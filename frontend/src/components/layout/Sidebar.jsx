@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { RoleBadge } from '../common/Badge';
+import { Download } from 'lucide-react';
 import '../../styles/layout.css';
 
 export const Sidebar = ({ isOpen, onClose }) => {
@@ -191,6 +192,32 @@ export const Sidebar = ({ isOpen, onClose }) => {
               </div>
             );
           })}
+        </div>
+
+        {/* Project Documentation Download Link */}
+        <div style={{ padding: '0.5rem 1rem 0.5rem 1rem' }}>
+          <a
+            href="/docs/BillFlow_Comprehensive_Project_Documentation.pdf"
+            download="BillFlow_Comprehensive_Project_Documentation.pdf"
+            className="btn btn-primary"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.45rem',
+              width: '100%',
+              fontSize: '0.75rem',
+              padding: '0.55rem 0.75rem',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontWeight: 600,
+              boxShadow: '0 2px 4px rgba(37, 99, 235, 0.2)',
+            }}
+            title="Download Comprehensive Project Documentation PDF"
+          >
+            <Download size={15} />
+            <span>Project Docs (PDF)</span>
+          </a>
         </div>
 
         {/* Bottom User Section */}

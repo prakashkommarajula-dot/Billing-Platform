@@ -2,6 +2,15 @@
 
 A production-grade, full-stack business billing, accounting, and invoice management web platform.
 
+[![Documentation](https://img.shields.io/badge/Documentation-Comprehensive_PDF-blue.svg)](./BillFlow_Comprehensive_Project_Documentation.pdf)
+[![Docker](https://img.shields.io/badge/Docker-Multi--Container_Ready-2496ED.svg)](./docker-compose.yml)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Production_Manifests-326CE5.svg)](./k8s)
+
+> 📄 **Official Project Documentation:**
+> - **Comprehensive PDF Documentation:** [BillFlow_Comprehensive_Project_Documentation.pdf](./BillFlow_Comprehensive_Project_Documentation.pdf)
+> - **Markdown Documentation:** [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md)
+> - **Generate PDF Anytime:** `npm run docs:pdf`
+
 ---
 
 ## 📁 Repository Architecture: Frontend & Backend Separation

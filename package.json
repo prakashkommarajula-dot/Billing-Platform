@@ -15,7 +15,8 @@
     "k8s:delete": "kubectl delete -k k8s/",
     "k8s:status": "kubectl get all,pvc -n billflow",
     "k8s:logs:backend": "kubectl logs -l app=backend -n billflow -f",
-    "k8s:logs:frontend": "kubectl logs -l app=frontend -n billflow -f"
+    "k8s:logs:frontend": "kubectl logs -l app=frontend -n billflow -f",
+    "docs:pdf": "node backend/scripts/generateDocumentationPdf.js"
   },
   "keywords": [
     "invoice",
