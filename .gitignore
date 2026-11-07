@@ -3,10 +3,12 @@ node_modules/
 backend/node_modules/
 frontend/node_modules/
 
-# Production Builds
+# Production Builds & Caches
 dist/
 frontend/dist/
 build/
+.vite/
+frontend/.vite/
 
 # Environment Variables
 .env
