@@ -6,7 +6,11 @@
     "dev:backend": "npm run dev --prefix backend",
     "dev:frontend": "npm run dev --prefix frontend",
     "install:all": "npm install --prefix backend && npm install --prefix frontend",
-    "start": "npm run start --prefix backend"
+    "start": "npm run start --prefix backend",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
   },
   "keywords": [
     "invoice",
@@ -15,6 +19,7 @@
     "react",
     "express",
     "mongodb",
+    "docker",
     "devops"
   ],
   "author": "B.Tech DevOps and Full Stack Development",

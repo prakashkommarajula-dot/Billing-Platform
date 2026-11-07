@@ -139,7 +139,39 @@ invoice-billing-platform/
 
 ## 🚀 Running the Application
 
-### Option A: Run Both Together from Project Root
+### Option A: Docker & Containerization (Production / Recommended)
+The entire multi-container architecture is orchestrated with Docker Compose:
+- **`billflow-mongodb`**: Dedicated MongoDB 6 database with automatic health check and named persistent volume `billflow_mongodb_data`.
+- **`billflow-backend`**: Node.js 20 Alpine Express API listening on port 5000 with automatic reconnection.
+- **`billflow-frontend`**: Multi-stage build with Nginx Alpine serving the production Vite React SPA on ports 80, 5173, and 3000, with reverse proxying for `/api/*`.
+
+```bash
+# Build and run all services in detached mode
+docker compose up -d --build
+
+# Or use root npm shortcut scripts:
+npm run docker:build
+npm run docker:up
+
+# Check container health and status
+docker compose ps
+
+# View live container logs
+docker compose logs -f
+
+# Stop all containers
+npm run docker:down
+# or: docker compose down
+```
+
+Once started:
+- Frontend Web App: [http://localhost:80](http://localhost:80) (or [http://localhost:5173](http://localhost:5173) / [http://localhost:3000](http://localhost:3000))
+- Backend REST API Health: [http://localhost:5000/api/health](http://localhost:5000/api/health)
+- API via Nginx Proxy: [http://localhost:80/api/health](http://localhost:80/api/health)
+
+---
+
+### Option B: Run Both Locally from Project Root
 ```bash
 # 1. Install dependencies
 npm run install:all
@@ -151,7 +183,7 @@ npm run dev:backend
 npm run dev:frontend
 ```
 
-### Option B: Run Individually
+### Option C: Run Individually
 
 **Backend (`backend/`):**
 ```bash
