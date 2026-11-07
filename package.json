@@ -10,7 +10,12 @@
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f"
+    "docker:logs": "docker compose logs -f",
+    "k8s:apply": "kubectl apply -k k8s/",
+    "k8s:delete": "kubectl delete -k k8s/",
+    "k8s:status": "kubectl get all,pvc -n billflow",
+    "k8s:logs:backend": "kubectl logs -l app=backend -n billflow -f",
+    "k8s:logs:frontend": "kubectl logs -l app=frontend -n billflow -f"
   },
   "keywords": [
     "invoice",

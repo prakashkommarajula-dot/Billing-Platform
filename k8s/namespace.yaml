@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: billflow
+  labels:
+    app.kubernetes.io/name: billflow
+    app.kubernetes.io/part-of: billflow-platform

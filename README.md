@@ -171,7 +171,42 @@ Once started:
 
 ---
 
-### Option B: Run Both Locally from Project Root
+### Option B: Kubernetes Deployment (Production Cluster / K8s)
+The entire enterprise stack is packaged with complete Kubernetes manifests in `k8s/`:
+- **Namespace**: `billflow`
+- **Configuration & Secrets**: `billflow-config` ConfigMap and `billflow-secret` Secret
+- **Storage**: PersistentVolumeClaim `mongodb-pvc` with 1Gi ReadWriteOnce volume
+- **Stateful Database**: MongoDB 6 Deployment with TCP socket probes and persistent storage
+- **Backend Service**: 2 Replicas, NodePort `30500`, HTTP readiness/liveness probes (`/api/health`), and resource quotas
+- **Frontend Web Service**: 2 Replicas, NodePort `30080`, Nginx SPA with reverse proxy, and health probes
+- **Ingress / Kustomize**: Single command deployment via Kustomize
+
+```bash
+# 1. Apply all Kubernetes resources
+kubectl apply -k k8s/
+# or: npm run k8s:apply
+
+# 2. Verify all pods, services, and PVCs are running
+kubectl get all,pvc -n billflow
+# or: npm run k8s:status
+
+# 3. View streaming pod logs
+npm run k8s:logs:backend
+npm run k8s:logs:frontend
+
+# 4. Tear down cluster deployment
+kubectl delete -k k8s/
+# or: npm run k8s:delete
+```
+
+**Cluster Access URLs:**
+- **Frontend SPA**: [http://localhost:30080](http://localhost:30080)
+- **Backend API Direct**: [http://localhost:30500/api/health](http://localhost:30500/api/health)
+- **API via Frontend Proxy**: [http://localhost:30080/api/health](http://localhost:30080/api/health)
+
+---
+
+### Option C: Run Both Locally from Project Root
 ```bash
 # 1. Install dependencies
 npm run install:all
@@ -183,7 +218,7 @@ npm run dev:backend
 npm run dev:frontend
 ```
 
-### Option C: Run Individually
+### Option D: Run Individually
 
 **Backend (`backend/`):**
 ```bash
