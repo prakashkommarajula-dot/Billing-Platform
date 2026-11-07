@@ -1,0 +1,232 @@
+/* User Profile Module Styles */
+
+.profile-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header Row */
+.profile-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.profile-main-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-navy, #172554);
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.01em;
+}
+
+.profile-sub-title {
+  font-size: 0.875rem;
+  color: var(--text-muted, #6B7280);
+  margin: 0;
+}
+
+/* 2-Column Responsive Layout */
+.profile-layout-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .profile-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-sidebar-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Identity Card */
+.profile-identity-card {
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.05));
+  text-align: center;
+}
+
+.profile-avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0 1.5rem 0;
+  border-bottom: 1px solid var(--light-border, #E5E7EB);
+}
+
+.profile-avatar-wrapper {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 1rem;
+}
+
+.avatar-full-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #BFDBFE;
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+}
+
+.avatar-initials-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563EB 0%, #172554 100%);
+  color: #FFFFFF;
+  font-size: 2.25rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #BFDBFE;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.avatar-upload-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--primary-blue, #2563EB);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.avatar-upload-badge:hover {
+  transform: scale(1.08);
+  background-color: #1D4ED8;
+}
+
+.profile-user-fullname {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--dark-navy, #172554);
+  margin: 0 0 0.25rem 0;
+}
+
+.profile-user-email {
+  font-size: 0.85rem;
+  color: var(--text-muted, #6B7280);
+  margin: 0 0 0.85rem 0;
+}
+
+.profile-role-badge-row {
+  display: flex;
+  justify-content: center;
+}
+
+/* Metadata Details List */
+.profile-meta-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  text-align: left;
+}
+
+.meta-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.meta-text-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-lbl {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted, #6B7280);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.meta-val {
+  font-size: 0.875rem;
+  color: var(--dark-navy, #172554);
+}
+
+/* Profile Form Section Cards */
+.profile-section-card {
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.05));
+}
+
+.profile-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .profile-inputs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-disabled-field {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--light-border, #E5E7EB);
+  border-radius: var(--radius-md, 8px);
+  background-color: #F8FAFC;
+  color: var(--text-muted, #6B7280);
+  font-size: 0.875rem;
+  outline: none;
+  cursor: not-allowed;
+}
+
+.profile-save-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.password-fields-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 520px;
+}
+
+.pwd-input-relative {
+  position: relative;
+}
+
+.pwd-eye-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 2.3rem;
+  background: none;
+  border: none;
+  color: var(--text-muted, #6B7280);
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.pwd-eye-btn:hover {
+  color: var(--text-main, #1F2937);
+}

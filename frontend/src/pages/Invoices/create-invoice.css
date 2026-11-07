@@ -1,0 +1,584 @@
+/* Create Invoice Page Styles */
+
+.create-invoice-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Page Header */
+.create-invoice-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  transition: color 0.15s ease;
+}
+
+.back-btn:hover {
+  color: var(--primary-blue);
+}
+
+.page-main-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-navy);
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.01em;
+}
+
+.page-main-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.header-action-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* 2-Column Layout Grid */
+.create-invoice-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.form-main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.calculations-sidebar-column {
+  position: sticky;
+  top: 5rem;
+}
+
+/* Section Cards */
+.section-card {
+  border: 1px solid var(--light-border);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  background-color: #FFFFFF;
+}
+
+/* Form Row Grids */
+.form-row-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Tax Type Toggle Buttons */
+.tax-type-toggle {
+  display: flex;
+  background-color: #F1F5F9;
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 4px;
+}
+
+.tax-type-btn {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.tax-type-btn.active {
+  background-color: #FFFFFF;
+  color: var(--primary-blue);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Products & Services Items Grid */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+}
+
+.items-table-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.items-table-grid th {
+  background-color: #F8FAFC;
+  padding: 0.75rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--light-border);
+  text-align: left;
+}
+
+.items-table-grid td {
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--light-border);
+  vertical-align: middle;
+}
+
+.items-table-grid tr:last-child td {
+  border-bottom: none;
+}
+
+.item-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 0.65rem;
+  font-size: 0.825rem;
+  color: var(--text-main);
+  background-color: #FAFCFE;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.item-input:focus {
+  border-color: var(--primary-blue);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.select-catalog-input {
+  font-weight: 500;
+}
+
+.remove-item-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.remove-item-btn:hover {
+  background-color: #FEE2E2;
+  color: #DC2626;
+}
+
+/* Section 3: Financial Calculations Sidebar */
+.calc-summary-card {
+  border: 1px solid var(--light-border);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  background-color: #FFFFFF;
+}
+
+.calc-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--dark-navy);
+  margin: 0 0 0.25rem 0;
+}
+
+.calc-card-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.calc-divider {
+  height: 1px;
+  background-color: var(--light-border);
+  margin: 1rem 0;
+}
+
+.calc-divider-dashed {
+  height: 1px;
+  border-top: 1px dashed var(--light-border);
+  margin: 0.75rem 0;
+}
+
+.calc-rows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.calc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.calc-row.align-center {
+  align-items: center;
+}
+
+.calc-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.calc-val {
+  font-weight: 600;
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+.calc-mini-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 0.5rem;
+  font-size: 0.85rem;
+  text-align: right;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  outline: none;
+  font-weight: 600;
+  background-color: #FAFCFE;
+}
+
+.calc-mini-input:focus {
+  border-color: var(--primary-blue);
+  background-color: #FFFFFF;
+}
+
+.grand-total-highlight {
+  padding: 0.75rem 0.5rem;
+  background-color: #EFF6FF;
+  border-radius: var(--radius-md);
+  border: 1px solid #BFDBFE;
+  margin: 0.25rem 0;
+}
+
+.calc-label-lg {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark-navy);
+}
+
+.calc-val-lg {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary-blue);
+}
+
+.balance-highlight {
+  padding: 0.75rem 0.5rem;
+  background-color: #F8FAFC;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--light-border);
+  margin-top: 0.25rem;
+}
+
+.calc-label-bold {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dark-navy);
+}
+
+.calc-val-bold {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.calc-footer-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+/* Modal and Print Preview */
+.print-preview-modal {
+  width: 900px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 0;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.print-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--light-border);
+  background-color: #F8FAFC;
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+}
+
+.invoice-print-sheet {
+  padding: 2.5rem;
+  background-color: #FFFFFF;
+  color: #1F2937;
+  font-family: inherit;
+}
+
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.sheet-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--dark-navy);
+  letter-spacing: -0.02em;
+}
+
+.sheet-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.sheet-tax-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary-blue);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.sheet-meta-num {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 0.25rem;
+}
+
+.sheet-status-tag {
+  margin-top: 0.4rem;
+}
+
+.sheet-divider {
+  height: 1.5px;
+  background-color: var(--light-border);
+  margin: 1.5rem 0;
+}
+
+.sheet-parties-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.sheet-meta-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.sheet-client-name {
+  font-size: 1.1rem;
+  color: var(--dark-navy);
+  margin-top: 0.25rem;
+}
+
+.sheet-meta-val {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  margin-top: 0.2rem;
+}
+
+.sheet-date-row {
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+}
+
+.sheet-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.sheet-items-table th {
+  border-top: 2px solid var(--dark-navy);
+  border-bottom: 2px solid var(--dark-navy);
+  padding: 0.75rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dark-navy);
+}
+
+.sheet-items-table td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--light-border);
+  font-size: 0.85rem;
+}
+
+.sheet-totals-container {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.sheet-notes-box {
+  background-color: #F8FAFC;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.sheet-totals-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sheet-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.sheet-total-row.grand-total-row {
+  border-top: 2px solid var(--dark-navy);
+  border-bottom: 2px solid var(--dark-navy);
+  padding: 0.65rem 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.sheet-total-row.paid-row {
+  font-weight: 600;
+  padding-top: 0.25rem;
+}
+
+.sheet-total-row.balance-row {
+  font-size: 1rem;
+  font-weight: 800;
+  padding-top: 0.25rem;
+}
+
+/* Print Media Query */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  #printable-invoice,
+  #printable-invoice * {
+    visibility: visible;
+  }
+
+  #printable-invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20mm;
+    box-shadow: none;
+    border: none;
+  }
+
+  .modal-backdrop {
+    background: transparent !important;
+    position: static !important;
+  }
+
+  .modal-card {
+    box-shadow: none !important;
+    border: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .create-invoice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calculations-sidebar-column {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row-3,
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .create-invoice-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-action-group {
+    width: 100%;
+  }
+
+  .header-action-group button {
+    flex: 1;
+  }
+
+  .sheet-parties-grid,
+  .sheet-totals-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

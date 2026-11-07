@@ -1,0 +1,22 @@
+{
+  "name": "invoice-generation-billing-platform",
+  "version": "1.0.0",
+  "description": "Full-stack Invoice Generation and Business Billing Management Platform",
+  "scripts": {
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "keywords": [
+    "invoice",
+    "billing",
+    "accounting",
+    "react",
+    "express",
+    "mongodb",
+    "devops"
+  ],
+  "author": "B.Tech DevOps and Full Stack Development",
+  "license": "ISC"
+}

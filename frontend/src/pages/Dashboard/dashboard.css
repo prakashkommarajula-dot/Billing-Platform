@@ -1,0 +1,388 @@
+/* Dashboard Styling */
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ========================================================= */
+/* 1. WELCOME BANNER                                         */
+/* ========================================================= */
+.dashboard-welcome-banner {
+  background-color: #FFFFFF;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.welcome-role-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-role-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.welcome-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-left: 1px solid var(--light-border);
+  padding-left: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.welcome-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.welcome-desc {
+  font-size: 0.925rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+.welcome-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ========================================================= */
+/* 2. 5 SUMMARY CARDS GRID                                   */
+/* ========================================================= */
+.stats-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.15rem;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-bg);
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card-highlight {
+  border-color: #FECACA;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%);
+}
+
+.stat-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.stat-card-title {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stat-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon-primary {
+  background-color: var(--primary-light);
+  color: var(--primary-blue);
+}
+
+.stat-icon-info {
+  background-color: var(--info-light);
+  color: var(--info-cyan);
+}
+
+.stat-icon-success {
+  background-color: var(--success-light);
+  color: var(--success-green);
+}
+
+.stat-icon-warning {
+  background-color: var(--warning-light);
+  color: var(--warning-orange);
+}
+
+.stat-icon-danger {
+  background-color: var(--danger-light);
+  color: var(--danger-red);
+}
+
+.stat-card-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.stat-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.775rem;
+  font-weight: 500;
+}
+
+.stat-card-footer.trend-up {
+  color: var(--success-green);
+}
+
+.stat-skeleton {
+  display: inline-block;
+  width: 90px;
+  height: 28px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeletonPulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========================================================= */
+/* 3. QUICK ACTIONS HORIZONTAL BAR                           */
+/* ========================================================= */
+.quick-actions-bar-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+}
+
+.quick-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.quick-actions-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-main);
+}
+
+.quick-actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ========================================================= */
+/* 4. REVENUE OVERVIEW CHART                                 */
+/* ========================================================= */
+.revenue-chart-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-lg);
+}
+
+.chart-wrapper {
+  margin-top: 0.5rem;
+}
+
+.chart-loading-placeholder {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.885rem;
+}
+
+.custom-chart-tooltip {
+  background-color: #FFFFFF;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  box-shadow: var(--shadow-lg);
+  font-size: 0.825rem;
+}
+
+.tooltip-month {
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid var(--light-border);
+  padding-bottom: 0.25rem;
+}
+
+.tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.25rem;
+  color: var(--text-secondary);
+}
+
+.tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-revenue {
+  background-color: var(--primary-blue);
+}
+
+.dot-collected {
+  background-color: var(--success-green);
+}
+
+/* ========================================================= */
+/* 5. TWO-COLUMN DASHBOARD GRID & TABLES                     */
+/* ========================================================= */
+.dashboard-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.dashboard-table-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-lg);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.885rem;
+}
+
+.custom-table th {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1.5px solid var(--light-border);
+  background-color: #FAFCFE;
+  white-space: nowrap;
+}
+
+.custom-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--light-border);
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.payment-method-tag {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background-color: #F1F5F9;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Utility classes */
+.text-success { color: var(--success-green) !important; }
+.text-warning { color: var(--warning-orange) !important; }
+.text-danger { color: var(--danger-red) !important; }
+.text-primary { color: var(--primary-blue) !important; }
+.text-center { text-align: center; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+/* ========================================================= */
+/* RESPONSIVE BREAKPOINTS                                    */
+/* ========================================================= */
+@media (max-width: 1400px) {
+  .stats-grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .dashboard-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .stats-grid-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard-welcome-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .welcome-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .welcome-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 580px) {
+  .stats-grid-5 {
+    grid-template-columns: 1fr;
+  }
+  .quick-actions-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .quick-actions-buttons {
+    width: 100%;
+  }
+  .quick-actions-buttons button {
+    flex: 1;
+  }
+}

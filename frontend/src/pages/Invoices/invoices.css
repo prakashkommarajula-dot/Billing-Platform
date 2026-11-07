@@ -1,0 +1,332 @@
+/* Invoice Management Module Styles */
+
+.invoices-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Metric Summary Chips */
+.invoice-metrics-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.invoice-summary-chip {
+  background-color: #FFFFFF;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.chip-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.chip-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Invoices Filter Grid */
+.invoices-filters-grid {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-date-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.filter-date-input {
+  height: 42px;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--light-border);
+  border-radius: var(--radius-md);
+  font-size: 0.825rem;
+  color: var(--text-main);
+  background-color: #FAFCFE;
+  outline: none;
+}
+
+.filter-date-input:focus {
+  border-color: var(--primary-blue);
+  background-color: #FFFFFF;
+}
+
+/* Master Invoice Table */
+.invoice-master-table th {
+  padding: 0.85rem 0.85rem;
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background-color: #FAFCFE;
+  border-bottom: 1.5px solid var(--light-border);
+  white-space: nowrap;
+}
+
+.invoice-master-table td {
+  padding: 0.95rem 0.85rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--light-border);
+  white-space: nowrap;
+}
+
+.invoice-row:hover {
+  background-color: #F8FAFC;
+}
+
+.inv-number-link {
+  color: var(--primary-blue);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.inv-number-link:hover {
+  color: var(--primary-hover);
+}
+
+.customer-cell {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-cancel:hover {
+  border-color: var(--warning-orange);
+  color: var(--warning-orange);
+  background-color: var(--warning-light);
+}
+
+/* ========================================================= */
+/* PRINT / PDF PREVIEW MODAL & SHEET                         */
+/* ========================================================= */
+.print-preview-modal {
+  max-width: 800px;
+  background-color: #FFFFFF;
+}
+
+.print-modal-header {
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--light-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice-print-sheet {
+  padding: 2.5rem;
+  background-color: #FFFFFF;
+  color: #0F172A;
+  font-family: var(--font-family);
+  overflow-y: auto;
+  max-height: 75vh;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.sheet-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--dark-navy);
+}
+
+.sheet-sub {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+}
+
+.sheet-tax-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-blue);
+  letter-spacing: 0.05em;
+}
+
+.sheet-meta-num {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 0.2rem;
+}
+
+.sheet-status-tag {
+  margin-top: 0.35rem;
+}
+
+.sheet-divider {
+  height: 2px;
+  background: var(--light-border);
+  margin: 1.25rem 0;
+}
+
+.sheet-parties-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.sheet-meta-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.sheet-client-name {
+  font-size: 1.05rem;
+  color: var(--text-main);
+  margin-top: 0.15rem;
+}
+
+.sheet-meta-val {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.sheet-date-row {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.sheet-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.75rem;
+}
+
+.sheet-items-table th {
+  background-color: #F8FAFC;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--light-border);
+  border-bottom: 2px solid var(--light-border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.sheet-items-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--light-border);
+  font-size: 0.885rem;
+}
+
+.sheet-totals-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.sheet-notes-box {
+  flex: 1;
+  background-color: #F8FAFC;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--light-border);
+}
+
+.sheet-totals-table {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sheet-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  padding: 0.25rem 0;
+}
+
+.grand-total-row {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  border-top: 2px solid var(--light-border);
+  padding-top: 0.65rem;
+}
+
+.balance-row {
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-top: 1px dashed var(--light-border);
+  padding-top: 0.5rem;
+}
+
+/* ========================================================= */
+/* PRINT MEDIA RULES                                         */
+/* ========================================================= */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .no-print {
+    display: none !important;
+  }
+  #printable-invoice,
+  #printable-invoice * {
+    visibility: visible;
+  }
+  #printable-invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    max-height: none;
+    overflow: visible;
+  }
+  .modal-backdrop {
+    position: static;
+    background: none;
+    padding: 0;
+  }
+  .modal-card {
+    box-shadow: none;
+    border: none;
+    max-width: 100%;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .invoice-metrics-summary-row {
+    grid-template-columns: 1fr;
+  }
+}

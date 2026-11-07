@@ -1,0 +1,408 @@
+/* Credit Notes Management Module Styles */
+
+.credit-notes-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.credit-notes-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.credit-notes-main-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-navy);
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.01em;
+}
+
+.credit-notes-sub-title {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.credit-notes-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* 3 Metrics Cards Grid */
+.credit-notes-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.cn-summary-chip {
+  background-color: #FFFFFF;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chip-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-amber {
+  background-color: #FEF3C7;
+  color: #D97706;
+}
+
+.icon-amber-bg {
+  background-color: #FEF3C7;
+}
+
+.icon-primary {
+  background-color: #EFF6FF;
+  color: var(--primary-blue);
+}
+
+.icon-slate {
+  background-color: #F8FAFC;
+  color: #475569;
+  border: 1px solid var(--light-border);
+}
+
+.text-amber {
+  color: #D97706 !important;
+}
+
+.chip-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.chip-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.chip-val {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--dark-navy);
+  letter-spacing: -0.01em;
+}
+
+.chip-sub {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+/* Filters Card */
+.cn-filters-grid {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Master Table */
+.credit-notes-master-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.credit-notes-master-table th {
+  padding: 0.85rem 1rem;
+  font-size: 0.725rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background-color: #FAFCFE;
+  border-bottom: 1.5px solid var(--light-border);
+  white-space: nowrap;
+  text-align: left;
+}
+
+.credit-notes-master-table td {
+  padding: 0.95rem 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--light-border);
+  white-space: nowrap;
+}
+
+.cn-row:hover {
+  background-color: #F8FAFC;
+}
+
+.cn-id-link {
+  color: #D97706;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.cn-id-link:hover {
+  text-decoration: underline;
+}
+
+/* Modal Form Fields */
+.cn-preview-chip {
+  background-color: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Preview Modal & Printable Sheet */
+.cn-modal-card {
+  max-width: 620px;
+  width: 95vw;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+}
+
+.cn-sheet {
+  padding: 2.25rem;
+  color: #1F2937;
+  background-color: #FFFFFF;
+}
+
+.cn-top-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cn-brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--dark-navy);
+  margin: 0;
+}
+
+.cn-brand-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.cn-status-stamp {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #D97706;
+  letter-spacing: 0.05em;
+}
+
+.cn-num {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 0.25rem;
+}
+
+.cn-divider {
+  height: 1.5px;
+  background-color: var(--light-border);
+  margin: 1.25rem 0;
+}
+
+.cn-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.cn-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  display: block;
+}
+
+.cn-client-name {
+  font-size: 1.05rem;
+  color: var(--dark-navy);
+  margin-top: 0.2rem;
+}
+
+.cn-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+}
+
+/* Details Table in Slip */
+.cn-table-wrap {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.cn-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.cn-details-table th {
+  background-color: #F8FAFC;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.725rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--dark-navy);
+  border-bottom: 1px solid var(--light-border);
+}
+
+.cn-details-table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--light-border);
+}
+
+.cn-details-table tr:last-child td {
+  border-bottom: none;
+}
+
+.cn-highlight-row {
+  background-color: #FEF3C7;
+}
+
+.cn-amount-banner {
+  background-color: #FFFBEB;
+  border: 1.5px solid #FDE68A;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.cn-amount-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #92400E;
+  letter-spacing: 0.04em;
+}
+
+.cn-amount-large {
+  font-size: 1.5rem;
+  color: #D97706;
+}
+
+.cn-notes-box {
+  background-color: #F8FAFC;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.cn-footer {
+  text-align: center;
+  font-size: 0.725rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--light-border);
+  padding-top: 1rem;
+}
+
+/* Print Media Query */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  #printable-credit-note,
+  #printable-credit-note * {
+    visibility: visible;
+  }
+
+  #printable-credit-note {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20mm;
+    box-shadow: none;
+    border: none;
+  }
+
+  .modal-backdrop {
+    background: transparent !important;
+    position: static !important;
+  }
+
+  .modal-card {
+    box-shadow: none !important;
+    border: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .credit-notes-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .credit-notes-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .credit-notes-header-actions {
+    width: 100%;
+  }
+
+  .credit-notes-header-actions button {
+    flex: 1;
+  }
+
+  .cn-info-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
