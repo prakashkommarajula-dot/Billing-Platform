@@ -2,12 +2,17 @@
 
 A production-grade, full-stack business billing, accounting, and invoice management web platform.
 
+[![Live Application](https://img.shields.io/badge/Render-Live_Application-28a745?logo=render&style=for-the-badge)](https://billflow-billing-platform.onrender.com)
+
 [![Documentation](https://img.shields.io/badge/Documentation-Comprehensive_PDF-blue.svg)](./BillFlow_Comprehensive_Project_Documentation.pdf)
 [![Docker](https://img.shields.io/badge/Docker-Multi--Container_Ready-2496ED.svg)](./docker-compose.yml)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Production_Manifests-326CE5.svg)](./k8s)
-[![Render](https://img.shields.io/badge/Render-Deploy_Ready-black.svg?logo=render)](./RENDER_DEPLOYMENT.md)
+[![Render](https://img.shields.io/badge/Render-Live_Deploy-black.svg?logo=render)](https://billflow-billing-platform.onrender.com)
 
+> 🌐 **Live Deployed URL:** **[https://billflow-billing-platform.onrender.com](https://billflow-billing-platform.onrender.com)**
+> 
 > 📄 **Official Project Documentation:**
+> - **Live Render URL:** [https://billflow-billing-platform.onrender.com](https://billflow-billing-platform.onrender.com)
 > - **Render Cloud Deployment Guide:** [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
 > - **Comprehensive PDF Documentation:** [BillFlow_Comprehensive_Project_Documentation.pdf](./BillFlow_Comprehensive_Project_Documentation.pdf)
 > - **Markdown Documentation:** [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md)
