@@ -3,20 +3,22 @@
 A production-grade, full-stack business billing, accounting, and invoice management web platform.
 
 [![Live Application](https://img.shields.io/badge/Render-Live_Application-28a745?logo=render&style=for-the-badge)](https://billflow-billing-platform.onrender.com)
-
-[![Documentation](https://img.shields.io/badge/Documentation-Comprehensive_PDF-blue.svg)](./BillFlow_Comprehensive_Project_Documentation.pdf)
+[![B.Tech Project Report PDF](https://img.shields.io/badge/B.Tech_Report-PDF-red.svg)](./documentation/BILLFLOW_PROJECT_REPORT.pdf)
+[![B.Tech Project Report DOCX](https://img.shields.io/badge/B.Tech_Report-Word_DOCX-blue.svg)](./documentation/BILLFLOW_PROJECT_REPORT.docx)
+[![System Architecture](https://img.shields.io/badge/Architecture-Diagram-brightgreen.svg)](./documentation/BILLFLOW_ARCHITECTURE.png)
 [![Docker](https://img.shields.io/badge/Docker-Multi--Container_Ready-2496ED.svg)](./docker-compose.yml)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Production_Manifests-326CE5.svg)](./k8s)
-[![Render](https://img.shields.io/badge/Render-Live_Deploy-black.svg?logo=render)](https://billflow-billing-platform.onrender.com)
 
 > 🌐 **Live Deployed URL:** **[https://billflow-billing-platform.onrender.com](https://billflow-billing-platform.onrender.com)**
 > 
-> 📄 **Official Project Documentation:**
-> - **Live Render URL:** [https://billflow-billing-platform.onrender.com](https://billflow-billing-platform.onrender.com)
-> - **Render Cloud Deployment Guide:** [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
-> - **Comprehensive PDF Documentation:** [BillFlow_Comprehensive_Project_Documentation.pdf](./BillFlow_Comprehensive_Project_Documentation.pdf)
-> - **Markdown Documentation:** [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md)
-> - **Generate PDF Anytime:** `npm run docs:pdf`
+> 📄 **Official Academic & Technical Documentation:**
+> - **B.Tech Project Report (PDF):** [documentation/BILLFLOW_PROJECT_REPORT.pdf](./documentation/BILLFLOW_PROJECT_REPORT.pdf)
+> - **B.Tech Project Report (Word DOCX):** [documentation/BILLFLOW_PROJECT_REPORT.docx](./documentation/BILLFLOW_PROJECT_REPORT.docx)
+> - **Full Report Source (Markdown):** [documentation/BILLFLOW_PROJECT_REPORT.md](./documentation/BILLFLOW_PROJECT_REPORT.md)
+> - **System & DevOps Architecture Diagram:** [documentation/BILLFLOW_ARCHITECTURE.png](./documentation/BILLFLOW_ARCHITECTURE.png)
+> - **Database ER Schema Diagram:** [documentation/BILLFLOW_DATABASE_DIAGRAM.png](./documentation/BILLFLOW_DATABASE_DIAGRAM.png)
+> - **Production Screenshots Gallery:** [documentation/screenshots/](./documentation/screenshots/)
+> - **Direct Live Download:** [https://billflow-billing-platform.onrender.com/docs/BILLFLOW_PROJECT_REPORT.pdf](https://billflow-billing-platform.onrender.com/docs/BILLFLOW_PROJECT_REPORT.pdf)
 
 ---
 

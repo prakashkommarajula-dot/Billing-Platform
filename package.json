@@ -30,5 +30,9 @@
     "devops"
   ],
   "author": "B.Tech DevOps and Full Stack Development",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "docx": "^9.15.3",
+    "puppeteer-core": "^25.16.0"
+  }
 }

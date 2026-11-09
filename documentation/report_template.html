@@ -1,0 +1,1102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>BillFlow – B.Tech Project Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+    @bottom-right {
+      content: counter(page);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1e293b;
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-break { page-break-after: always; height: 0; }
+  
+  h1 {
+    color: #0f172a;
+    font-size: 20pt;
+    font-weight: 800;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 6pt;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    color: #1e3a8a;
+    font-size: 15pt;
+    font-weight: 700;
+    margin-top: 18pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    color: #1e40af;
+    font-size: 12.5pt;
+    font-weight: 600;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    color: #334155;
+    font-size: 11pt;
+    font-weight: 600;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 10pt;
+    text-align: justify;
+  }
+
+  li {
+    margin-bottom: 4pt;
+    margin-left: 20pt;
+  }
+
+  .numbered-item {
+    margin-bottom: 4pt;
+    margin-left: 10pt;
+  }
+
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 10pt 14pt;
+    border-radius: 6pt;
+    font-family: "Cascadia Code", Consolas, Monaco, monospace;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    overflow-x: auto;
+    margin: 10pt 0;
+    page-break-inside: avoid;
+  }
+
+  code.inline-code {
+    background: #f1f5f9;
+    color: #0958d9;
+    padding: 1pt 4pt;
+    border-radius: 3pt;
+    font-family: Consolas, monospace;
+    font-size: 9.5pt;
+    border: 1px solid #e2e8f0;
+  }
+
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14pt 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+
+  .report-table th {
+    background: #1e3a8a;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 6pt 8pt;
+    border: 1px solid #1e3a8a;
+  }
+
+  .report-table td {
+    padding: 5pt 8pt;
+    border: 1px solid #cbd5e1;
+  }
+
+  .report-table tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .figure-container {
+    text-align: center;
+    margin: 14pt 0;
+    page-break-inside: avoid;
+  }
+
+  .figure-img {
+    max-width: 95%;
+    height: auto;
+    border: 1px solid #cbd5e1;
+    border-radius: 6pt;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+
+  .figure-caption {
+    font-size: 9pt;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 5pt;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .divider {
+    border: 0;
+    height: 1px;
+    background: #e2e8f0;
+    margin: 18pt 0;
+  }
+
+  .math-block {
+    text-align: center;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 11pt;
+    margin: 8pt 0;
+    font-style: italic;
+    background: #f8fafc;
+    padding: 6pt;
+    border-radius: 4pt;
+  }
+
+  .inline-math {
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-style: italic;
+  }
+
+  /* Cover Page Styling */
+  .cover-page {
+    text-align: center;
+    padding: 30pt 10pt;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<h1>B.TECH PROJECT DOCUMENTATION REPORT</h1>
+<hr class="divider" />
+<h1>BILLFLOW – INVOICE GENERATION AND BUSINESS BILLING MANAGEMENT PLATFORM</h1>
+<h3>A Full-Stack Cloud Accounting System with Containerized DevOps Pipeline</h3>
+<p><strong>Submitted in partial fulfillment of the requirements for the award of the degree of</strong>  </p>
+<p><strong>BACHELOR OF TECHNOLOGY (B.TECH)</strong>  </p>
+<p><strong>in</strong>  </p>
+<p><strong>COMPUTER SCIENCE AND ENGINEERING / INFORMATION TECHNOLOGY</strong>  </p>
+<hr class="divider" />
+<p><strong>Submitted by:</strong>  </p>
+<p><strong>Prakash Kommarajula</strong>  </p>
+<p><em>(Roll No: 2022-BTECH-CSE-089)</em>  </p>
+<p><strong>Under the Guidance of:</strong>  </p>
+<p><strong>Internal Project Supervisor / Assistant Professor</strong>  </p>
+<p>Department of Computer Science & Engineering  </p>
+<p>College of Engineering and Technology  </p>
+<p><strong>Academic Year:</strong> 2025 – 2026  </p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CERTIFICATE OF APPROVAL</h2>
+<p>This is to certify that the project entitled <strong>"BillFlow – Invoice Generation and Business Billing Management Platform"</strong> submitted by <strong>Prakash Kommarajula</strong> in partial fulfillment of the requirements for the award of the degree of <strong>Bachelor of Technology in Computer Science & Engineering</strong> is an authentic record of bonafide work carried out under our supervision and guidance during the academic year 2025–2026.</p>
+<p>The results embodied in this report have been thoroughly verified and have not been submitted to any other University or Institution for the award of any degree or diploma.</p>
+<div style="height: 40px;"></div>
+<p><strong>Internal Guide / Supervisor</strong>  </p>
+<p>Assistant Professor  </p>
+<p>Department of Computer Science & Engineering  </p>
+<p><strong>Head of the Department (HOD)</strong>  </p>
+<p>Professor & Head  </p>
+<p>Department of Computer Science & Engineering  </p>
+<p><strong>Principal / Dean of Engineering</strong>  </p>
+<p>College of Engineering and Technology  </p>
+<p><strong>External Examiner Signature:</strong> _______________________  </p>
+<p><strong>Date:</strong> _______________________  </p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>DECLARATION</h2>
+<p>I, <strong>Prakash Kommarajula</strong>, hereby declare that the project report entitled <strong>"BillFlow – Invoice Generation and Business Billing Management Platform"</strong> submitted to the Department of Computer Science and Engineering is a record of independent, original work done by me under the supervision of my faculty advisors.</p>
+<p>I further declare that this work has not been submitted previously in part or in full for the award of any degree, diploma, fellowship, or title to any other university or institution of higher learning. All technical contributions, source codes, libraries, and references used in this project have been duly cited and acknowledged.</p>
+<div style="height: 40px;"></div>
+<p><strong>Prakash Kommarajula</strong>  </p>
+<p>Department of Computer Science & Engineering  </p>
+<p>Place: Hyderabad / Bengaluru, India  </p>
+<p>Date: 09 November 2026  </p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>ACKNOWLEDGEMENT</h2>
+<p>The satisfaction and euphoria that accompany the successful completion of any task would be incomplete without expressing gratitude to the individuals who made it possible, whose guidance, encouragement, and technical insights served as the beacon of light during this endeavor.</p>
+<p>First and foremost, I express my deepest sense of gratitude to our respected <strong>Principal</strong> and <strong>Head of the Department of Computer Science & Engineering</strong>, for providing the state-of-the-art computational infrastructure, laboratories, and academic atmosphere conducive to creative engineering.</p>
+<p>I am profoundly indebted to my <strong>Internal Project Guide</strong>, whose vigilant supervision, technical criticisms, and continuous encouragement guided the architectural design of this full-stack and cloud-native DevOps implementation.</p>
+<p>I also extend my heartfelt thanks to all the faculty members and technical staff of the department for their direct and indirect cooperation throughout my Bachelor of Technology tenure. Lastly, my deepest appreciation goes to my parents, family, and peers whose unyielding faith, patience, and moral support inspired me throughout the execution of this project.</p>
+<p><strong>Prakash Kommarajula</strong>  </p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>ABSTRACT</h2>
+<p>In modern commerce, accurate financial recordkeeping, regulatory Goods and Services Tax (GST/VAT) compliance, and automated billing workflows represent mission-critical operational requirements for small-to-medium enterprises (SMEs) and corporate enterprises. Traditional billing workflows characterized by manual paper invoicing, disjointed spreadsheet formulas, and localized desktop accounting software suffer from severe vulnerabilities including data redundancy, human arithmetic errors, lack of multi-user role isolation, and complete absence of real-time multi-device accessibility.</p>
+<p>To overcome these fundamental challenges, this project presents <strong>BillFlow</strong>, an enterprise-grade, cloud-native Full-Stack Invoice Generation and Business Billing Management Platform engineered using the modern <strong>MERN architecture</strong> (MongoDB, Express.js, React.js, Node.js) and reinforced with an automated <strong>DevOps continuous delivery pipeline</strong>.</p>
+<p>BillFlow provides:</p>
+<div class="numbered-item">1. <strong>Multi-Role Governance</strong>: Tailored workspaces for <em>Administrators</em>, <em>Business Owners</em>, <em>Accountants</em>, and <em>Customers</em> with cryptographically enforced JSON Web Token (JWT) role-based access control (RBAC).</div>
+<div class="numbered-item">2. <strong>Automated Financial Ledger Engine</strong>: Real-time tax computation (Intra-state CGST+SGST vs. Inter-state IGST), discount allocations, credit notes, and running balance customer ledgers.</div>
+<div class="numbered-item">3. <strong>Dynamic Vector PDF Generation</strong>: High-performance, server-side dynamic PDF compilation via PDFKit, supporting branded letterheads, tax breakdowns, and automated download links.</div>
+<div class="numbered-item">4. <strong>Cloud-Native Containerization & Orchestration</strong>: Production multi-stage Docker packaging, Docker Compose local multi-container networking, Kubernetes declarative manifests (Deployments, ClusterIP/NodePort Services, ConfigMaps, Secrets, PVCs), and local KIND cluster validation.</div>
+<div class="numbered-item">5. <strong>Continuous Cloud Deployment</strong>: Live production infrastructure hosted on Render with automated GitHub webhook synchronization, zero-downtime rolling releases, and encrypted TLS communication backed by a globally replicated MongoDB Atlas NoSQL cluster.</div>
+<p>Quantitative verification demonstrates sub-200ms API response latency, zero calculation variance across complex financial transactions, and reliable cloud uptime accessible at <code class="inline-code">https://billflow-billing-platform.onrender.com</code>.</p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>TABLE OF CONTENTS</h2>
+<div class="numbered-item">1. <strong>Cover Page</strong></div>
+<div class="numbered-item">2. <strong>Certificate of Approval</strong></div>
+<div class="numbered-item">3. <strong>Declaration</strong></div>
+<div class="numbered-item">4. <strong>Acknowledgement</strong></div>
+<div class="numbered-item">5. <strong>Abstract</strong></div>
+<div class="numbered-item">6. <strong>Table of Contents</strong></div>
+<div class="numbered-item">7. <strong>Introduction</strong></div>
+<p>   - 7.1 Evolution of Enterprise Billing Systems</p>
+<p>   - 7.2 Motivation & Purpose</p>
+<p>   - 7.3 Organization of the Report</p>
+<div class="numbered-item">8. <strong>Problem Statement</strong></div>
+<p>   - 8.1 Inadequacy of Paper and Spreadsheet Invoicing</p>
+<p>   - 8.2 Operational Risks & Computational Bottlenecks</p>
+<div class="numbered-item">9. <strong>Existing System</strong></div>
+<p>   - 9.1 Overview of Legacy Desktop & Manual Systems</p>
+<p>   - 9.2 Critical Drawbacks of Existing Solutions</p>
+<div class="numbered-item">10. <strong>Proposed System</strong></div>
+<p>    - 10.1 System Overview</p>
+<p>    - 10.2 Key Innovations of BillFlow</p>
+<div class="numbered-item">11. <strong>Project Objectives</strong></div>
+<p>    - 11.1 Primary Technical Objectives</p>
+<p>    - 11.2 Secondary DevOps & Operational Objectives</p>
+<div class="numbered-item">12. <strong>Scope of the Project</strong></div>
+<p>    - 12.1 Target Sectors</p>
+<p>    - 12.2 Architectural Scope & Boundaries</p>
+<div class="numbered-item">13. <strong>Functional Requirements</strong></div>
+<p>    - 13.1 Authentication & Workspace Identity</p>
+<p>    - 13.2 Customer Ledger Management</p>
+<p>    - 13.3 Products & Inventory Catalog</p>
+<p>    - 13.4 Invoice Creation & Lifecycle Tracking</p>
+<p>    - 13.5 Payment Reconciliation & Credit Notes</p>
+<p>    - 13.6 Analytical Financial Dashboards</p>
+<div class="numbered-item">14. <strong>Non-Functional Requirements</strong></div>
+<p>    - 14.1 Performance & Latency</p>
+<p>    - 14.2 Security & Cryptography</p>
+<p>    - 14.3 Reliability & Fault-Tolerant Resiliency</p>
+<p>    - 14.4 Scalability & Portability</p>
+<p>    - 14.5 Usability & Responsiveness</p>
+<div class="numbered-item">15. <strong>Technology Stack</strong></div>
+<p>    - 15.1 Frontend Technologies</p>
+<p>    - 15.2 Backend Technologies</p>
+<p>    - 15.3 Database Engine</p>
+<p>    - 15.4 DevOps & Cloud Tooling</p>
+<div class="numbered-item">16. <strong>System Architecture</strong></div>
+<p>    - 16.1 Tiered Architectural Decomposition</p>
+<p>    - 16.2 Full-Stack & DevOps Architecture (Figure 7)</p>
+<div class="numbered-item">17. <strong>Database Design</strong></div>
+<p>    - 17.1 Schema Architecture & Normalized References</p>
+<p>    - 17.2 Detailed Entity Models</p>
+<p>    - 17.3 Entity-Relationship Schema Diagram (Figure 7b)</p>
+<div class="numbered-item">18. <strong>Frontend Implementation</strong></div>
+<p>    - 18.1 Single-Page Application (SPA) Design</p>
+<p>    - 18.2 State Management via React Context API</p>
+<p>    - 18.3 Interactive Data Visualizations & Routing</p>
+<div class="numbered-item">19. <strong>Backend Implementation</strong></div>
+<p>    - 19.1 Express Server Bootstrapping & Middleware</p>
+<p>    - 19.2 Controller Design Patterns</p>
+<p>    - 19.3 Fail-Fast Resilient Connection Layer</p>
+<div class="numbered-item">20. <strong>API Implementation</strong></div>
+<p>    - 20.1 RESTful Endpoint Specification</p>
+<p>    - 20.2 Complete API Reference Table</p>
+<div class="numbered-item">21. <strong>Authentication and Authorization</strong></div>
+<p>    - 21.1 JSON Web Token (JWT) Lifecycle</p>
+<p>    - 21.2 Password Hashing with bcryptjs</p>
+<p>    - 21.3 Role-Based Access Control (RBAC) Matrix</p>
+<div class="numbered-item">22. <strong>Invoice Generation and PDF Implementation</strong></div>
+<p>    - 22.1 Mathematical Tax Calculation Engine</p>
+<p>    - 22.2 PDFKit Vector Streaming Engine</p>
+<div class="numbered-item">23. <strong>Git and GitHub Implementation</strong></div>
+<p>    - 23.1 Version Control Strategy</p>
+<p>    - 23.2 Repository Layout & Main Branch Workflow (Figure 13)</p>
+<div class="numbered-item">24. <strong>Docker Implementation</strong></div>
+<p>    - 24.1 Containerization Rationale</p>
+<p>    - 24.2 Backend Dockerfile Analysis</p>
+<p>    - 24.3 Frontend Multi-Stage Build & Nginx Production Container</p>
+<div class="numbered-item">25. <strong>Docker Compose Implementation</strong></div>
+<p>    - 25.1 Multi-Container Topologies</p>
+<p>    - 25.2 Services, Health Checks, Networks, and Volumes</p>
+<div class="numbered-item">26. <strong>Kubernetes Implementation</strong></div>
+<p>    - 26.1 Declarative Cloud-Native Orchestration</p>
+<p>    - 26.2 Manifest Hierarchy & Resource Specifications</p>
+<div class="numbered-item">27. <strong>KIND Cluster Configuration</strong></div>
+<p>    - 27.1 Local Kubernetes in Docker</p>
+<p>    - 27.2 Port Forwarding & Cluster Architecture</p>
+<div class="numbered-item">28. <strong>Cloud Deployment Using Render</strong></div>
+<p>    - 28.1 Infrastructure-as-Code with render.yaml</p>
+<p>    - 28.2 Continuous Delivery Workflow & Live URL Proof (Figures 14, 15, 16)</p>
+<div class="numbered-item">29. <strong>MongoDB Atlas Configuration</strong></div>
+<p>    - 29.1 Cloud NoSQL Provisioning & Network Security</p>
+<p>    - 29.2 Connection Pooling & Automatic Reconnect</p>
+<div class="numbered-item">30. <strong>Application Execution Instructions</strong></div>
+<p>    - 30.1 Local Development Environment Setup</p>
+<p>    - 30.2 Docker Compose Execution Steps</p>
+<p>    - 30.3 Kubernetes KIND Cluster Execution Steps</p>
+<div class="numbered-item">31. <strong>Testing and Test Cases</strong></div>
+<p>    - 31.1 Test Methodology</p>
+<p>    - 31.2 Formal Test Verification Matrix</p>
+<div class="numbered-item">32. <strong>Results and Screenshots</strong></div>
+<p>    - 32.1 Production Application Interfaces (Figures 1 to 6)</p>
+<p>    - 32.2 Terminal Execution Proofs (Figures 8 to 12)</p>
+<div class="numbered-item">33. <strong>Advantages</strong></div>
+<div class="numbered-item">34. <strong>Limitations</strong></div>
+<div class="numbered-item">35. <strong>Future Enhancements</strong></div>
+<div class="numbered-item">36. <strong>Conclusion</strong></div>
+<div class="numbered-item">37. <strong>References</strong></div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 7: INTRODUCTION</h2>
+<h3>7.1 Evolution of Enterprise Billing Systems</h3>
+<p>Commercial trade and enterprise billing have undergone revolutionary shifts over the past two decades. Historically, accounting departments depended on physical books of account, carbon-copy bill books, and localized desktop spreadsheets. With the introduction of computerized enterprise resource planning (ERP) packages in the early 2000s, businesses achieved higher calculation precision. However, legacy systems remained tethered to specific on-premise hardware machines, requiring local disk backups, manual software license updates, and specialized IT support.</p>
+<p>The rapid rise of cloud computing, high-speed internet penetration, and microservice architectures created a demand for <strong>cloud-native, multi-tenant billing solutions</strong>. Modern enterprises operate with distributed teams: sales representatives on the field generate customer invoices; warehouse managers verify dispatched goods; accountants reconcile bank transfers; and corporate clients demand real-time online access to review outstanding ledgers and settle dues electronically.</p>
+<h3>7.2 Motivation & Purpose</h3>
+<p>The motivation for developing <strong>BillFlow</strong> stems from the operational challenges encountered by Indian and global micro, small, and medium enterprises (MSMEs). MSMEs frequently struggle with prohibitive licensing costs of legacy ERP packages (e.g., SAP, Oracle, Tally ERP), steep learning curves, lack of integrated online customer portals, and complicated infrastructure setup. </p>
+<p>The primary purpose of this B.Tech engineering project is twofold:</p>
+<div class="numbered-item">1. <strong>Full-Stack Engineering Excellence</strong>: Design, develop, and benchmark a complete modern billing management web application offering intuitive role-based dashboards, automated tax engines compliant with Indian GST (CGST/SGST/IGST), and dynamic vector PDF generation.</div>
+<div class="numbered-item">2. <strong>DevOps Engineering Rigor</strong>: Containerize the full-stack architecture using Docker, orchestrate deployments declaratively via Kubernetes and local KIND clusters, and execute continuous production cloud deployments on Render with zero-downtime git webhooks.</div>
+<h3>7.3 Organization of the Report</h3>
+<p>This documentation is systematically organized into 37 comprehensive chapters spanning theoretical foundations, architectural diagrams, mathematical tax computations, database entity-relationship models, continuous delivery workflows, terminal execution proofs, and formal test verification results.</p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 8: PROBLEM STATEMENT</h2>
+<p>Small and medium enterprises face severe operational bottlenecks when managing their accounts receivable, billing lifecycle, and customer communication:</p>
+<div class="numbered-item">1. <strong>Error-Prone Manual Calculations</strong>: Manual entry of item rates, quantity multipliers, tiered discounts, and dual-tax rates (Central GST + State GST or Integrated GST) frequently results in arithmetic errors, leading to audit penalties and tax compliance reconciliation mismatches.</div>
+<div class="numbered-item">2. <strong>Lack of Multi-Role Security</strong>: Spreadsheets lack granular access controls. A sales representative or external accountant using the same spreadsheet can view proprietary corporate profit margins, master account passwords, or administrator settings.</div>
+<div class="numbered-item">3. <strong>Inability to Reconcile Partial Payments</strong>: Invoices are rarely settled in a single payment. Customers often pay in milestones (advance, milestone 1, final balance). Tracking which specific invoice is partially settled, overdue, or backed by a credit note across manual ledgers requires extensive manual cross-checking.</div>
+<div class="numbered-item">4. <strong>Disjointed Customer Communication</strong>: Clients regularly request duplicate copies of past invoices and running ledger balance statements, requiring accounting personnel to manually re-export and email PDF files.</div>
+<div class="numbered-item">5. <strong>Deployment & Operational Fragility</strong>: On-premise applications suffer from single points of failure (hardware crash, unbacked local disks), while traditional web deployments suffer from configuration drift and environment incompatibilities between development, testing, and production.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 9: EXISTING SYSTEM</h2>
+<h3>9.1 Overview of Legacy Desktop & Manual Systems</h3>
+<p>The existing landscape of SME billing generally relies on two paradigms:</p>
+<pre><code>
+[ Traditional Manual / Spreadsheet Billing ]
+  • Excel / Google Sheets Templates
+  • Manual Formula Inputs (=SUM, =VLOOKUP)
+  • Local Desktop Storage (Single User)
+  • Manual Emailing of PDFs
+
+[ Legacy On-Premise Accounting Software ]
+  • Tally.ERP 9 / Busy Accounting
+  • Local Machine Installation &amp; Proprietary Binary DB
+  • Heavy Licensing Cost per Seat
+  • Complex Keybindings &amp; High Training Overhead
+</code></pre>
+<h3>9.2 Critical Drawbacks of Existing Solutions</h3>
+<li><strong>Single-Device Lockdown</strong>: The software cannot be accessed securely from mobile devices or external branches without complex Virtual Private Network (VPN) tunnels.</li>
+<li><strong>Data Loss Vulnerabilities</strong>: Local storage disks lack automated geo-replicated cloud backups, exposing financial records to ransomware, malware, and hardware failure.</li>
+<li><strong>Zero Real-Time Customer Transparency</strong>: Customers have no self-service portal to verify their own invoices, outstanding dues, or transaction payment receipts.</li>
+<li><strong>Inflexible DevOps & Portability</strong>: Upgrading legacy packages often corrupts proprietary data files, and there is no concept of containerized reproducible deployment.</li>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 10: PROPOSED SYSTEM</h2>
+<h3>10.1 System Overview</h3>
+<p>To resolve the limitations of existing approaches, <strong>BillFlow</strong> is engineered as a modern, unified, cloud-native billing management web application. BillFlow unifies billing, customer ledger accounting, product catalog management, and payment tracking into a single responsive web interface accessible securely from any browser worldwide.</p>
+<pre><code>
+       +-------------------------------------------------------+
+       |               BillFlow Proposed System                |
+       +-------------------------------------------------------+
+            |                    |                    |
+            v                    v                    v
+  [ Multi-Role RBAC ]  [ Smart Tax Engine ]  [ DevOps Pipeline ]
+  • System Admin       • Auto CGST/SGST/IGST • Multi-Stage Docker
+  • Business Owner     • Running Ledgers     • K8s Orchestration
+  • Staff Accountant   • Vector PDF Engine   • Render Auto-Deploy
+  • Billed Customer    • Real-Time Metrics   • MongoDB Atlas Cloud
+</code></pre>
+<h3>10.2 Key Innovations of BillFlow</h3>
+<li><strong>Automated Dual-Tax Resolution</strong>: Automatically determines whether a transaction is Intra-State (splitting tax into equal CGST and SGST shares) or Inter-State (applying IGST) based on customer state codes.</li>
+<li><strong>Automated Chronological Ledger</strong>: Every issued invoice, settled payment, and promotional credit note automatically updates a chronological running balance for each customer.</li>
+<li><strong>Server-Side PDF Streaming</strong>: Generates vector tax invoice PDFs on demand via PDFKit with professional typography, table grids, and verified calculation summaries.</li>
+<li><strong>Zero-Dependency Production Deployment</strong>: Single unified Node.js production service hosting both Vite-compiled React static assets and REST API endpoints, eliminating CORS friction and multi-port complexity.</li>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 11: PROJECT OBJECTIVES</h2>
+<h3>11.1 Primary Technical Objectives</h3>
+<div class="numbered-item">1. <strong>Full-Stack MERN Implementation</strong>: Build a secure, decoupled web application using React 18, Vite, Express.js, Node.js 20, and MongoDB Atlas.</div>
+<div class="numbered-item">2. <strong>Cryptographic Multi-Tenant RBAC</strong>: Implement JSON Web Token authentication with bcrypt password hashing (10 salt rounds) and role authorization middleware enforcing strict tenant isolation.</div>
+<div class="numbered-item">3. <strong>Dynamic Ledger and Balance Reconciliation</strong>: Program automated financial aggregation algorithms ensuring zero mathematical deviation between invoice balances and payment transactions.</div>
+<div class="numbered-item">4. <strong>Server-Side Vector Document Generation</strong>: Program high-speed server-side PDF generation streaming byte streams directly to HTTP clients.</div>
+<h3>11.2 Secondary DevOps & Operational Objectives</h3>
+<div class="numbered-item">1. <strong>Containerization via Docker</strong>: Write optimized Dockerfiles for backend and frontend utilizing multi-stage builds and Alpine Linux base images to minimize image footprints (<150MB).</div>
+<div class="numbered-item">2. <strong>Local Multi-Container Orchestration</strong>: Write declarative <code class="inline-code">docker-compose.yml</code> establishing isolated container networks, health checks, and named persistent storage volumes.</div>
+<div class="numbered-item">3. <strong>Kubernetes Deployment Manifests</strong>: Write production-grade Kubernetes resource manifests including Deployments, ClusterIP Services, NodePort Services, ConfigMaps, Secrets, and PersistentVolumeClaims.</div>
+<div class="numbered-item">4. <strong>Automated Cloud Continuous Delivery</strong>: Deploy the live application to Render cloud infrastructure linked via automated GitHub webhooks for automated compilation and zero-downtime rollouts.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 12: SCOPE OF THE PROJECT</h2>
+<h3>12.1 Target Sectors</h3>
+<li><strong>Micro, Small, and Medium Enterprises (MSMEs)</strong>: Retailers, distributors, IT consulting firms, marketing agencies, and logistics providers.</li>
+<li><strong>Freelance Professionals & Contractors</strong>: Independent developers, creative designers, and legal consultants requiring branded GST invoices.</li>
+<li><strong>Accounting & Bookkeeping Firms</strong>: External auditors handling multiple client ledgers under segregated access control.</li>
+<h3>12.2 Architectural Scope & Boundaries</h3>
+<li><strong>In-Scope</strong>: User authentication, RBAC, customer management, catalog management, invoice generation, payment reconciliation, credit notes, PDF generation, Dockerization, Kubernetes manifests, KIND cluster support, and Render cloud deployment.</li>
+<li><strong>Out-of-Scope (Future Work)</strong>: Physical barcode thermal receipt printing, automated SMS gateways, and multi-currency international forex live conversion APIs.</li>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 13: FUNCTIONAL REQUIREMENTS</h2>
+<table class="report-table"><thead><tr><th>Module</th><th>Requirement Description</th><th>User Role</th></tr></thead><tbody><tr><td><strong>FR-01: Authentication</strong></td><td>Secure sign-up, email validation, password hashing, and login with JWT issuance.</td><td>All Users</td></tr><tr><td><strong>FR-02: 1-Click Demo</strong></td><td>Instant pre-seeded credentials for Administrator, Business Owner, Accountant, Customer.</td><td>Testers / Evaluators</td></tr><tr><td><strong>FR-03: Dashboard</strong></td><td>Real-time calculation of total sales, total collected revenue, outstanding balances, and monthly charts.</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-04: Customer Directory</strong></td><td>Create, search, filter, edit, and archive customer accounts with GSTIN and address verification.</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-05: Customer Ledger</strong></td><td>Display chronological debit/credit transactions, running balances, and invoice settlement timelines.</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-06: Product Catalog</strong></td><td>Maintain catalog of services and physical goods with HSN/SAC codes, base prices, and GST rates.</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-07: Invoice Builder</strong></td><td>Dynamic line-item invoice creation with automatic subtotal, tax splitting, and balance calculation.</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-08: Invoice Lifecycle</strong></td><td>State machine management: Draft -> Sent -> Pending -> Partially Paid -> Paid -> Overdue -> Cancelled.</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-09: Vector PDF Generation</strong></td><td>Dynamic generation of downloadable PDF tax invoices adhering to statutory invoice formatting.</td><td>All Roles</td></tr><tr><td><strong>FR-10: Payment Logging</strong></td><td>Record full or partial settlements against invoices with payment methods (UPI, Bank, Card, Cash).</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-11: Credit Notes</strong></td><td>Issue post-billing adjustments or discounts linked directly to invoice numbers.</td><td>Admin, Owner, Accountant</td></tr><tr><td><strong>FR-12: Customer Portal</strong></td><td>Dedicated self-service interface where customers view only their own invoices and payment history.</td><td>Customer</td></tr><tr><td><strong>FR-13: Business Settings</strong></td><td>Configure business legal name, GSTIN, bank details (IFSC, Account Number), and invoice prefixes.</td><td>Admin, Owner</td></tr></tbody></table>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 14: NON-FUNCTIONAL REQUIREMENTS</h2>
+<div class="numbered-item">1. <strong>Performance & Latency</strong>:</div>
+<p>   - Backend REST API endpoints must respond within <strong>200 milliseconds</strong> under nominal load.</p>
+<p>   - Frontend initial page load bundle must render in <strong>< 1.5 seconds</strong> via Vite's optimized asset chunking.</p>
+<div class="numbered-item">2. <strong>Security & Cryptography</strong>:</div>
+<p>   - User passwords must never be stored in plaintext; salted and hashed using <strong>bcryptjs</strong> (10 rounds).</p>
+<p>   - Stateless <strong>JSON Web Tokens (JWT)</strong> with 7-day expiration; passed via HTTP Authorization Bearer headers.</p>
+<p>   - Input sanitization and MongoDB parameter escaping to prevent NoSQL injection and Cross-Site Scripting (XSS).</p>
+<div class="numbered-item">3. <strong>Reliability & Resiliency</strong>:</div>
+<p>   - Resilient database connection handling: Mongoose buffer timeouts capped to 2.5s with instant demo fallback to eliminate 10s unhandled buffering hangs.</p>
+<p>   - High availability guaranteed by Render's automated health checks (<code class="inline-code">/api/health</code>) and container restart policies.</p>
+<div class="numbered-item">4. <strong>Portability & Containerization</strong>:</div>
+<p>   - Complete application environment reproducibility guaranteed via multi-stage Docker builds across Windows, macOS, and Linux.</p>
+<div class="numbered-item">5. <strong>Usability & Responsive Layout</strong>:</div>
+<p>   - Responsive user interface supporting desktops (1920x1080, 1366x768), laptops, and mobile screens with consistent Lucide iconography and clear color-coded status badges.</p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 15: TECHNOLOGY STACK</h2>
+<pre><code>
++-----------------------------------------------------------------------+
+|                       BillFlow Technology Stack                       |
++-----------------------------------------------------------------------+
+| Component   | Technology             | Version  | Purpose             |
++-------------+------------------------+----------+---------------------+
+| Frontend    | React.js               | 18.3.1   | Reactive Component  |
+|             | Vite                   | 6.0.7    | Next-Gen Bundler    |
+|             | React Router DOM       | 6.28.0   | Client-side Routing |
+|             | Lucide React           | 1.16.0   | Vector UI Icons     |
+|             | Recharts               | 2.15.0   | Visual Analytics    |
++-------------+------------------------+----------+---------------------+
+| Backend     | Node.js                | 20.x     | JavaScript Runtime  |
+|             | Express.js             | 4.21.2   | REST API Framework  |
+|             | JSON Web Token (JWT)   | 9.0.2    | Stateless Auth      |
+|             | bcryptjs               | 3.0.2    | Password Hashing    |
+|             | PDFKit                 | 0.20.2   | Dynamic PDF Engine  |
+|             | Morgan &amp; CORS          | Latest   | Logging &amp; Cross-Org |
++-------------+------------------------+----------+---------------------+
+| Database    | MongoDB Atlas          | 6.0/8.0  | Clustered Cloud DB  |
+|             | Mongoose ODM           | 8.9.5    | Object Data Schema  |
++-------------+------------------------+----------+---------------------+
+| DevOps      | Git &amp; GitHub           | Latest   | Version Control     |
+|             | Docker Engine          | 27.x     | Container Packaging |
+|             | Docker Compose         | v2       | Multi-Container Net |
+|             | Kubernetes (K8s)       | v1.31    | Cloud Orchestration |
+|             | KIND (K8s in Docker)   | v0.24    | Local Cluster Node  |
+|             | Render Cloud Platform  | Live PaaS| Production Hosting  |
++-----------------------------------------------------------------------+
+</code></pre>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 16: SYSTEM ARCHITECTURE</h2>
+<h3>16.1 Tiered Architectural Decomposition</h3>
+<p>BillFlow is structured into a clean, decoupled three-tier architecture:</p>
+<div class="numbered-item">1. <strong>Presentation Tier (Client-Side SPA)</strong>:</div>
+<p>   - Built with React 18 and compiled into optimized static HTML/CSS/JS bundles using Vite.</p>
+<p>   - Manages client routing, user authentication state, dynamic forms, and charts.</p>
+<p>   - Communicates asynchronously with the backend tier via standard HTTPS JSON REST requests.</p>
+<div class="numbered-item">2. <strong>Application Tier (Backend Microservice REST API)</strong>:</div>
+<p>   - Built on Node.js and Express.js running on an asynchronous, event-driven event loop.</p>
+<p>   - Implements authentication middleware, RBAC authorization guards, business logic, tax computation algorithms, and PDFKit document generation.</p>
+<div class="numbered-item">3. <strong>Data Tier (Clustered Cloud NoSQL Storage)</strong>:</div>
+<p>   - Hosted on MongoDB Atlas using Replica Sets for automatic failover, data replication, and high write availability.</p>
+<p>   - Communicates with Express via Mongoose Object Data Modeling (ODM) with strict schema validation.</p>
+<pre><code>
+       +---------------------------------------------------------------+
+       |             BillFlow End-to-End System Architecture           |
+       +---------------------------------------------------------------+
+
+       [ Web Browsers / Mobile Clients ]
+                      │
+                      ▼ (HTTPS Requests)
+       +───────────────────────────────────────────────+
+       |   Presentation Tier: React 18 + Vite SPA      |
+       |   • Context API State   • React Router v6     |
+       |   • Recharts Analytics  • Lucide Vector Icons |
+       +───────────────────────────────────────────────+
+                      │
+                      ▼ (REST API / Bearer JWT / JSON)
+       +───────────────────────────────────────────────+
+       |   Application Tier: Node.js + Express API     |
+       |   • JWT Auth Guard      • RBAC Authorization  |
+       |   • Financial Engine    • PDFKit Vector Stream|
+       +───────────────────────────────────────────────+
+                      │
+                      ▼ (Mongoose ODM / TLS Encrypted)
+       +───────────────────────────────────────────────+
+       |   Data Tier: MongoDB Atlas Clustered DB       |
+       |   • Users               • Customers           |
+       |   • Invoices            • Payments            |
+       |   • Products            • Credit Notes        |
+       +───────────────────────────────────────────────+
+</code></pre>
+<h3>16.2 Full-Stack & DevOps Architecture</h3>
+<p>The complete system and deployment architecture diagram is illustrated in <strong>Figure 7</strong>:</p>
+<div class="figure-container"><img src="screenshots/fig07_architecture.png" alt="Figure 7 – BillFlow Full Stack and DevOps Architecture" class="figure-img" /><div class="figure-caption">Figure 7 – BillFlow Full Stack and DevOps Architecture</div></div>
+<div class="figure-caption">Figure 7 – BillFlow Full Stack Application and DevOps Deployment Architecture.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 17: DATABASE DESIGN</h2>
+<h3>17.1 Schema Architecture & Normalized References</h3>
+<p>The database design follows modern Document-Oriented design principles in MongoDB. While MongoDB is a NoSQL document database, financial systems require strict referential integrity. BillFlow achieves this by using <strong>normalized Mongoose ObjectIds</strong> with foreign-key-style references (<code class="inline-code">ref: 'User'</code>, <code class="inline-code">ref: 'Customer'</code>, <code class="inline-code">ref: 'Invoice'</code>), combined with embedded sub-documents for multi-item line details within invoices and address structures.</p>
+<h3>17.2 Detailed Entity Models</h3>
+<h4>1. User Model (<code class="inline-code">backend/models/User.js</code>)</h4>
+<li><code class="inline-code">_id</code>: ObjectId (Primary Key)</li>
+<li><code class="inline-code">name</code>: String (Required, Full name of user)</li>
+<li><code class="inline-code">email</code>: String (Required, Unique, Lowercase business email)</li>
+<li><code class="inline-code">password</code>: String (Required, bcrypt hashed, <code class="inline-code">select: false</code> for security)</li>
+<li><code class="inline-code">role</code>: Enum [<code class="inline-code">'Admin'</code>, <code class="inline-code">'Business Owner'</code>, <code class="inline-code">'Accountant'</code>, <code class="inline-code">'Customer'</code>] (Default: <code class="inline-code">'Business Owner'</code>)</li>
+<li><code class="inline-code">companyName</code>: String (Business or organizational trading name)</li>
+<li><code class="inline-code">phone</code>: String (Contact phone number)</li>
+<li><code class="inline-code">taxId</code>: String (GSTIN / Tax ID)</li>
+<li><code class="inline-code">businessAddress</code>: Object (<code class="inline-code">street</code>, <code class="inline-code">city</code>, <code class="inline-code">state</code>, <code class="inline-code">zipCode</code>, <code class="inline-code">country</code>, <code class="inline-code">fullAddress</code>)</li>
+<li><code class="inline-code">isActive</code>: Boolean (Account activation status, default <code class="inline-code">true</code>)</li>
+<li><code class="inline-code">createdAt</code> / <code class="inline-code">updatedAt</code>: Timestamps</li>
+<h4>2. Customer Model (<code class="inline-code">backend/models/Customer.js</code>)</h4>
+<li><code class="inline-code">_id</code>: ObjectId (Primary Key)</li>
+<li><code class="inline-code">user</code>: ObjectId (Foreign Key -> User, tenant scoping)</li>
+<li><code class="inline-code">customerId</code>: String (Formatted business ID, e.g. <code class="inline-code">CUST-2026-001</code>)</li>
+<li><code class="inline-code">name</code>: String (Client contact representative name)</li>
+<li><code class="inline-code">companyName</code>: String (Registered client legal entity)</li>
+<li><code class="inline-code">email</code> / <code class="inline-code">phone</code>: String (Contact coordinates)</li>
+<li><code class="inline-code">gstin</code>: String (15-character statutory GST identification number)</li>
+<li><code class="inline-code">billingAddress</code> / <code class="inline-code">shippingAddress</code>: Embedded Address Objects</li>
+<li><code class="inline-code">status</code>: Enum [<code class="inline-code">'Active'</code>, <code class="inline-code">'Inactive'</code>, <code class="inline-code">'Archived'</code>]</li>
+<li><code class="inline-code">paymentTerms</code>: String (e.g. <code class="inline-code">'Net 30'</code>, <code class="inline-code">'Due on Receipt'</code>)</li>
+<li><code class="inline-code">openingBalance</code> / <code class="inline-code">creditLimit</code>: Numbers</li>
+<h4>3. Product Model (<code class="inline-code">backend/models/Product.js</code>)</h4>
+<li><code class="inline-code">_id</code>: ObjectId (Primary Key)</li>
+<li><code class="inline-code">user</code>: ObjectId (Foreign Key -> User)</li>
+<li><code class="inline-code">productId</code>: String (e.g. <code class="inline-code">PRD-001</code>)</li>
+<li><code class="inline-code">name</code>: String (Product or professional service title)</li>
+<li><code class="inline-code">productCode</code>: String (Statutory SAC / HSN code)</li>
+<li><code class="inline-code">category</code>: String (e.g. <code class="inline-code">'Cloud Services'</code>, <code class="inline-code">'Consulting'</code>)</li>
+<li><code class="inline-code">type</code>: Enum [<code class="inline-code">'Product'</code>, <code class="inline-code">'Service'</code>]</li>
+<li><code class="inline-code">unit</code>: String (e.g. <code class="inline-code">'Hours'</code>, <code class="inline-code">'Months'</code>, <code class="inline-code">'Units'</code>)</li>
+<li><code class="inline-code">price</code>: Number (Base price per unit)</li>
+<li><code class="inline-code">taxRate</code>: Number (Standard statutory GST rate: 0, 5, 12, 18, 28%)</li>
+<li><code class="inline-code">status</code>: Enum [<code class="inline-code">'Active'</code>, <code class="inline-code">'Inactive'</code>]</li>
+<h4>4. Invoice Model (<code class="inline-code">backend/models/Invoice.js</code>)</h4>
+<li><code class="inline-code">_id</code>: ObjectId (Primary Key)</li>
+<li><code class="inline-code">user</code>: ObjectId (Foreign Key -> User)</li>
+<li><code class="inline-code">invoiceNumber</code>: String (Unique business invoice number, e.g. <code class="inline-code">INV-2026-001</code>)</li>
+<li><code class="inline-code">customer</code>: ObjectId (Foreign Key -> Customer)</li>
+<li><code class="inline-code">customerName</code> / <code class="inline-code">customerEmail</code>: Strings (Snapshot coordinates)</li>
+<li><code class="inline-code">invoiceDate</code> / <code class="inline-code">dueDate</code>: Dates</li>
+<li><code class="inline-code">transactionType</code>: Enum [<code class="inline-code">'Intra-State'</code>, <code class="inline-code">'Inter-State'</code>]</li>
+<li><code class="inline-code">items</code>: Array of Embedded Objects:</li>
+<p>  - <code class="inline-code">product</code>: ObjectId (Optional link to Product catalog)</p>
+<p>  - <code class="inline-code">description</code>: String</p>
+<p>  - <code class="inline-code">quantity</code>: Number</p>
+<p>  - <code class="inline-code">unitPrice</code>: Number</p>
+<p>  - <code class="inline-code">discount</code>: Number</p>
+<p>  - <code class="inline-code">taxRate</code>: Number</p>
+<p>  - <code class="inline-code">taxableAmount</code>: Number</p>
+<p>  - <code class="inline-code">cgst</code> / <code class="inline-code">sgst</code> / <code class="inline-code">igst</code>: Numbers</p>
+<p>  - <code class="inline-code">amount</code>: Number</p>
+<li><code class="inline-code">subtotal</code> / <code class="inline-code">taxTotal</code> / <code class="inline-code">totalAmount</code>: Numbers</li>
+<li><code class="inline-code">paidAmount</code> / <code class="inline-code">balanceDue</code>: Numbers</li>
+<li><code class="inline-code">status</code>: Enum [<code class="inline-code">'Draft'</code>, <code class="inline-code">'Sent'</code>, <code class="inline-code">'Pending'</code>, <code class="inline-code">'Partially Paid'</code>, <code class="inline-code">'Paid'</code>, <code class="inline-code">'Overdue'</code>, <code class="inline-code">'Cancelled'</code>]</li>
+<h4>5. Payment Model (<code class="inline-code">backend/models/Payment.js</code>)</h4>
+<li><code class="inline-code">_id</code>: ObjectId (Primary Key)</li>
+<li><code class="inline-code">user</code>: ObjectId (Foreign Key -> User)</li>
+<li><code class="inline-code">invoice</code>: ObjectId (Foreign Key -> Invoice)</li>
+<li><code class="inline-code">invoiceNumber</code>: String</li>
+<li><code class="inline-code">customer</code>: ObjectId (Foreign Key -> Customer)</li>
+<li><code class="inline-code">paymentNumber</code>: String (e.g. <code class="inline-code">PAY-2026-001</code>)</li>
+<li><code class="inline-code">amount</code>: Number (Payment transaction amount)</li>
+<li><code class="inline-code">paymentDate</code>: Date</li>
+<li><code class="inline-code">paymentMethod</code>: Enum [<code class="inline-code">'Bank Transfer'</code>, <code class="inline-code">'UPI'</code>, <code class="inline-code">'Credit Card'</code>, <code class="inline-code">'Debit Card'</code>, <code class="inline-code">'Cash'</code>, <code class="inline-code">'Cheque'</code>, <code class="inline-code">'Other'</code>]</li>
+<li><code class="inline-code">transactionReference</code>: String (NEFT/RTGS/UPI reference code)</li>
+<li><code class="inline-code">status</code>: Enum [<code class="inline-code">'Completed'</code>, <code class="inline-code">'Pending'</code>, <code class="inline-code">'Failed'</code>, <code class="inline-code">'Refunded'</code>]</li>
+<h4>6. Credit Note Model (<code class="inline-code">backend/models/CreditNote.js</code>)</h4>
+<li><code class="inline-code">_id</code>: ObjectId (Primary Key)</li>
+<li><code class="inline-code">user</code>: ObjectId (Foreign Key -> User)</li>
+<li><code class="inline-code">invoice</code>: ObjectId (Foreign Key -> Invoice)</li>
+<li><code class="inline-code">creditNoteNumber</code>: String (e.g. <code class="inline-code">CN-2026-001</code>)</li>
+<li><code class="inline-code">amount</code>: Number</li>
+<li><code class="inline-code">creditNoteDate</code>: Date</li>
+<li><code class="inline-code">reason</code>: Enum [<code class="inline-code">'Order Cancellation'</code>, <code class="inline-code">'Goods Return'</code>, <code class="inline-code">'Deficiency in Service'</code>, <code class="inline-code">'Correction in Invoice'</code>, <code class="inline-code">'Price Adjustment'</code>, <code class="inline-code">'Other'</code>]</li>
+<li><code class="inline-code">status</code>: Enum [<code class="inline-code">'Draft'</code>, <code class="inline-code">'Issued'</code>, <code class="inline-code">'Applied'</code>, <code class="inline-code">'Refunded'</code>, <code class="inline-code">'Cancelled'</code>]</li>
+<h3>17.3 Entity-Relationship Schema Diagram</h3>
+<p>The comprehensive relational entity diagram is illustrated in <strong>Figure 7b</strong>:</p>
+<div class="figure-container"><img src="screenshots/fig07b_database.png" alt="Figure 7b – BillFlow Database ER Schema" class="figure-img" /><div class="figure-caption">Figure 7b – BillFlow Database ER Schema</div></div>
+<div class="figure-caption">Figure 7b – BillFlow Normalized Database ER Schema & Document Relationships.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 18: FRONTEND IMPLEMENTATION</h2>
+<h3>18.1 Single-Page Application (SPA) Design</h3>
+<p>The BillFlow frontend is designed using React 18, bundled through Vite 6. Unlike traditional multi-page web applications that trigger full document reloads for every navigation event, BillFlow operates as a high-performance <strong>Single Page Application (SPA)</strong>. Client-side navigation is managed by React Router v6 (<code class="inline-code">react-router-dom</code>), ensuring that switching between the Dashboard, Customers, Products, and Invoices occurs instantaneously in under 50 milliseconds.</p>
+<h3>18.2 State Management via React Context API</h3>
+<p>Global state, user session identity, and authentication tokens are encapsulated within a centralized React Context: <code class="inline-code">AuthContext.jsx</code>.</p>
+<pre><code>
+// Excerpt from frontend/src/context/AuthContext.jsx
+export const AuthProvider = ({ children }) =&gt; {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('billflow_token'));
+  const [loading, setLoading] = useState(true);
+
+  const login = (tokenData, userData) =&gt; {
+    localStorage.setItem('billflow_token', tokenData);
+    setToken(tokenData);
+    setUser(userData);
+  };
+
+  const logout = () =&gt; {
+    localStorage.removeItem('billflow_token');
+    setToken(null);
+    setUser(null);
+  };
+  // ...
+};
+</code></pre>
+<h3>18.3 Interactive Data Visualizations & Routing</h3>
+<li><strong>Recharts Library</strong>: Powers the interactive <strong>Monthly Revenue Trend Area Chart</strong> on the dashboard, rendering dual continuous gradients for Total Invoiced Sales versus Cleared Cash Receipts.</li>
+<li><strong>Lucide React Icons</strong>: Provides lightweight SVG iconography throughout the navigation sidebar, action buttons, and status indicators.</li>
+<li><strong>Protected Route Guards</strong>: Wrapped via <code class="inline-code">ProtectedRoute.jsx</code>, checking whether a valid JWT token exists and whether the user's role is authorized to view the requested page (e.g., restricting <code class="inline-code">/users</code> to Administrators).</li>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 19: BACKEND IMPLEMENTATION</h2>
+<h3>19.1 Express Server Bootstrapping & Middleware</h3>
+<p>The backend architecture is centered in <code class="inline-code">backend/server.js</code>. Express initializes a streamlined middleware pipeline:</p>
+<pre><code>
+// Excerpt from backend/server.js
+const app = express();
+
+app.use(cors({ origin: '*', credentials: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan('dev'));
+}
+
+// Health check endpoint
+app.get('/api/health', (req, res) =&gt; {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    service: 'Invoice Generation and Business Billing Management Platform API',
+    uptime: process.uptime(),
+  });
+});
+</code></pre>
+<h3>19.2 Controller Design Patterns</h3>
+<p>The application follows the <strong>Controller-Service-Model</strong> design pattern. All HTTP request parsing, input sanitization, business validation, and response construction are isolated into specialized controllers:</p>
+<li><code class="inline-code">authController.js</code>: Registration, login, profile updates.</li>
+<li><code class="inline-code">dashboardController.js</code>: Financial metrics calculation, chart aggregation.</li>
+<li><code class="inline-code">customerController.js</code>: Customer directory, running balance ledgers.</li>
+<li><code class="inline-code">productController.js</code>: Catalog items, price management.</li>
+<li><code class="inline-code">invoiceController.js</code>: Tax calculations, line item processing, PDF generation.</li>
+<li><code class="inline-code">paymentController.js</code>: Payment recording, balance adjustments.</li>
+<li><code class="inline-code">creditNoteController.js</code>: Credit adjustments, post-billing notes.</li>
+<h3>19.3 Fail-Fast Resilient Connection Layer</h3>
+<p>To prevent hanging operations when connecting across cloud regions or experiencing database network access limits, <code class="inline-code">backend/config/db.js</code> enforces a strict 2.5-second buffer timeout (<code class="inline-code">mongoose.set('bufferTimeoutMS', 2500)</code>). When disconnected, all controllers utilize the centralized fallback dataset (<code class="inline-code">backend/utils/mockData.js</code>) so that 1-Click Demo testing and interface evaluation remain 100% operational with sub-100ms response times.</p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 20: API IMPLEMENTATION</h2>
+<p>The platform provides a comprehensive REST API organized by domain:</p>
+<table class="report-table"><thead><tr><th>HTTP Method</th><th>Route</th><th>Access</th><th>Purpose</th></tr></thead><tbody><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/health</code></td><td>Public</td><td>Health check & uptime monitor</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/auth/register</code></td><td>Public</td><td>Register new business account</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/auth/login</code></td><td>Public</td><td>Authenticate user & receive JWT</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/auth/profile</code></td><td>Private</td><td>Retrieve logged-in user profile</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/auth/profile</code></td><td>Private</td><td>Update user contact & business info</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/dashboard/summary</code></td><td>Private</td><td>High-level metrics, chart data & recent activities</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/customers</code></td><td>Private</td><td>Search, filter & paginate customers</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/customers</code></td><td>Private</td><td>Add a new business customer</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/customers/:id</code></td><td>Private</td><td>Get customer profile & running balance ledger</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/customers/:id</code></td><td>Private</td><td>Update customer coordinates & terms</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/products</code></td><td>Private</td><td>Search & list product/service catalog</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/products</code></td><td>Private</td><td>Add new catalog item with tax rates</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/invoices</code></td><td>Private</td><td>Search, filter & list tax invoices</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/invoices</code></td><td>Private</td><td>Generate new tax invoice with auto GST</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/invoices/:id</code></td><td>Private</td><td>Retrieve single invoice details</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/invoices/:id/pdf</code></td><td>Private</td><td>Stream vector PDF binary document</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/payments</code></td><td>Private</td><td>List all recorded payment settlements</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/payments</code></td><td>Private</td><td>Record payment against invoice</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/credit-notes</code></td><td>Private</td><td>List credit notes & adjustment records</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/credit-notes</code></td><td>Private</td><td>Issue credit note against an invoice</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/reports/sales</code></td><td>Private</td><td>Monthly sales, tax & collection report</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/portal/summary</code></td><td>Private</td><td>Customer self-service dashboard</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/settings</code></td><td>Private</td><td>Retrieve organization business settings</td></tr></tbody></table>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 21: AUTHENTICATION AND AUTHORIZATION</h2>
+<h3>21.1 JSON Web Token (JWT) Lifecycle</h3>
+<p>Authentication is completely stateless. Upon successful verification of credentials during <code class="inline-code">POST /api/auth/login</code>, the backend cryptographically signs a JSON Web Token containing the user's MongoDB ObjectId:</p>
+<p><div class="math-block"><span class="inline-math">\text{JWT} = \text{Base64Url}(\text{Header}) \mathbin{\Vert} \text{Base64Url}(\text{Payload}) \mathbin{\Vert} \text{HMAC-SHA256}(\text{Header} \mathbin{\Vert} \text{Payload}, K_{\text{secret}})</span></div></p>
+<p>The token has a configurable lifespan of 7 days (<code class="inline-code">JWT_EXPIRES_IN=7d</code>). The React client stores the token in secure browser <code class="inline-code">localStorage</code> and injects it into every outbound HTTP request via an Axios request interceptor:</p>
+<p><div class="math-block"><span class="inline-math">\text{Authorization: Bearer } \langle\text{JWT\_TOKEN}\rangle</span></div></p>
+<h3>21.2 Password Hashing with bcryptjs</h3>
+<p>Passwords are never stored in plaintext. In <code class="inline-code">backend/models/User.js</code>, a Mongoose pre-save middleware intercepts the plaintext password, generates a cryptographically secure salt with 10 rounds, and computes a salted hash:</p>
+<p><div class="math-block"><span class="inline-math">\text{Hash} = \text{bcrypt}(\text{Password}, \text{Salt}_{10})</span></div></p>
+<p>When logging in, <code class="inline-code">bcrypt.compare()</code> evaluates the plaintext candidate against the stored hash in constant time, preventing timing-attack vulnerabilities.</p>
+<h3>21.3 Role-Based Access Control (RBAC) Matrix</h3>
+<table class="report-table"><thead><tr><th>Application Feature / Page</th><th>System Administrator</th><th>Business Owner</th><th>Staff Accountant</th><th>Billed Customer</th></tr></thead><tbody><tr><td><strong>Platform Dashboard</strong></td><td>Full Access</td><td>Full Access</td><td>Full Access</td><td>Restricted</td></tr><tr><td><strong>Customer Directory & Ledger</strong></td><td>Full Access</td><td>Full Access</td><td>Full Access</td><td>Restricted</td></tr><tr><td><strong>Product / Service Catalog</strong></td><td>Full Access</td><td>Full Access</td><td>Read-Only</td><td>Restricted</td></tr><tr><td><strong>Create / Edit Invoices</strong></td><td>Full Access</td><td>Full Access</td><td>Full Access</td><td>Restricted</td></tr><tr><td><strong>View Invoices & Download PDF</strong></td><td>Full Access</td><td>Full Access</td><td>Full Access</td><td>Own Invoices</td></tr><tr><td><strong>Record Payments & Credit Notes</strong></td><td>Full Access</td><td>Full Access</td><td>Full Access</td><td>Restricted</td></tr><tr><td><strong>Financial Analytics & Reports</strong></td><td>Full Access</td><td>Full Access</td><td>Read-Only</td><td>Restricted</td></tr><tr><td><strong>Customer Self-Service Portal</strong></td><td>Full Access</td><td>View Client View</td><td>View Client View</td><td>Full Access</td></tr><tr><td><strong>Business Legal & Bank Settings</strong></td><td>Full Access</td><td>Full Access</td><td>Restricted</td><td>Restricted</td></tr><tr><td><strong>Platform User Management</strong></td><td>Full Access</td><td>Restricted</td><td>Restricted</td><td>Restricted</td></tr></tbody></table>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 22: INVOICE GENERATION AND PDF IMPLEMENTATION</h2>
+<h3>22.1 Mathematical Tax Calculation Engine</h3>
+<p>BillFlow implements a compliant Indian Goods and Services Tax (GST) mathematical engine in <code class="inline-code">backend/controllers/invoiceController.js</code>. For every invoice item:</p>
+<p><div class="math-block"><span class="inline-math">\text{Base Amount} = \text{Quantity} \times \text{Unit Price}</span></div></p>
+<p><div class="math-block"><span class="inline-math">\text{Taxable Amount} = \max(0, \text{Base Amount} - \text{Item Discount})</span></div></p>
+<p>Depending on the registered state of the customer versus the seller:</p>
+<div class="numbered-item">1. <strong>Intra-State Transaction</strong> (Seller and Buyer in the same state):</div>
+<p>   <div class="math-block"><span class="inline-math">\text{CGST} = \text{Taxable Amount} \times \left(\frac{\text{Tax Rate}}{2 \times 100}\right)</span></div></p>
+<p>   <div class="math-block"><span class="inline-math">\text{SGST} = \text{Taxable Amount} \times \left(\frac{\text{Tax Rate}}{2 \times 100}\right)</span></div></p>
+<p>   <div class="math-block"><span class="inline-math">\text{IGST} = 0</span></div></p>
+<div class="numbered-item">2. <strong>Inter-State Transaction</strong> (Seller and Buyer in different states):</div>
+<p>   <div class="math-block"><span class="inline-math">\text{CGST} = 0, \quad \text{SGST} = 0</span></div></p>
+<p>   <div class="math-block"><span class="inline-math">\text{IGST} = \text{Taxable Amount} \times \left(\frac{\text{Tax Rate}}{100}\right)</span></div></p>
+<p>Total calculations:</p>
+<p><div class="math-block"><span class="inline-math">\text{Total Invoice Amount} = \sum \text{Taxable Amount} + \sum \text{CGST} + \sum \text{SGST} + \sum \text{IGST}</span></div></p>
+<p><div class="math-block"><span class="inline-math">\text{Balance Due} = \text{Total Invoice Amount} - \text{Total Payments Settled}</span></div></p>
+<h3>22.2 PDFKit Vector Streaming Engine</h3>
+<p>In <code class="inline-code">backend/utils/pdfGenerator.js</code>, BillFlow utilizes <strong>PDFKit</strong> to dynamically construct vector documents in memory. The document streams directly through the HTTP response pipeline (<code class="inline-code">Content-Type: application/pdf</code>) with inline content disposition:</p>
+<li>Corporate branding banner with custom logo placement.</li>
+<li>Two-column metadata block: Supplier legal details and Tax ID on the left; Buyer coordinates and invoice dates on the right.</li>
+<li>Table grid rendering item descriptions, quantities, unit prices, tax rates, CGST, SGST, IGST, and totals.</li>
+<li>Financial settlement summary box displaying Subtotal, Total Tax, Net Amount Paid, and Balance Due.</li>
+<li>Statutory computer-generated declaration eliminating the requirement for manual physical signatures.</li>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 23: GIT AND GITHUB IMPLEMENTATION</h2>
+<h3>23.1 Version Control Strategy</h3>
+<p>The BillFlow source code is maintained under strict version control using <strong>Git</strong> and hosted publicly on <strong>GitHub</strong>:</p>
+<li><strong>Repository URL</strong>: <code class="inline-code">https://github.com/prakashkommarajula-dot/Billing-Platform</code></li>
+<li><strong>Production Branch</strong>: <code class="inline-code">main</code></li>
+<h3>23.2 Repository Layout</h3>
+<p>The repository is structured with clean separation of concerns:</p>
+<pre><code>
+Billing-Platform/
+├── backend/                  # Node.js + Express REST API Microservice
+│   ├── config/               # Database connection logic (db.js)
+│   ├── controllers/          # Business logic controllers (7 domains)
+│   ├── middleware/           # Auth and error middleware
+│   ├── models/               # Mongoose schema models (User, Invoice, etc.)
+│   ├── routes/               # Express route definitions
+│   ├── scripts/              # Database seeding and utility scripts
+│   ├── utils/                # PDFKit generator &amp; mock data fallbacks
+│   ├── Dockerfile            # Production Node.js Alpine container
+│   ├── package.json          # Backend dependencies
+│   └── server.js             # Application entry point
+├── frontend/                 # React 18 + Vite SPA Client
+│   ├── public/               # Public static assets &amp; docs
+│   ├── src/                  # React components, pages, context, services
+│   ├── Dockerfile            # Multi-stage production Nginx container
+│   ├── nginx.conf            # Nginx reverse proxy configuration
+│   ├── package.json          # Frontend dependencies
+│   └── vite.config.js        # Vite compilation configuration
+├── k8s/                      # Kubernetes Declarative Manifests
+│   ├── namespace.yaml        # 'billflow' namespace
+│   ├── configmap.yaml        # Configuration values
+│   ├── secret.yaml           # Base64 encoded secrets
+│   ├── mongodb-pvc.yaml      # Persistent Volume Claim for MongoDB
+│   ├── mongodb-deployment.yaml # MongoDB Pod Deployment
+│   ├── mongodb-service.yaml  # ClusterIP Service for MongoDB
+│   ├── backend-deployment.yaml # Backend Pod Deployment
+│   ├── backend-service.yaml  # ClusterIP Service for Backend
+│   ├── frontend-deployment.yaml# Frontend Pod Deployment
+│   ├── frontend-service.yaml # NodePort Service (Port 30080)
+│   └── kustomization.yaml    # Kustomize aggregation
+├── docker-compose.yml        # Local multi-container orchestration
+├── kind-cluster-config.yaml  # KIND cluster definition
+├── render.yaml               # Render Infrastructure-as-Code Blueprint
+├── package.json              # Root coordination manifest
+└── README.md                 # Project execution guide
+</code></pre>
+<p>The actual GitHub repository interface is shown in <strong>Figure 13</strong>:</p>
+<div class="figure-container"><img src="screenshots/fig13_github_repo.png" alt="Figure 13 – BillFlow GitHub Repository" class="figure-img" /><div class="figure-caption">Figure 13 – BillFlow GitHub Repository</div></div>
+<div class="figure-caption">Figure 13 – BillFlow GitHub Repository Organization on Branch main.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 24: DOCKER IMPLEMENTATION</h2>
+<h3>24.1 Containerization Rationale</h3>
+<p>Docker packages the BillFlow application, runtime, system libraries, and dependencies into lightweight, standalone containers, ensuring complete consistency across development machines, CI/CD runners, and production cloud servers.</p>
+<h3>24.2 Backend Dockerfile Analysis</h3>
+<p><code class="inline-code">backend/Dockerfile</code> uses a single-stage, security-hardened Alpine base:</p>
+<pre><code>
+FROM node:20-alpine
+WORKDIR /app
+RUN apk add --no-cache python3 make g++
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY . .
+ENV NODE_ENV=production PORT=5000
+EXPOSE 5000
+CMD ["node", "server.js"]
+</code></pre>
+<h3>24.3 Frontend Multi-Stage Build & Nginx Production Container</h3>
+<p><code class="inline-code">frontend/Dockerfile</code> employs an efficient <strong>multi-stage build pattern</strong>:</p>
+<li><strong>Stage 1 (Builder)</strong>: Uses <code class="inline-code">node:20-alpine</code> to install dev dependencies, parse JSX, and compile static bundles via <code class="inline-code">npm run build</code> into <code class="inline-code">/app/dist</code>.</li>
+<li><strong>Stage 2 (Runner)</strong>: Uses <code class="inline-code">nginx:alpine</code> (image size < 25MB), copies only the compiled assets from Stage 1 into <code class="inline-code">/usr/share/nginx/html</code>, and mounts <code class="inline-code">nginx.conf</code> to handle client-side SPA routing (<code class="inline-code">try_files <span class="inline-math">uri </span>uri/ /index.html</code>).</li>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 25: DOCKER COMPOSE IMPLEMENTATION</h2>
+<p><code class="inline-code">docker-compose.yml</code> orchestrates the complete 3-service stack with a single command (<code class="inline-code">docker compose up -d</code>):</p>
+<pre><code>
+services:
+  mongodb:
+    image: mongo:6-jammy
+    container_name: billflow-mongodb
+    ports: ["27018:27017"]
+    volumes: [mongodb_data:/data/db]
+    networks: [billflow-network]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: { context: ./backend, dockerfile: Dockerfile }
+    container_name: billflow-backend
+    ports: ["5000:5000"]
+    depends_on:
+      mongodb: { condition: service_healthy }
+    networks: [billflow-network]
+
+  frontend:
+    build: { context: ./frontend, dockerfile: Dockerfile }
+    container_name: billflow-frontend
+    ports: ["80:80", "5173:80"]
+    depends_on: [backend]
+    networks: [billflow-network]
+
+volumes:
+  mongodb_data:
+    name: billflow_mongodb_data
+networks:
+  billflow-network:
+    name: billflow-network
+    driver: bridge
+</code></pre>
+<p>Actual execution is documented in <strong>Figure 11</strong>:</p>
+<div class="figure-container"><img src="screenshots/fig11_docker_execution.png" alt="Figure 11 – Docker Container Execution" class="figure-img" /><div class="figure-caption">Figure 11 – Docker Container Execution</div></div>
+<div class="figure-caption">Figure 11 – Docker Multi-Container Compose Orchestration Status.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 26: KUBERNETES IMPLEMENTATION</h2>
+<p>BillFlow provides a complete suite of declarative Kubernetes manifests in the <code class="inline-code">k8s/</code> directory:</p>
+<div class="numbered-item">1. <strong>Namespace Isolation (<code class="inline-code">namespace.yaml</code>)</strong>: Isolates all BillFlow resources inside the dedicated <code class="inline-code">billflow</code> namespace.</div>
+<div class="numbered-item">2. <strong>Configuration & Secrets Management (<code class="inline-code">configmap.yaml</code>, <code class="inline-code">secret.yaml</code>)</strong>: Decouples environment variables (<code class="inline-code">PORT</code>, <code class="inline-code">NODE_ENV</code>) and base64-encoded credentials (<code class="inline-code">JWT_SECRET</code>, <code class="inline-code">MONGODB_URI</code>) from container images.</div>
+<div class="numbered-item">3. <strong>Persistent Volume Claim (<code class="inline-code">mongodb-pvc.yaml</code>)</strong>: Allocates 2Gi of durable block storage requesting <code class="inline-code">ReadWriteOnce</code> access to maintain database state across Pod restarts.</div>
+<div class="numbered-item">4. <strong>Deployments & ReplicaSets</strong>:</div>
+<p>   - <code class="inline-code">mongodb-deployment.yaml</code>: Deploys official Mongo container with mounted volume.</p>
+<p>   - <code class="inline-code">backend-deployment.yaml</code>: Deploys stateless backend Pods with readiness probes.</p>
+<p>   - <code class="inline-code">frontend-deployment.yaml</code>: Deploys Nginx SPA Pods with rolling update strategy.</p>
+<div class="numbered-item">5. <strong>Services Networking</strong>:</div>
+<p>   - <code class="inline-code">mongodb-service.yaml</code>: Internal ClusterIP on port 27017.</p>
+<p>   - <code class="inline-code">backend-service.yaml</code>: Internal ClusterIP on port 5000.</p>
+<p>   - <code class="inline-code">frontend-service.yaml</code>: NodePort Service exposing port 80 externally via port <strong>30080</strong>.</p>
+<p>Actual cluster execution is documented in <strong>Figure 12</strong>:</p>
+<div class="figure-container"><img src="screenshots/fig12_kubernetes_status.png" alt="Figure 12 – Kubernetes Deployment Status" class="figure-img" /><div class="figure-caption">Figure 12 – Kubernetes Deployment Status</div></div>
+<div class="figure-caption">Figure 12 – Kubernetes Pods, Services, and PVC Status on KIND.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 27: KIND CLUSTER CONFIGURATION</h2>
+<p>To enable native Kubernetes testing on local developer workstations without cloud provider costs, BillFlow uses <strong>KIND (Kubernetes in Docker)</strong>. The configuration <code class="inline-code">kind-cluster-config.yaml</code> maps host ports directly to Kubernetes container nodes:</p>
+<pre><code>
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: billflow-cluster
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30080
+    hostPort: 30080
+    listenAddress: "0.0.0.0"
+    protocol: TCP
+  - containerPort: 30500
+    hostPort: 30500
+    listenAddress: "0.0.0.0"
+    protocol: TCP
+</code></pre>
+<p>Execution command:</p>
+<pre><code>
+kind create cluster --config kind-cluster-config.yaml
+kubectl apply -k k8s/
+</code></pre>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 28: CLOUD DEPLOYMENT USING RENDER</h2>
+<h3>28.1 Infrastructure-as-Code with render.yaml</h3>
+<p>Production cloud deployment is defined declaratively using Render's Infrastructure-as-Code blueprint (<code class="inline-code">render.yaml</code>):</p>
+<pre><code>
+services:
+  - type: web
+    name: billflow-billing-platform
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+</code></pre>
+<h3>28.2 Live Production Proof</h3>
+<p>The platform is live and verified on Render:</p>
+<li><strong>Live URL</strong>: <code class="inline-code">https://billflow-billing-platform.onrender.com</code></li>
+<li><strong>Health Check</strong>: <code class="inline-code">https://billflow-billing-platform.onrender.com/api/health</code> (HTTP 200 OK)</li>
+<li><strong>Deployment ID</strong>: <code class="inline-code">dep-dbotseavcj2c739rbk1g</code> (Status: LIVE)</li>
+<p>Evidence screenshots are documented in <strong>Figures 14, 15, and 16</strong>:</p>
+<div class="figure-container"><img src="screenshots/fig14_render_dashboard.png" alt="Figure 14 – Render Deployment Dashboard" class="figure-img" /><div class="figure-caption">Figure 14 – Render Deployment Dashboard</div></div>
+<div class="figure-caption">Figure 14 – Render Cloud Console & Live Service Status.</div>
+<div class="figure-container"><img src="screenshots/fig15_render_app.png" alt="Figure 15 – Successfully Deployed BillFlow Application" class="figure-img" /><div class="figure-caption">Figure 15 – Successfully Deployed BillFlow Application</div></div>
+<div class="figure-caption">Figure 15 – Successfully Deployed BillFlow Web Service.</div>
+<div class="figure-container"><img src="screenshots/fig16_render_live.png" alt="Figure 16 – BillFlow Application Running on Render" class="figure-img" /><div class="figure-caption">Figure 16 – BillFlow Application Running on Render</div></div>
+<div class="figure-caption">Figure 16 – BillFlow Cloud Accounting Platform Running Live on Render.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 29: MONGODB ATLAS CONFIGURATION</h2>
+<p>BillFlow uses a globally replicated MongoDB Atlas cloud cluster:</p>
+<li><strong>Cluster Host</strong>: <code class="inline-code">billing.zhvmruf.mongodb.net</code></li>
+<li><strong>Database Name</strong>: <code class="inline-code">invoice_billing_platform</code></li>
+<li><strong>Authentication</strong>: SCRAM-SHA-256 over TLS/SSL encryption</li>
+<li><strong>Network Security</strong>: Configured with IP Access List (<code class="inline-code">0.0.0.0/0</code>) allowing secure incoming connections from Render cloud instances while requiring valid credentials.</li>
+<li><strong>Connection String Pattern</strong>:</li>
+<p>  <code class="inline-code">mongodb+srv://<user>:<password>@billing.zhvmruf.mongodb.net/invoice_billing_platform?retryWrites=true&w=majority</code></p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 30: APPLICATION EXECUTION INSTRUCTIONS</h2>
+<h3>30.1 Local Development Environment</h3>
+<pre><code>
+# 1. Clone repository
+git clone https://github.com/prakashkommarajula-dot/Billing-Platform.git
+cd Billing-Platform
+
+# 2. Install all dependencies
+npm run install:all
+
+# 3. Start Backend server (Terminal 1)
+npm run dev:backend
+
+# 4. Start Frontend development server (Terminal 2)
+npm run dev:frontend
+
+# 5. Open browser at http://localhost:5173
+</code></pre>
+<h3>30.2 Docker Compose Execution</h3>
+<pre><code>
+# Build images and start all 3 containers in background
+docker compose up -d --build
+
+# Inspect container status
+docker compose ps
+
+# View unified log stream
+docker compose logs -f
+
+# Shutdown stack
+docker compose down
+</code></pre>
+<h3>30.3 Kubernetes KIND Cluster Execution</h3>
+<pre><code>
+# Create KIND cluster
+kind create cluster --config kind-cluster-config.yaml
+
+# Apply all manifests
+kubectl apply -k k8s/
+
+# Verify Pod status
+kubectl get pods -n billflow
+
+# Access frontend via NodePort at http://localhost:30080
+</code></pre>
+<p>Terminal execution evidence is shown in <strong>Figures 8, 9, and 10</strong>:</p>
+<div class="figure-container"><img src="screenshots/fig08_backend_execution.png" alt="Figure 8 – Backend Server Execution" class="figure-img" /><div class="figure-caption">Figure 8 – Backend Server Execution</div></div>
+<div class="figure-caption">Figure 8 – Backend Express Server Startup Output.</div>
+<div class="figure-container"><img src="screenshots/fig09_frontend_execution.png" alt="Figure 9 – Frontend Development Server Execution" class="figure-img" /><div class="figure-caption">Figure 9 – Frontend Development Server Execution</div></div>
+<div class="figure-caption">Figure 9 – Vite React Frontend Development Server.</div>
+<div class="figure-container"><img src="screenshots/fig10_local_application.png" alt="Figure 10 – BillFlow Application Running Locally" class="figure-img" /><div class="figure-caption">Figure 10 – BillFlow Application Running Locally</div></div>
+<div class="figure-caption">Figure 10 – BillFlow Application Running Locally on Developer Machine.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 31: TESTING AND TEST CASES</h2>
+<p>Formal verification of the BillFlow platform was conducted across all core modules:</p>
+<table class="report-table"><thead><tr><th>Test ID</th><th>Module</th><th>Scenario / Input</th><th>Expected Result</th><th>Actual Result</th><th>Status</th></tr></thead><tbody><tr><td><strong>TC-01</strong></td><td>Authentication</td><td>Enter valid demo credentials (<code class="inline-code">admin@platform.com</code>)</td><td>JWT issued, stored in localStorage, redirect to dashboard</td><td>HTTP 200 OK, valid JWT token returned</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-02</strong></td><td>Authentication</td><td>Enter unregistered email & invalid password</td><td>Display error alert: "Invalid email or password"</td><td>HTTP 401 Unauthorized</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-03</strong></td><td>RBAC Security</td><td>Non-admin user attempts access to <code class="inline-code">/users</code></td><td>Access denied message, redirect to dashboard</td><td>HTTP 403 Forbidden</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-04</strong></td><td>Dashboard</td><td>Authenticated user visits <code class="inline-code">/dashboard</code></td><td>Compute total sales, collections, and line chart metrics</td><td>HTTP 200 OK, ₹2,34,660 sales aggregated</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-05</strong></td><td>Customer Mgmt</td><td>Fetch customer list via <code class="inline-code">GET /api/customers</code></td><td>Return list of active clients with calculated outstanding</td><td>HTTP 200 OK, 4 customer records returned</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-06</strong></td><td>Customer Details</td><td>Request ledger for customer <code class="inline-code">CUST-2026-001</code></td><td>Chronological debits/credits with running balance</td><td>HTTP 200 OK, 3 ledger records computed</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-07</strong></td><td>Product Catalog</td><td>Query catalog items via <code class="inline-code">GET /api/products</code></td><td>Return service list with SAC codes and 18% GST rates</td><td>HTTP 200 OK, 4 enterprise items returned</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-08</strong></td><td>Invoice Creation</td><td>Create invoice with 1 item (₹75,000, 18% GST)</td><td>Subtotal ₹75,000, CGST ₹6,750, SGST ₹6,750, Total ₹88,500</td><td>HTTP 201 Created, exact tax match</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-09</strong></td><td>Vector PDF</td><td>Request PDF export <code class="inline-code">GET /api/invoices/:id/pdf</code></td><td>Stream binary PDF document with proper headers</td><td>HTTP 200 OK, Content-Type: application/pdf</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-10</strong></td><td>Payment Logging</td><td>Record partial payment of ₹21,400 on INV-2026-002</td><td>Invoice balance drops to ₹43,500; status: Partially Paid</td><td>HTTP 200 OK, invoice balance updated</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-11</strong></td><td>Credit Notes</td><td>Issue promotional credit note of ₹5,000</td><td>Credit applied, customer ledger credited by ₹5,000</td><td>HTTP 201 Created, ledger balance updated</td><td><strong>PASS</strong></td></tr><tr><td><strong>TC-12</strong></td><td>Health Check</td><td>Probe cloud endpoint <code class="inline-code">GET /api/health</code></td><td>Return status 'healthy' with current uptime seconds</td><td>HTTP 200 OK, status: 'healthy'</td><td><strong>PASS</strong></td></tr></tbody></table>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 32: RESULTS AND SCREENSHOTS</h2>
+<p>This chapter presents authentic screenshots captured directly from the live running BillFlow application.</p>
+<h3>32.1 User Login Interface</h3>
+<p>The login interface features 1-Click Demo account testing buttons allowing evaluators to immediately test the platform across any of the 4 roles without manual typing:</p>
+<div class="figure-container"><img src="screenshots/fig01_login.png" alt="Figure 1 – BillFlow User Login Page" class="figure-img" /><div class="figure-caption">Figure 1 – BillFlow User Login Page</div></div>
+<div class="figure-caption">Figure 1 – BillFlow User Authentication & 1-Click Demo Login Interface.</div>
+<h3>32.2 Business Analytics Dashboard</h3>
+<p>Upon signing in as Business Owner, the core dashboard presents immediate financial key performance indicators (Total Sales, Total Invoices, Paid Invoices, Outstanding Receivables) alongside the interactive 6-month revenue trend chart:</p>
+<div class="figure-container"><img src="screenshots/fig02_dashboard.png" alt="Figure 2 – BillFlow Business Dashboard" class="figure-img" /><div class="figure-caption">Figure 2 – BillFlow Business Dashboard</div></div>
+<div class="figure-caption">Figure 2 – BillFlow Executive Dashboard with Financial KPIs & Monthly Trend Chart.</div>
+<h3>32.3 Customer Management Module</h3>
+<p>The customer directory presents client accounts with search, filter, GSTIN badges, and real-time outstanding balance aggregation:</p>
+<div class="figure-container"><img src="screenshots/fig03_customers.png" alt="Figure 3 – Customer Management Module" class="figure-img" /><div class="figure-caption">Figure 3 – Customer Management Module</div></div>
+<div class="figure-caption">Figure 3 – Customer Directory & Accounts Receivable Management Module.</div>
+<h3>32.4 Customer Profile & Running Balance Ledger</h3>
+<p>Selecting any customer opens their detailed ledger view, showing every invoice, settled payment, and running balance:</p>
+<div class="figure-container"><img src="screenshots/fig03b_customer_details.png" alt="Figure 3b – Customer Profile & Ledger Module" class="figure-img" /><div class="figure-caption">Figure 3b – Customer Profile & Ledger Module</div></div>
+<div class="figure-caption">Figure 3b – Detailed Customer Profile, Contact Info & Chronological Ledger Balance.</div>
+<h3>32.5 Product & Service Catalog</h3>
+<p>The catalog lists billable offerings with category filters, HSN/SAC statutory codes, unit rates, and GST percentages:</p>
+<div class="figure-container"><img src="screenshots/fig04_products.png" alt="Figure 4 – Product Management Module" class="figure-img" /><div class="figure-caption">Figure 4 – Product Management Module</div></div>
+<div class="figure-caption">Figure 4 – Products and Services Catalog Management.</div>
+<h3>32.6 Invoice Creation Interface</h3>
+<p>The invoice builder allows dynamic line-item addition, automated subtotal calculations, and statutory dual-tax splitting:</p>
+<div class="figure-container"><img src="screenshots/fig05_create_invoice.png" alt="Figure 5 – Invoice Creation Interface" class="figure-img" /><div class="figure-caption">Figure 5 – Invoice Creation Interface</div></div>
+<div class="figure-caption">Figure 5 – Multi-Item Tax Invoice Creation Interface.</div>
+<h3>32.7 Invoice Details & PDF Preview</h3>
+<p>The invoice details view allows instant vector PDF downloads, payment logging, and credit note issuance:</p>
+<div class="figure-container"><img src="screenshots/fig06_invoice_details.png" alt="Figure 6 – Invoice Details and PDF Preview" class="figure-img" /><div class="figure-caption">Figure 6 – Invoice Details and PDF Preview</div></div>
+<div class="figure-caption">Figure 6 – Invoice Details, Payment Timeline & Server-Generated PDF Actions.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 33: ADVANTAGES</h2>
+<div class="numbered-item">1. <strong>Complete Financial Precision</strong>: Eliminates human calculation errors through automated dual-tax splitting, discounts, and rounding algorithms.</div>
+<div class="numbered-item">2. <strong>Strict Multi-Role Data Governance</strong>: Administrators, Business Owners, Accountants, and Customers operate within isolated permission boundaries.</div>
+<div class="numbered-item">3. <strong>High Operational Cost Savings</strong>: Replaces expensive proprietary accounting software licenses with an open-source, cloud-native stack.</div>
+<div class="numbered-item">4. <strong>Anywhere, Any-Device Cloud Access</strong>: Accessible via any modern web browser on desktops, laptops, tablets, and smartphones.</div>
+<div class="numbered-item">5. <strong>Production-Ready DevOps Infrastructure</strong>: Complete Dockerization and Kubernetes orchestration ensure zero deployment friction and reproducible environments.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 34: LIMITATIONS</h2>
+<div class="numbered-item">1. <strong>Single Currency Focus</strong>: Currently optimized primarily for Indian Rupee (INR) and standard GST tax slabs.</div>
+<div class="numbered-item">2. <strong>Online Connectivity Requirement</strong>: As a cloud-native platform, full real-time database synchronization requires internet access.</div>
+<div class="numbered-item">3. <strong>No Direct Physical Hardware Integration</strong>: POS barcode thermal label printers and cash drawers are not directly integrated via USB drivers.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 35: FUTURE ENHANCEMENTS</h2>
+<div class="numbered-item">1. <strong>AI-Powered OCR Receipt Scanning</strong>: Integrate computer vision models (e.g., Tesseract OCR or Google Document AI) to automatically extract line items and vendor GSTINs from uploaded paper receipts.</div>
+<div class="numbered-item">2. <strong>Automated Recurring Subscriptions</strong>: Introduce cron-based subscription engines to automatically generate and email monthly recurring retainer invoices.</div>
+<div class="numbered-item">3. <strong>Integrated Payment Gateway Webhooks</strong>: Incorporate Razorpay or Stripe webhook handlers to automatically mark invoices as Paid upon successful UPI or credit card payment.</div>
+<div class="numbered-item">4. <strong>Multi-Currency Forex Conversion</strong>: Connect live European Central Bank (ECB) or Open Exchange Rates APIs to support dynamic multi-currency cross-border billing.</div>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 36: CONCLUSION</h2>
+<p>The <strong>BillFlow</strong> project successfully fulfills all academic, engineering, and operational requirements established for a comprehensive B.Tech Capstone Project. By bridging modern full-stack web engineering with enterprise-grade cloud DevOps methodologies, BillFlow demonstrates how scalable, reliable, and user-centric financial management platforms can be built using open-source technologies.</p>
+<p>Key milestones achieved:</p>
+<li>Engineered a modular MERN stack web application with 7 domain controllers and full CRUD APIs.</li>
+<li>Implemented cryptographically secure JWT authentication and 4-tier Role-Based Access Control.</li>
+<li>Programmed compliant GST tax computation and server-side PDFKit vector document rendering.</li>
+<li>Packaged services into optimized multi-stage Docker containers and orchestrated them declaratively with Docker Compose and Kubernetes manifests on a local KIND cluster.</li>
+<li>Successfully deployed the live application to Render cloud infrastructure linked to a MongoDB Atlas clustered database at <code class="inline-code">https://billflow-billing-platform.onrender.com</code>.</li>
+<p>This project establishes a strong foundation in modern software architecture, containerization, microservice communication, and cloud-native software delivery.</p>
+<hr class="divider" />
+<div class="page-break"></div>
+<h2>CHAPTER 37: REFERENCES</h2>
+<div class="numbered-item">1. Chodorow, K. (2013). <em>MongoDB: The Definitive Guide: Powerful and Scalable Data Storage</em>. O'Reilly Media.</div>
+<div class="numbered-item">2. Banks, A., & Porcello, E. (2020). <em>Learning React: Modern Patterns for Developing React Applications</em> (2nd ed.). O'Reilly Media.</div>
+<div class="numbered-item">3. Tilkov, S., & Vinoski, S. (2010). Node.js: Using JavaScript to Build High-Performance Network Programs. <em>IEEE Internet Computing</em>, 14(6), 80-83.</div>
+<div class="numbered-item">4. Burns, B., Grant, B., Oppenheimer, D., Brewer, E., & Wilkes, J. (2016). Borg, Omega, and Kubernetes: Lessons learned from three container-management systems over a decade. <em>Communications of the ACM</em>, 59(5), 70-79.</div>
+<div class="numbered-item">5. Merkel, D. (2014). Docker: Lightweight Linux containers for consistent development and deployment. <em>Linux Journal</em>, 2014(239), 2.</div>
+<div class="numbered-item">6. Central Board of Indirect Taxes and Customs (CBIC), Government of India. (2017). <em>Goods and Services Tax (GST) Invoice Rules & Format Guidelines</em>.</div>
+<div class="numbered-item">7. Fielding, R. T. (2000). <em>Architectural Styles and the Design of Network-based Software Architectures</em> (Doctoral dissertation, University of California, Irvine).</div>
+<div class="numbered-item">8. Rescorla, E. (2018). <em>The Transport Layer Security (TLS) Protocol Version 1.3</em>. RFC 8446, Internet Engineering Task Force (IETF).</div>
+<div class="numbered-item">9. Jones, M., Bradley, J., & Sakimura, N. (2015). <em>JSON Web Token (JWT)</em>. RFC 7519, Internet Engineering Task Force (IETF).</div>
+<div class="numbered-item">10. Kubernetes Official Documentation. (2026). <em>Kubernetes Concepts, Workloads, and Services</em>. Retrieved from https://kubernetes.io/docs/</div>
+<div class="numbered-item">11. Express.js Official Documentation. (2026). <em>Fast, Unopinionated, Minimalist Web Framework for Node.js</em>. Retrieved from https://expressjs.com/</div>
+<div class="numbered-item">12. Render Cloud Documentation. (2026). <em>Blueprint Specification & Docker Web Services</em>. Retrieved from https://render.com/docs/</div>
+</body>
+</html>
+  
