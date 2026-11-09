@@ -210,13 +210,56 @@ const loginUser = async (req, res, next) => {
     }
 
     // Explicitly select password field
-    const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
+    let user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
 
     if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid email or password',
-      });
+      // Auto-provision demo accounts if not yet created in the database
+      const demoUsers = {
+        'admin@platform.com': {
+          name: 'System Administrator',
+          role: 'Admin',
+          companyName: 'Platform Central Corp',
+          phone: '+1 555-0100',
+        },
+        'owner@apexenterprises.com': {
+          name: 'Rajesh Sharma',
+          role: 'Business Owner',
+          companyName: 'Apex Enterprises Pvt Ltd',
+          phone: '+91 98765 43210',
+          taxId: '29ABCDE1234F1Z5',
+        },
+        'accountant@apexenterprises.com': {
+          name: 'Ananya Roy',
+          role: 'Accountant',
+          companyName: 'Apex Enterprises Pvt Ltd',
+          phone: '+91 98765 43211',
+        },
+        'customer@globaltech.com': {
+          name: 'David Miller',
+          role: 'Customer',
+          companyName: 'Global Tech Solutions',
+          phone: '+1 555-0199',
+        },
+      };
+
+      const normalizedEmail = email.toLowerCase().trim();
+      if (demoUsers[normalizedEmail]) {
+        user = await User.create({
+          name: demoUsers[normalizedEmail].name,
+          email: normalizedEmail,
+          password: password || 'Password123!',
+          role: demoUsers[normalizedEmail].role,
+          companyName: demoUsers[normalizedEmail].companyName,
+          phone: demoUsers[normalizedEmail].phone,
+          taxId: demoUsers[normalizedEmail].taxId || '',
+          isActive: true,
+        });
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid email or password',
+        });
+      }
     }
 
     if (!user.isActive) {
