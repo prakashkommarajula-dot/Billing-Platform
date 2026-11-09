@@ -63,7 +63,8 @@ export const InvoiceDetails = () => {
   const navigate = useNavigate();
   const { user, isCustomer } = useAuth();
 
-  const invoiceId = paramId || searchParams.get('id');
+  const rawInvoiceId = paramId || searchParams.get('id');
+  const invoiceId = rawInvoiceId && rawInvoiceId !== 'details' ? rawInvoiceId : '';
 
   // Main State
   const [invoice, setInvoice] = useState(null);

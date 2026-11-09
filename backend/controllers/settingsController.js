@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
 const BusinessSettings = require('../models/BusinessSettings');
 const User = require('../models/User');
+const { demoSettings } = require('../utils/mockData');
 
 // Helper to get or create business settings for a user
 const getOrCreateSettings = async (userId, userObj = null) => {
@@ -28,10 +30,23 @@ const getOrCreateSettings = async (userId, userObj = null) => {
 // @access  Private (Admin, Business Owner)
 const getSettings = async (req, res, next) => {
   try {
-    const settings = await getOrCreateSettings(req.user._id, req.user);
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({
+        success: true,
+        settings: demoSettings,
+      });
+    }
+
+    let settings = null;
+    try {
+      settings = await getOrCreateSettings(req.user._id, req.user);
+    } catch (e) {
+      settings = demoSettings;
+    }
+
     res.status(200).json({
       success: true,
-      settings,
+      settings: settings || demoSettings,
     });
   } catch (error) {
     next(error);

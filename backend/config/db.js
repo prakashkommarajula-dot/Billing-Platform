@@ -1,15 +1,42 @@
 const mongoose = require('mongoose');
 
+// Cap mongoose buffer timeout to 2.5 seconds to prevent 10s hangs if cluster is unreachable
+mongoose.set('bufferTimeoutMS', 2500);
+
+let isConnected = false;
+
 const connectDB = async () => {
+  const mongoUri =
+    process.env.MONGODB_URI ||
+    process.env.MONGO_URI ||
+    'mongodb://127.0.0.1:27017/invoice_billing_platform';
+
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/invoice_billing_platform', {
-      serverSelectionTimeoutMS: 5000,
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 4000,
+      connectTimeoutMS: 5000,
     });
-    console.log(`[MongoDB] Connected successfully: ${conn.connection.host}`);
+    isConnected = true;
+    console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}`);
   } catch (error) {
+    isConnected = false;
     console.error(`[MongoDB] Connection Warning/Error: ${error.message}`);
-    console.log('[MongoDB] If you are running locally, ensure mongod service is started or update MONGODB_URI in backend/.env');
+    console.log('[MongoDB] Running in Resilient Mode. Demo accounts and mock fallbacks are active.');
   }
 };
+
+mongoose.connection.on('connected', () => {
+  isConnected = true;
+  console.log('[MongoDB] State: CONNECTED');
+});
+
+mongoose.connection.on('disconnected', () => {
+  isConnected = false;
+  console.warn('[MongoDB] State: DISCONNECTED');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.warn(`[MongoDB] Connection Event Error: ${err.message}`);
+});
 
 module.exports = connectDB;

@@ -58,7 +58,8 @@ export const CustomerDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Active Customer ID from URL route (/customers/:id) or query (?id=...)
-  const customerIdFromUrl = params.id || searchParams.get('id');
+  const rawId = params.id || searchParams.get('id');
+  const customerIdFromUrl = rawId && rawId !== 'details' ? rawId : '';
 
   // Customer List for Switcher Dropdown
   const [allCustomers, setAllCustomers] = useState([]);
@@ -90,12 +91,19 @@ export const CustomerDetails = () => {
           setAllCustomers(res.customers);
           // If no customer ID is specified in URL, auto-select first customer
           if (!customerIdFromUrl) {
-            setSelectedCustomerId(res.customers[0]._id);
-            setSearchParams({ id: res.customers[0]._id });
+            const firstId = res.customers[0]._id || res.customers[0].id;
+            setSelectedCustomerId(firstId);
+            setSearchParams({ id: firstId });
           }
+        } else {
+          // If no customers returned, load default customer
+          fetchCustomerDetails('details');
         }
       })
-      .catch((err) => console.warn('Fetch all customers error:', err));
+      .catch((err) => {
+        console.warn('Fetch all customers error:', err);
+        fetchCustomerDetails('details');
+      });
   }, [customerIdFromUrl, setSearchParams]);
 
   // 2. Fetch Selected Customer Details

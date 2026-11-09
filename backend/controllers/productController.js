@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const { demoProducts } = require('../utils/mockData');
 
 // Helper to seed initial sample catalog for a business if empty
 const seedInitialProducts = async (userId) => {
@@ -96,8 +98,25 @@ const getProducts = async (req, res, next) => {
   try {
     const userId = req.user._id;
 
-    // Auto-seed sample catalog if brand new business
-    await seedInitialProducts(userId);
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({
+        success: true,
+        products: demoProducts,
+        pagination: {
+          total: demoProducts.length,
+          page: 1,
+          limit: 10,
+          totalPages: 1,
+        },
+      });
+    }
+
+    try {
+      // Auto-seed sample catalog if brand new business
+      await seedInitialProducts(userId);
+    } catch (seedErr) {
+      console.warn('[Product] Auto-seed warning:', seedErr.message);
+    }
 
     const {
       search,

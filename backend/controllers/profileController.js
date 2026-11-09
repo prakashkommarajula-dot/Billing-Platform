@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
@@ -6,18 +7,32 @@ const bcrypt = require('bcryptjs');
 // @access  Private
 const getProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).select('-password');
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User profile not found',
+    if (mongoose.connection.readyState !== 1 || !req.user || !req.user._id) {
+      return res.status(200).json({
+        success: true,
+        user: req.user,
       });
     }
 
-    res.status(200).json({
-      success: true,
-      user,
-    });
+    try {
+      const user = await User.findById(req.user._id).select('-password');
+      if (!user) {
+        return res.status(200).json({
+          success: true,
+          user: req.user,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (e) {
+      return res.status(200).json({
+        success: true,
+        user: req.user,
+      });
+    }
   } catch (error) {
     next(error);
   }

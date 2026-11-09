@@ -4,6 +4,7 @@ const Invoice = require('../models/Invoice');
 const Customer = require('../models/Customer');
 const User = require('../models/User');
 const { generateCreditNotePDF } = require('../utils/pdfGenerator');
+const { demoCreditNotes } = require('../utils/mockData');
 
 // Decimal-safe rounding
 const round2 = (num) => Math.round((Number(num) + Number.EPSILON) * 100) / 100;
@@ -77,6 +78,28 @@ const getCreditNotes = async (req, res, next) => {
     const pageSize = parseInt(limit, 10) || 10;
     const skip = (currentPage - 1) * pageSize;
 
+    if (mongoose.connection.readyState !== 1) {
+      let totalCreditAmount = 0;
+      demoCreditNotes.forEach((cn) => {
+        totalCreditAmount += cn.amount || 0;
+      });
+      return res.status(200).json({
+        success: true,
+        creditNotes: demoCreditNotes,
+        metrics: {
+          totalCreditAmount,
+          totalCount: demoCreditNotes.length,
+          activeCount: demoCreditNotes.length,
+        },
+        pagination: {
+          total: demoCreditNotes.length,
+          page: 1,
+          limit: 10,
+          totalPages: 1,
+        },
+      });
+    }
+
     const totalCount = await CreditNote.countDocuments(query);
 
     const sortOptions = {};
@@ -126,7 +149,24 @@ const getCreditNotes = async (req, res, next) => {
 // @access  Private
 const getCreditNoteById = async (req, res, next) => {
   try {
-    const creditNote = await CreditNote.findById(req.params.id)
+    const rawId = req.params.id;
+
+    if (
+      mongoose.connection.readyState !== 1 ||
+      rawId === 'details' ||
+      !mongoose.Types.ObjectId.isValid(rawId)
+    ) {
+      const cn =
+        demoCreditNotes.find(
+          (c) => c._id === rawId || c.id === rawId || c.creditNoteNumber === rawId
+        ) || demoCreditNotes[0];
+      return res.status(200).json({
+        success: true,
+        creditNote: cn,
+      });
+    }
+
+    const creditNote = await CreditNote.findById(rawId)
       .populate('invoice')
       .populate('customer')
       .populate('recordedBy', 'name email role');

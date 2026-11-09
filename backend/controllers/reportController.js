@@ -4,6 +4,7 @@ const Payment = require('../models/Payment');
 const CreditNote = require('../models/CreditNote');
 const Customer = require('../models/Customer');
 const User = require('../models/User');
+const { demoInvoices } = require('../utils/mockData');
 
 // Helper for decimal-safe monetary rounding (2 decimal places)
 const round2 = (num) => Math.round((Number(num) + Number.EPSILON) * 100) / 100;
@@ -76,6 +77,39 @@ const getSalesReport = async (req, res, next) => {
     const currentPage = parseInt(page, 10) || 1;
     const pageSize = parseInt(limit, 10) || 10;
     const skip = (currentPage - 1) * pageSize;
+
+    if (mongoose.connection.readyState !== 1) {
+      let totalSales = 0;
+      let totalPaid = 0;
+      let totalOutstanding = 0;
+      demoInvoices.forEach((inv) => {
+        totalSales += inv.totalAmount || 0;
+        totalPaid += inv.paidAmount || 0;
+        totalOutstanding += inv.balanceDue || 0;
+      });
+
+      return res.status(200).json({
+        success: true,
+        invoices: demoInvoices,
+        metrics: {
+          totalSales: round2(totalSales),
+          totalPaid: round2(totalPaid),
+          totalOutstanding: round2(totalOutstanding),
+          invoiceCount: demoInvoices.length,
+        },
+        chartData: [
+          { month: 'Jan 2026', sales: 18500, collected: 0 },
+          { month: 'Feb 2026', sales: 191160, collected: 147660 },
+          { month: 'Mar 2026', sales: 25000, collected: 0 },
+        ],
+        pagination: {
+          total: demoInvoices.length,
+          page: 1,
+          limit: 10,
+          totalPages: 1,
+        },
+      });
+    }
 
     const totalCount = await Invoice.countDocuments(query);
 

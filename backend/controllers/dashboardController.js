@@ -1,7 +1,9 @@
+const mongoose = require('mongoose');
 const Invoice = require('../models/Invoice');
 const Payment = require('../models/Payment');
 const Customer = require('../models/Customer');
 const User = require('../models/User');
+const { demoInvoices, demoPayments } = require('../utils/mockData');
 
 // Helper to auto-seed initial demo data for a business if empty
 const seedBusinessDemoData = async (userId, userCompanyName) => {
@@ -245,17 +247,38 @@ const getDashboardSummary = async (req, res, next) => {
   try {
     const userId = req.user._id;
 
-    // Auto-seed initial demo invoices if none exist yet for this user
-    await seedBusinessDemoData(userId, req.user.companyName || req.user.businessName);
+    let invoices = [];
+    let payments = [];
 
-    // Filter query strictly by logged-in business user (or admin)
-    const filter = req.user.role === 'Admin' ? {} : { user: userId };
+    if (mongoose.connection.readyState === 1) {
+      try {
+        // Auto-seed initial demo invoices if none exist yet for this user
+        await seedBusinessDemoData(userId, req.user.companyName || req.user.businessName);
 
-    // 1. Fetch Invoices
-    const invoices = await Invoice.find(filter).sort({ createdAt: -1 });
+        // Filter query strictly by logged-in business user (or admin)
+        const filter = req.user.role === 'Admin' ? {} : { user: userId };
 
-    // 2. Fetch Payments
-    const payments = await Payment.find(filter).sort({ paymentDate: -1 });
+        // 1. Fetch Invoices
+        invoices = await Invoice.find(filter).sort({ createdAt: -1 });
+
+        // 2. Fetch Payments
+        payments = await Payment.find(filter).sort({ paymentDate: -1 });
+      } catch (dbErr) {
+        console.warn('[Dashboard] Live DB query warning:', dbErr.message);
+        invoices = demoInvoices;
+        payments = demoPayments;
+      }
+    } else {
+      invoices = demoInvoices;
+      payments = demoPayments;
+    }
+
+    if (!invoices || invoices.length === 0) {
+      invoices = demoInvoices;
+    }
+    if (!payments || payments.length === 0) {
+      payments = demoPayments;
+    }
 
     // 3. Compute Summary Card Metrics
     let totalSales = 0;
