@@ -227,13 +227,20 @@ const getInvoices = async (req, res, next) => {
     let totalCount = 0;
     let invoices = [];
 
-    const sortOptions = {};
-    sortOptions[sortBy] = order === 'asc' ? 1 : -1;
+    try {
+      totalCount = await Invoice.countDocuments(query);
+      const sortOptions = {};
+      sortOptions[sortBy] = order === 'asc' ? 1 : -1;
 
-    const invoices = await Invoice.find(query)
-      .sort(sortOptions)
-      .skip(skip)
-      .limit(pageSize);
+      invoices = await Invoice.find(query)
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(pageSize);
+    } catch (dbErr) {
+      console.warn('[Invoice] Live query warning:', dbErr.message);
+      invoices = demoInvoices;
+      totalCount = demoInvoices.length;
+    }
 
     // Auto-update Overdue status dynamically if dueDate has passed and balance remains
     const now = new Date();

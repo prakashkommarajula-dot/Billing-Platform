@@ -407,10 +407,6 @@ const getCurrentUserProfile = async (req, res, next) => {
     next(error);
   }
 };
-  } catch (error) {
-    next(error);
-  }
-};
 
 // @desc    Update user profile
 // @route   PUT /api/auth/profile
