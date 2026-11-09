@@ -1,4 +1,5 @@
-const API_BASE_URL = '/api';
+const rawBase = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = rawBase.replace(/\/+$/, '');
 
 /**
  * Enhanced fetch client with auto Bearer token inclusion and JSON handling
@@ -15,7 +16,8 @@ export async function apiFetch(endpoint, options = {}) {
   };
 
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const response = await fetch(`${API_BASE_URL}${cleanEndpoint}`, {
       ...options,
       headers,
     });

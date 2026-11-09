@@ -1,0 +1,29 @@
+# ========================================================================
+# Render Blueprint Configuration (Infrastructure-as-Code)
+# Documentation: https://render.com/docs/blueprint-spec
+# ========================================================================
+
+services:
+  # ----------------------------------------------------------------------
+  # Primary Service: Full-Stack Web Service
+  # Combines React 18 SPA + Node.js 20 Express REST API into a single
+  # unified service with zero CORS friction and automatic SPA fallback.
+  # ----------------------------------------------------------------------
+  - type: web
+    name: billflow-billing-platform
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false # User enters their MongoDB Atlas connection URI in Render Dashboard

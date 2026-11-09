@@ -5,8 +5,10 @@ A production-grade, full-stack business billing, accounting, and invoice managem
 [![Documentation](https://img.shields.io/badge/Documentation-Comprehensive_PDF-blue.svg)](./BillFlow_Comprehensive_Project_Documentation.pdf)
 [![Docker](https://img.shields.io/badge/Docker-Multi--Container_Ready-2496ED.svg)](./docker-compose.yml)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Production_Manifests-326CE5.svg)](./k8s)
+[![Render](https://img.shields.io/badge/Render-Deploy_Ready-black.svg?logo=render)](./RENDER_DEPLOYMENT.md)
 
 > 📄 **Official Project Documentation:**
+> - **Render Cloud Deployment Guide:** [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
 > - **Comprehensive PDF Documentation:** [BillFlow_Comprehensive_Project_Documentation.pdf](./BillFlow_Comprehensive_Project_Documentation.pdf)
 > - **Markdown Documentation:** [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md)
 > - **Generate PDF Anytime:** `npm run docs:pdf`
