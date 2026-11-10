@@ -20,17 +20,26 @@ const resolveCustomerScope = async (req) => {
 
   // If Admin or Business Owner requested a specific customer view via query param
   if (!isCustomerRole && req.query.customerId) {
-    const specifiedCust = await Customer.findById(req.query.customerId);
-    if (specifiedCust) {
-      customerEmail = specifiedCust.email.toLowerCase();
-      customerDocId = specifiedCust._id;
+    if (mongoose.connection.readyState === 1 && mongoose.Types.ObjectId.isValid(req.query.customerId)) {
+      try {
+        const specifiedCust = await Customer.findById(req.query.customerId);
+        if (specifiedCust) {
+          customerEmail = specifiedCust.email.toLowerCase();
+          customerDocId = specifiedCust._id;
+        }
+      } catch (e) {}
     }
   }
 
   // Find linked customer document
-  const custDoc = await Customer.findOne({
-    $or: [{ email: customerEmail }, ...(customerDocId ? [{ _id: customerDocId }] : [])],
-  });
+  let custDoc = null;
+  if (mongoose.connection.readyState === 1) {
+    try {
+      custDoc = await Customer.findOne({
+        $or: [{ email: customerEmail }, ...(customerDocId ? [{ _id: customerDocId }] : [])],
+      });
+    } catch (e) {}
+  }
 
   const matchingDocIds = [customerUserId];
   if (custDoc) matchingDocIds.push(custDoc._id);
@@ -482,6 +491,208 @@ const updatePortalProfile = async (req, res, next) => {
   }
 };
 
+// @desc    Process customer payment for an invoice (with simulated demo mode)
+// @route   POST /api/portal/pay
+// @access  Private (Customer, Admin, Business Owner)
+const payPortalInvoice = async (req, res, next) => {
+  try {
+    const {
+      invoiceId,
+      amount,
+      paymentMethod = 'UPI',
+      transactionReference,
+      notes = '',
+    } = req.body;
+
+    if (!invoiceId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invoice ID is required to process payment',
+      });
+    }
+
+    const payAmount = round2(Number(amount));
+    if (isNaN(payAmount) || payAmount < 1.0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Payment amount must be at least ₹1.00',
+      });
+    }
+
+    // Resilient offline / demo fallback
+    if (mongoose.connection.readyState !== 1) {
+      const demoInv = demoInvoices.find((i) => i._id === invoiceId || i.id === invoiceId) || demoInvoices[0];
+      const receiptNo = `RCPT-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const ref = transactionReference || `SIM-UPI-${Date.now().toString().slice(-6)}`;
+      const newPaid = round2((demoInv.paidAmount || 0) + payAmount);
+      const newBalance = Math.max(0, round2((demoInv.totalAmount || 10000) - newPaid));
+      const newStatus = newBalance === 0 ? 'Paid' : 'Partially Paid';
+
+      demoInv.paidAmount = newPaid;
+      demoInv.balanceDue = newBalance;
+      demoInv.status = newStatus;
+
+      const demoPaymentRecord = {
+        _id: 'pay_' + Date.now(),
+        paymentNumber: receiptNo,
+        invoice: demoInv._id,
+        invoiceNumber: demoInv.invoiceNumber,
+        customerName: req.user.name,
+        amount: payAmount,
+        paymentDate: new Date(),
+        paymentMethod,
+        transactionReference: ref,
+        status: 'Completed',
+        isSimulatedDemo: true,
+        notes: notes || 'Simulated Customer Portal Payment',
+      };
+      demoPayments.unshift(demoPaymentRecord);
+
+      return res.status(200).json({
+        success: true,
+        message: `Payment of ₹${payAmount.toLocaleString('en-IN')} processed successfully! (Simulated Academic Demo)`,
+        receipt: {
+          receiptNumber: receiptNo,
+          invoiceNumber: demoInv.invoiceNumber,
+          invoiceId: demoInv._id,
+          amountPaid: payAmount,
+          remainingBalance: newBalance,
+          paymentDate: new Date(),
+          paymentMethod,
+          transactionReference: ref,
+          status: 'Completed',
+          customerName: req.user.name,
+          businessName: demoInv.companyName || 'Apex Enterprises Pvt Ltd',
+          isSimulated: true,
+        },
+        invoice: demoInv,
+      });
+    }
+
+    // 1. Fetch Target Invoice
+    const invoice = await Invoice.findById(invoiceId);
+    if (!invoice) {
+      return res.status(404).json({
+        success: false,
+        message: 'The requested invoice was not found',
+      });
+    }
+
+    // 2. Authorization: Customer can only pay their own invoices
+    const isCustomer = req.user.role === 'Customer';
+    if (isCustomer) {
+      const matchEmail = (invoice.customerEmail || '').toLowerCase() === req.user.email.toLowerCase();
+      const matchUserId = String(invoice.customer) === String(req.user._id);
+      const matchCustRecord = req.user.customerRecord && String(invoice.customer) === String(req.user.customerRecord);
+      if (!matchEmail && !matchUserId && !matchCustRecord) {
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied: You are not authorized to pay this invoice',
+        });
+      }
+    }
+
+    if (invoice.status === 'Cancelled') {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot process payment for a cancelled invoice',
+      });
+    }
+
+    if (invoice.status === 'Paid' || invoice.balanceDue <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'This invoice has already been fully settled',
+      });
+    }
+
+    // 3. Overpayment check
+    const currentBalance = round2(invoice.balanceDue);
+    if (payAmount > currentBalance) {
+      return res.status(400).json({
+        success: false,
+        message: `Payment amount of ₹${payAmount.toLocaleString('en-IN')} exceeds remaining balance of ₹${currentBalance.toLocaleString('en-IN')}. Overpayment is prohibited.`,
+      });
+    }
+
+    // 4. Generate Unique Sequential Receipt / Payment Number
+    const year = new Date().getFullYear();
+    const payCount = await Payment.countDocuments({ user: invoice.user });
+    const paymentNumber = `PAY-${year}-${(payCount + 1).toString().padStart(4, '0')}`;
+    const receiptNumber = `RCPT-${year}-${(payCount + 1).toString().padStart(4, '0')}`;
+    const ref = transactionReference && transactionReference.trim()
+      ? transactionReference.trim()
+      : `SIM-${paymentMethod.toUpperCase().slice(0, 3)}-${Date.now().toString().slice(-6)}`;
+
+    // 5. Create Payment Record
+    const payment = await Payment.create({
+      user: invoice.user,
+      customer: invoice.customer,
+      invoice: invoice._id,
+      paymentNumber,
+      amount: payAmount,
+      paymentDate: new Date(),
+      paymentMethod,
+      transactionReference: ref,
+      status: 'Completed',
+      notes: notes || 'Customer Portal Self-Service Payment (Simulated Academic Demo)',
+    });
+
+    // 6. Update Invoice Totals & Status
+    const newPaidAmount = round2(invoice.paidAmount + payAmount);
+    const newBalanceDue = Math.max(0, round2(invoice.totalAmount - newPaidAmount));
+    const newStatus = newBalanceDue === 0 ? 'Paid' : 'Partially Paid';
+
+    invoice.paidAmount = newPaidAmount;
+    invoice.balanceDue = newBalanceDue;
+    invoice.status = newStatus;
+    await invoice.save();
+
+    // 7. Update Customer Ledger Balance if Customer doc exists
+    if (invoice.customer) {
+      try {
+        const custDoc = await Customer.findById(invoice.customer);
+        if (custDoc) {
+          custDoc.outstandingBalance = Math.max(0, round2((custDoc.outstandingBalance || 0) - payAmount));
+          await custDoc.save();
+        }
+      } catch (custErr) {
+        console.warn('[Portal Pay] Customer balance update warning:', custErr.message);
+      }
+    }
+
+    // Fetch Business info for receipt
+    let businessName = 'BillFlow Workspace';
+    try {
+      const bizOwner = await User.findById(invoice.user).select('companyName businessName');
+      if (bizOwner) businessName = bizOwner.companyName || bizOwner.businessName || businessName;
+    } catch (e) {}
+
+    res.status(200).json({
+      success: true,
+      message: `Payment of ₹${payAmount.toLocaleString('en-IN')} processed successfully!`,
+      receipt: {
+        receiptNumber,
+        paymentNumber,
+        invoiceNumber: invoice.invoiceNumber,
+        invoiceId: invoice._id,
+        amountPaid: payAmount,
+        remainingBalance: newBalanceDue,
+        paymentDate: payment.paymentDate,
+        paymentMethod: payment.paymentMethod,
+        transactionReference: payment.transactionReference,
+        status: 'Completed',
+        customerName: invoice.customerName,
+        businessName,
+        isSimulated: true,
+      },
+      invoice,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getPortalSummary,
   getPortalInvoices,
@@ -489,4 +700,5 @@ module.exports = {
   getPortalCreditNotes,
   getPortalStatement,
   updatePortalProfile,
+  payPortalInvoice,
 };

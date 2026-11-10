@@ -277,10 +277,10 @@ const recordPayment = async (req, res, next) => {
     }
 
     const payAmount = round2(Number(amount));
-    if (!payAmount || payAmount <= 0) {
+    if (isNaN(payAmount) || payAmount < 1.0) {
       return res.status(400).json({
         success: false,
-        message: 'Payment amount must be greater than zero.',
+        message: 'Payment amount must be at least ₹1.00.',
       });
     }
 

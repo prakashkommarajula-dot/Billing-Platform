@@ -93,6 +93,7 @@ export const InvoiceDetails = () => {
   // Credit Note Form State
   const [creditAmount, setCreditAmount] = useState('');
   const [creditReason, setCreditReason] = useState('Price Adjustment');
+  const [customReason, setCustomReason] = useState('');
   const [creditNotes, setCreditNotes] = useState('');
 
   // Fetch Invoice Details and Payment History
@@ -170,8 +171,13 @@ export const InvoiceDetails = () => {
     setSuccessMessage('');
 
     const amt = Number(paymentAmount);
-    if (!amt || amt <= 0) {
-      setError('Please enter a valid payment amount greater than 0.');
+    if (isNaN(amt) || amt < 1.0) {
+      setError('Payment amount must be at least ₹1.00.');
+      return;
+    }
+
+    if (invoice && amt > invoice.balanceDue) {
+      setError(`Payment amount of ₹${amt.toLocaleString('en-IN')} exceeds the remaining invoice balance of ₹${invoice.balanceDue.toLocaleString('en-IN')}. Overpayment is prohibited.`);
       return;
     }
 
@@ -213,11 +219,18 @@ export const InvoiceDetails = () => {
       return;
     }
 
+    if (creditReason === 'Other' && !customReason.trim()) {
+      setError('Please specify the custom credit note reason.');
+      return;
+    }
+
+    const finalReason = creditReason === 'Other' ? `Other: ${customReason.trim()}` : creditReason;
+
     setSubmittingAction(true);
     try {
       const res = await invoiceAPI.createCreditNote(invoice._id, {
         amount: amt,
-        reason: creditReason,
+        reason: finalReason,
         notes: creditNotes,
       });
 
@@ -225,6 +238,7 @@ export const InvoiceDetails = () => {
         setSuccessMessage(res.message || 'Credit note generated successfully!');
         setIsCreditNoteModalOpen(false);
         setCreditNotes('');
+        setCustomReason('');
       }
     } catch (err) {
       console.error('Credit note error:', err);
@@ -928,6 +942,16 @@ export const InvoiceDetails = () => {
                     </select>
                   </div>
                 </div>
+
+                {creditReason === 'Other' && (
+                  <Input
+                    label="Specify Custom Reason *"
+                    value={customReason}
+                    onChange={(e) => setCustomReason(e.target.value)}
+                    placeholder="e.g. Rate revision or dispute settlement"
+                    required
+                  />
+                )}
 
                 <Input
                   label="Remarks & Reason Details"

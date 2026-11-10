@@ -41,6 +41,8 @@ export async function apiFetch(endpoint, options = {}) {
 }
 
 export const authAPI = {
+  getBusinesses: () => apiFetch('/auth/businesses'),
+
   login: (credentials) =>
     apiFetch('/auth/login', {
       method: 'POST',
@@ -261,6 +263,11 @@ export const reportAPI = {
 };
 
 export const portalAPI = {
+  payInvoice: (paymentData) =>
+    apiFetch('/portal/pay', {
+      method: 'POST',
+      body: JSON.stringify(paymentData),
+    }),
   getSummary: (params = {}) => {
     const query = new URLSearchParams(params).toString();
     return apiFetch(`/portal/summary${query ? `?${query}` : ''}`);

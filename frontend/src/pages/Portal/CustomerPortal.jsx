@@ -25,6 +25,8 @@ import {
   BookOpen,
   DollarSign,
   ShieldCheck,
+  X,
+  CreditCard as PayIcon,
 } from 'lucide-react';
 import { portalAPI, invoiceAPI, creditNoteAPI, customerAPI } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -108,6 +110,93 @@ export const CustomerPortal = () => {
   const [savingProfile, setSavingProfile] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  // Pay Now Modal State
+  const [isPayModalOpen, setIsPayModalOpen] = useState(false);
+  const [selectedPayInvoice, setSelectedPayInvoice] = useState(null);
+  const [payAmount, setPayAmount] = useState('');
+  const [payMethod, setPayMethod] = useState('UPI');
+  const [payRef, setPayRef] = useState('');
+  const [payNotes, setPayNotes] = useState('');
+  const [paySubmitting, setPaySubmitting] = useState(false);
+  const [payError, setPayError] = useState('');
+
+  // Official Receipt Modal State
+  const [receiptModalOpen, setReceiptModalOpen] = useState(false);
+  const [currentReceipt, setCurrentReceipt] = useState(null);
+
+  // Open Pay Modal
+  const handleOpenPayModal = (inv) => {
+    setSelectedPayInvoice(inv);
+    setPayAmount(inv.balanceDue || 0);
+    setPayMethod('UPI');
+    setPayRef(`UPI-${Date.now().toString().slice(-8)}`);
+    setPayNotes('Portal self-service balance settlement');
+    setPayError('');
+    setIsPayModalOpen(true);
+  };
+
+  // Generate Reference Number
+  const handleGenerateRef = () => {
+    const prefixes = {
+      UPI: 'UPI',
+      'Bank Transfer': 'UTR',
+      'Credit/Debit Card': 'CARD',
+      Cash: 'CSH',
+    };
+    const prefix = prefixes[payMethod] || 'PAY';
+    const randomDigits = Math.floor(10000000 + Math.random() * 90000000);
+    setPayRef(`${prefix}-${randomDigits}`);
+  };
+
+  // Submit Due Payment
+  const handleConfirmPayment = async (e) => {
+    e.preventDefault();
+    setPayError('');
+
+    if (!selectedPayInvoice) return;
+
+    const numAmount = Number(payAmount);
+    if (isNaN(numAmount) || numAmount < 1) {
+      setPayError('Minimum payment amount must be ₹1.00');
+      return;
+    }
+
+    if (numAmount > selectedPayInvoice.balanceDue) {
+      setPayError(
+        `Payment amount of ₹${numAmount} exceeds remaining balance of ₹${selectedPayInvoice.balanceDue}`
+      );
+      return;
+    }
+
+    setPaySubmitting(true);
+    try {
+      const res = await portalAPI.payInvoice({
+        invoiceId: selectedPayInvoice._id,
+        amount: numAmount,
+        paymentMethod: payMethod,
+        transactionReference: payRef.trim(),
+        notes: payNotes.trim(),
+      });
+
+      if (res.success && res.receipt) {
+        setCurrentReceipt(res.receipt);
+        setIsPayModalOpen(false);
+        setReceiptModalOpen(true);
+        setSuccessMessage(`Payment for ${selectedPayInvoice.invoiceNumber} processed successfully!`);
+
+        // Refresh all portal collections
+        fetchPortalSummary();
+        fetchInvoices();
+        fetchPayments();
+      }
+    } catch (err) {
+      console.error('Payment processing error:', err);
+      setPayError(err.message || 'Payment processing failed. Please try again.');
+    } finally {
+      setPaySubmitting(false);
+    }
+  };
 
   // Fetch Customers if user is Admin/Owner for switcher
   useEffect(() => {
@@ -546,13 +635,26 @@ export const CustomerPortal = () => {
                               </Badge>
                             </td>
                             <td className="text-center">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                icon={Download}
-                                onClick={() => invoiceAPI.downloadPDF(inv._id, inv.invoiceNumber)}
-                                title="Download A4 PDF"
-                              />
+                              <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                                {inv.balanceDue > 0 && (
+                                  <Button
+                                    variant="primary"
+                                    size="sm"
+                                    icon={PayIcon}
+                                    onClick={() => handleOpenPayModal(inv)}
+                                    title="Pay outstanding balance"
+                                  >
+                                    Pay Now
+                                  </Button>
+                                )}
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  icon={Download}
+                                  onClick={() => invoiceAPI.downloadPDF(inv._id, inv.invoiceNumber)}
+                                  title="Download A4 PDF"
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -761,6 +863,17 @@ export const CustomerPortal = () => {
                         </td>
                         <td className="text-center">
                           <div className="portal-action-btns">
+                            {inv.balanceDue > 0 && (
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                icon={PayIcon}
+                                onClick={() => handleOpenPayModal(inv)}
+                                title="Pay outstanding balance"
+                              >
+                                Pay Now
+                              </Button>
+                            )}
                             <Button
                               variant="outline"
                               size="sm"
@@ -1153,6 +1266,316 @@ export const CustomerPortal = () => {
               </form>
             </Card.Body>
           </Card>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* 9. MODAL: PAY DUE INVOICE                                 */}
+      {/* ========================================================= */}
+      {isPayModalOpen && selectedPayInvoice && (
+        <div className="modal-backdrop no-print" onClick={() => setIsPayModalOpen(false)}>
+          <div
+            className="modal-dialog"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="modal-header">
+              <div className="modal-title-wrap">
+                <div className="modal-icon-box icon-blue-bg">
+                  <PayIcon size={20} className="text-primary" />
+                </div>
+                <div>
+                  <h3 className="modal-title">Settle Due Invoice</h3>
+                  <p className="modal-subtitle">
+                    Invoice #{selectedPayInvoice.invoiceNumber} • Due: {formatDate(selectedPayInvoice.dueDate)}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => setIsPayModalOpen(false)}
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleConfirmPayment}>
+              <div className="modal-body">
+                {payError && (
+                  <Alert
+                    type="error"
+                    message={payError}
+                    onClose={() => setPayError('')}
+                    className="mb-3"
+                  />
+                )}
+
+                {/* Summary Strip */}
+                <div className="pay-summary-strip">
+                  <div className="pay-sum-item">
+                    <span className="pay-sum-label">Invoice Total</span>
+                    <span className="pay-sum-val">{formatINR(selectedPayInvoice.totalAmount)}</span>
+                  </div>
+                  <div className="pay-sum-item">
+                    <span className="pay-sum-label">Already Paid</span>
+                    <span className="pay-sum-val text-success">
+                      {formatINR(selectedPayInvoice.paidAmount || 0)}
+                    </span>
+                  </div>
+                  <div className="pay-sum-item highlight">
+                    <span className="pay-sum-label">Balance Outstanding</span>
+                    <span className="pay-sum-val text-danger">
+                      {formatINR(selectedPayInvoice.balanceDue)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Payment Amount */}
+                <div className="pay-form-group">
+                  <div className="pay-amount-label-row">
+                    <label className="input-label">Payment Amount (₹) *</label>
+                    <div className="quick-amount-btns">
+                      <button
+                        type="button"
+                        className="quick-amt-btn"
+                        onClick={() => setPayAmount(selectedPayInvoice.balanceDue)}
+                      >
+                        Full Balance
+                      </button>
+                      <button
+                        type="button"
+                        className="quick-amt-btn"
+                        onClick={() =>
+                          setPayAmount(Math.round(selectedPayInvoice.balanceDue / 2))
+                        }
+                      >
+                        50% Partial
+                      </button>
+                    </div>
+                  </div>
+                  <input
+                    type="number"
+                    min="1"
+                    max={selectedPayInvoice.balanceDue}
+                    step="0.01"
+                    value={payAmount}
+                    onChange={(e) => setPayAmount(e.target.value)}
+                    className="pay-input font-bold"
+                    required
+                  />
+                  <span className="text-xs text-muted mt-1 block">
+                    You can pay the full remaining amount or enter a partial settlement (min ₹1.00).
+                  </span>
+                </div>
+
+                {/* Payment Method & UTR / Reference */}
+                <div className="modal-row-2 mt-3">
+                  <div className="pay-form-group">
+                    <label className="input-label">Payment Method *</label>
+                    <select
+                      value={payMethod}
+                      onChange={(e) => {
+                        setPayMethod(e.target.value);
+                      }}
+                      className="filter-select w-full"
+                    >
+                      <option value="UPI">UPI (Google Pay / PhonePe / Paytm)</option>
+                      <option value="Bank Transfer">Bank Transfer (NEFT / RTGS / IMPS)</option>
+                      <option value="Credit/Debit Card">Credit / Debit Card</option>
+                      <option value="Cash">Cash Settlement</option>
+                    </select>
+                  </div>
+
+                  <div className="pay-form-group">
+                    <div className="flex justify-between items-center mb-1">
+                      <label className="input-label mb-0">Transaction Ref / UTR *</label>
+                      <button
+                        type="button"
+                        className="text-xs text-primary font-semibold hover:underline"
+                        onClick={handleGenerateRef}
+                      >
+                        Auto-Gen UTR
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      value={payRef}
+                      onChange={(e) => setPayRef(e.target.value)}
+                      placeholder="e.g. UPI-982374619"
+                      className="pay-input font-mono text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Notes */}
+                <div className="pay-form-group mt-3">
+                  <label className="input-label">Payment Notes (Optional)</label>
+                  <input
+                    type="text"
+                    value={payNotes}
+                    onChange={(e) => setPayNotes(e.target.value)}
+                    placeholder="e.g. Month-end invoice settlement"
+                    className="pay-input"
+                  />
+                </div>
+
+                {/* Academic Simulation Demo Notice */}
+                <div className="academic-demo-alert mt-4">
+                  <ShieldCheck size={18} className="academic-demo-icon" />
+                  <div className="academic-demo-content">
+                    <span className="academic-demo-title">Academic Demonstration Mode</span>
+                    <p className="academic-demo-text">
+                      Real monetary transactions are safely simulated for academic evaluation. Submitting this settlement reconciles genuine ledger accounts, updates invoice balance, and issues an official receipt.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => setIsPayModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  icon={PayIcon}
+                  loading={paySubmitting}
+                >
+                  Confirm & Pay {formatINR(payAmount)}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* 10. MODAL: OFFICIAL PAYMENT RECEIPT SLIP                   */}
+      {/* ========================================================= */}
+      {receiptModalOpen && currentReceipt && (
+        <div className="modal-backdrop" onClick={() => setReceiptModalOpen(false)}>
+          <div
+            className="modal-dialog modal-receipt"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="receipt-print-wrapper" id="printable-receipt">
+              <div className="receipt-header">
+                <div className="receipt-logo-title">
+                  <div className="receipt-logo-box">
+                    <ShieldCheck size={26} color="#FFFFFF" />
+                  </div>
+                  <div>
+                    <h3 className="receipt-title">BillFlow</h3>
+                    <span className="receipt-subtitle">Official Payment Receipt</span>
+                  </div>
+                </div>
+                <div className="receipt-badge-status">
+                  <Badge variant="success" size="lg" dot>
+                    Settled & Verified
+                  </Badge>
+                </div>
+              </div>
+
+              <div className="receipt-body">
+                <div className="receipt-amount-banner">
+                  <span className="receipt-amt-label">Amount Paid</span>
+                  <span className="receipt-amt-value font-mono">
+                    {formatINR(currentReceipt.amountPaid)}
+                  </span>
+                  <span className="receipt-amt-sub text-success">
+                    ✓ Transaction Reconciled Successfully
+                  </span>
+                </div>
+
+                <div className="receipt-details-grid">
+                  <div className="receipt-field">
+                    <span className="r-label">Receipt Number</span>
+                    <span className="r-val font-mono font-bold text-primary">
+                      {currentReceipt.receiptNumber}
+                    </span>
+                  </div>
+
+                  <div className="receipt-field">
+                    <span className="r-label">Invoice Reference</span>
+                    <span className="r-val font-mono font-bold">
+                      {currentReceipt.invoiceNumber}
+                    </span>
+                  </div>
+
+                  <div className="receipt-field">
+                    <span className="r-label">Payment Date & Time</span>
+                    <span className="r-val">
+                      {new Date(currentReceipt.paymentDate).toLocaleString('en-IN', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short',
+                      })}
+                    </span>
+                  </div>
+
+                  <div className="receipt-field">
+                    <span className="r-label">Payment Mode</span>
+                    <span className="r-val font-semibold">{currentReceipt.paymentMethod}</span>
+                  </div>
+
+                  <div className="receipt-field">
+                    <span className="r-label">Transaction Reference (UTR)</span>
+                    <span className="r-val font-mono text-sm">{currentReceipt.transactionReference}</span>
+                  </div>
+
+                  <div className="receipt-field">
+                    <span className="r-label">Remaining Balance Due</span>
+                    <span className="r-val font-bold">
+                      <span className={currentReceipt.remainingBalance > 0 ? 'text-danger' : 'text-success'}>
+                        {formatINR(currentReceipt.remainingBalance)}
+                      </span>
+                    </span>
+                  </div>
+
+                  <div className="receipt-field">
+                    <span className="r-label">Billed To (Customer)</span>
+                    <span className="r-val font-semibold">{currentReceipt.customerName || user?.name}</span>
+                  </div>
+
+                  <div className="receipt-field">
+                    <span className="r-label">Issued By (Organization)</span>
+                    <span className="r-val font-semibold">{currentReceipt.businessName || 'BillFlow Organization'}</span>
+                  </div>
+                </div>
+
+                <div className="receipt-footer-note">
+                  <p className="text-xs text-muted text-center">
+                    This is a computer-generated billing payment receipt. Validated under B.Tech Project Demonstration Architecture.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer no-print">
+              <Button
+                variant="outline"
+                icon={Printer}
+                onClick={() => window.print()}
+              >
+                Print Receipt
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => setReceiptModalOpen(false)}
+              >
+                Done
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -130,8 +130,18 @@ export const CustomerList = () => {
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       errs.email = 'Please provide a valid email address';
     }
-    if (formData.phone && !/^[+0-9\s\-()]{7,20}$/.test(formData.phone.trim())) {
-      errs.phone = 'Please provide a valid phone number';
+    if (formData.phone && formData.phone.trim()) {
+      const cleanPhone = formData.phone.trim();
+      if (!/^(?:\+?\d{1,3}[-\s]?)?[6-9]\d{9}$|^[+]?[0-9\s-]{10,15}$/.test(cleanPhone)) {
+        errs.phone = 'Please provide a valid 10-digit mobile number or standard phone format';
+      }
+    }
+    if (formData.gstin && formData.gstin.trim()) {
+      const cleanGstin = formData.gstin.trim().toUpperCase();
+      const gstinRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+      if (!gstinRegex.test(cleanGstin)) {
+        errs.gstin = 'Invalid GSTIN structure (15 uppercase chars: 2 state digits + 10 PAN chars + 1 entity + Z + 1 check char, e.g. 29ABCDE1234F1Z5)';
+      }
     }
     setFormErrors(errs);
     return Object.keys(errs).length === 0;

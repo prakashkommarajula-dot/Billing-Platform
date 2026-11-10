@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Customer = require('../models/Customer');
+const BusinessSettings = require('../models/BusinessSettings');
 const { demoUsers } = require('../utils/mockData');
 
 // Helper to generate JWT token
@@ -14,7 +16,70 @@ const generateToken = (id) => {
   );
 };
 
-// @desc    Register a new user
+// @desc    Get public businesses available for accountant/customer association
+// @route   GET /api/auth/businesses
+// @access  Public
+const getPublicBusinesses = async (req, res, next) => {
+  try {
+    let businesses = [
+      {
+        id: '6aef0e891a7af6c7eede0002',
+        _id: '6aef0e891a7af6c7eede0002',
+        name: 'Rajesh Sharma',
+        companyName: 'Apex Enterprises Pvt Ltd',
+        businessName: 'Apex Enterprises Pvt Ltd',
+        invitationCode: 'APEX-2026',
+      },
+      {
+        id: '6aef0e891a7af6c7eede0022',
+        _id: '6aef0e891a7af6c7eede0022',
+        name: 'David Miller',
+        companyName: 'Global Tech Solutions',
+        businessName: 'Global Tech Solutions',
+        invitationCode: 'GLOBAL-2026',
+      },
+      {
+        id: '6aef0e891a7af6c7eede0032',
+        _id: '6aef0e891a7af6c7eede0032',
+        name: 'Vikram Malhotra',
+        companyName: 'Sunrise Solutions',
+        businessName: 'Sunrise Solutions',
+        invitationCode: 'SUNRISE-2026',
+      },
+    ];
+
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const liveOwners = await User.find({
+          role: 'Business Owner',
+          isActive: true,
+        }).select('_id name companyName businessName invitationCode taxId');
+        if (liveOwners && liveOwners.length > 0) {
+          businesses = liveOwners.map((o) => ({
+            id: o._id,
+            _id: o._id,
+            name: o.name,
+            companyName: o.companyName || o.businessName,
+            businessName: o.businessName || o.companyName,
+            invitationCode: o.invitationCode || 'INVITE-2026',
+            taxId: o.taxId || '',
+          }));
+        }
+      } catch (e) {
+        console.warn('[Auth] Live business lookup warning:', e.message);
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      businesses,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Register a new user (Business Owner, Accountant, Customer)
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = async (req, res, next) => {
@@ -28,23 +93,18 @@ const registerUser = async (req, res, next) => {
       businessAddress,
       password,
       confirmPassword,
-      role,
+      role = 'Business Owner',
+      businessId,
+      invitationCode,
+      gstin,
+      taxId,
     } = req.body;
 
-    const orgName = (businessName || companyName || '').trim();
-
-    // 1. Required fields validation
+    // 1. Required field validation
     if (!name || !name.trim()) {
       return res.status(400).json({
         success: false,
         message: 'Please provide your full name',
-      });
-    }
-
-    if (!orgName) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide your registered business name',
       });
     }
 
@@ -55,30 +115,22 @@ const registerUser = async (req, res, next) => {
       });
     }
 
-    // 2. Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide a valid business email address',
+        message: 'Please provide a valid email address',
       });
     }
 
     if (!phone || !phone.trim()) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide a business contact phone number',
+        message: 'Please provide a contact phone number',
       });
     }
 
-    if (!businessAddress || (typeof businessAddress === 'string' && !businessAddress.trim())) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide your physical or registered business address',
-      });
-    }
-
-    // 3. Password presence & strength validation
+    // 2. Password strength & confirmation
     if (!password) {
       return res.status(400).json({
         success: false,
@@ -98,11 +150,10 @@ const registerUser = async (req, res, next) => {
     if (!hasLetter || !hasNumber) {
       return res.status(400).json({
         success: false,
-        message: 'Password must contain both letters and numbers for adequate strength',
+        message: 'Password must contain both letters and numbers',
       });
     }
 
-    // 4. Confirm password check
     if (confirmPassword && password !== confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -110,50 +161,72 @@ const registerUser = async (req, res, next) => {
       });
     }
 
-    // 5. Controlled Role Assignment: Disallow public registration as Admin
-    if (role && role.trim().toLowerCase() === 'admin') {
+    // 3. Security: Prevent System Admin public registration
+    if (role && (role.trim().toLowerCase() === 'admin' || role.trim().toLowerCase() === 'system admin')) {
       return res.status(403).json({
         success: false,
-        message: 'Administrative accounts cannot be registered publicly. Please contact platform administration.',
+        message: 'System Administrator accounts cannot be registered publicly.',
       });
     }
 
-    // Default public role is Business Owner (or Accountant/Customer if invited)
-    const assignedRole =
-      role === 'Accountant' || role === 'Customer' ? role : 'Business Owner';
+    const assignedRole = ['Accountant', 'Customer'].includes(role) ? role : 'Business Owner';
 
-    // 7. Parse business address
+    // 4. Resolve Target Business / Organization
+    let targetOwner = null;
+    let targetBusinessId = null;
+    let orgName = (businessName || companyName || '').trim();
+
+    if (assignedRole === 'Business Owner') {
+      if (!orgName) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please provide your registered business or company name',
+        });
+      }
+    } else {
+      // Accountant or Customer must associate with an existing business
+      if (mongoose.connection.readyState === 1) {
+        if (businessId && mongoose.Types.ObjectId.isValid(businessId)) {
+          targetOwner = await User.findOne({ _id: businessId, role: 'Business Owner' });
+        }
+        if (!targetOwner && invitationCode) {
+          targetOwner = await User.findOne({
+            invitationCode: invitationCode.trim().toUpperCase(),
+            role: 'Business Owner',
+          });
+        }
+        if (!targetOwner) {
+          // Fallback to first available business owner if neither was provided
+          targetOwner = await User.findOne({ role: 'Business Owner' });
+        }
+      }
+
+      if (targetOwner) {
+        targetBusinessId = targetOwner._id;
+        orgName = targetOwner.companyName || targetOwner.businessName || 'Business Workspace';
+      } else {
+        targetBusinessId = '6aef0e891a7af6c7eede0002'; // Apex Enterprises demo fallback
+        orgName = 'Apex Enterprises Pvt Ltd';
+      }
+    }
+
+    // 5. Parse Address
     let formattedAddress = {
       street: '',
       city: '',
       state: '',
       zipCode: '',
-      country: '',
+      country: 'India',
       fullAddress: '',
     };
-
-    if (typeof businessAddress === 'string') {
+    if (typeof businessAddress === 'string' && businessAddress.trim()) {
       formattedAddress.street = businessAddress.trim();
       formattedAddress.fullAddress = businessAddress.trim();
     } else if (typeof businessAddress === 'object' && businessAddress !== null) {
-      formattedAddress = {
-        ...formattedAddress,
-        ...businessAddress,
-        fullAddress:
-          businessAddress.fullAddress ||
-          [
-            businessAddress.street,
-            businessAddress.city,
-            businessAddress.state,
-            businessAddress.zipCode,
-            businessAddress.country,
-          ]
-            .filter(Boolean)
-            .join(', '),
-      };
+      formattedAddress = { ...formattedAddress, ...businessAddress };
     }
 
-    // 8. Resilient offline handling if database connection is offline or negotiating
+    // 6. Resilient Offline Bypass
     if (mongoose.connection.readyState !== 1) {
       const existingDemo = demoUsers[email.toLowerCase().trim()];
       if (existingDemo) {
@@ -172,7 +245,9 @@ const registerUser = async (req, res, next) => {
         role: assignedRole,
         companyName: orgName,
         businessName: orgName,
+        businessId: assignedRole === 'Business Owner' ? mockId : targetBusinessId,
         phone: phone.trim(),
+        taxId: gstin || taxId || '',
         businessAddress: formattedAddress,
         isActive: true,
       };
@@ -181,20 +256,14 @@ const registerUser = async (req, res, next) => {
 
       return res.status(201).json({
         success: true,
-        message: 'Account registered successfully! Redirecting to sign in...',
+        message: `Account created successfully as ${assignedRole}! Welcome to BillFlow.`,
         token,
         user: mockUser,
       });
     }
 
-    // 6. Prevent duplicate email registrations
-    let userExists = null;
-    try {
-      userExists = await User.findOne({ email: email.toLowerCase().trim() });
-    } catch (e) {
-      console.warn('[Register] DB lookup warning:', e.message);
-    }
-
+    // 7. Check Duplicate Email
+    const userExists = await User.findOne({ email: email.toLowerCase().trim() });
     if (userExists) {
       return res.status(400).json({
         success: false,
@@ -202,62 +271,104 @@ const registerUser = async (req, res, next) => {
       });
     }
 
-    try {
-      // Create user in MongoDB (bcrypt hashing handled in pre('save') hook)
-      const user = await User.create({
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
-        password,
-        role: assignedRole,
-        companyName: orgName,
-        businessName: orgName,
-        phone: phone.trim(),
-        businessAddress: formattedAddress,
-      });
-
-      const token = generateToken(user._id);
-
-      res.status(201).json({
-        success: true,
-        message: 'Account registered successfully! Redirecting to sign in...',
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          companyName: user.companyName,
-          businessName: user.businessName,
-          phone: user.phone,
-          businessAddress: user.businessAddress,
-          isActive: user.isActive,
-        },
-      });
-    } catch (createErr) {
-      console.warn('[Register] Create DB error, falling back to resilient demo account:', createErr.message);
-      const mockId = 'usr_' + Date.now();
-      const mockUser = {
-        _id: mockId,
-        id: mockId,
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
-        role: assignedRole,
-        companyName: orgName,
-        businessName: orgName,
-        phone: phone.trim(),
-        businessAddress: formattedAddress,
-        isActive: true,
-      };
-      demoUsers[mockUser.email] = mockUser;
-      const token = generateToken(mockUser.id);
-
-      res.status(201).json({
-        success: true,
-        message: 'Account registered successfully! Redirecting to sign in...',
-        token,
-        user: mockUser,
-      });
+    // 8. Generate Invitation Code for Business Owners
+    let ownerInvitationCode = '';
+    if (assignedRole === 'Business Owner') {
+      const codePrefix = orgName.replace(/[^A-Za-z]/g, '').slice(0, 4).toUpperCase() || 'FLOW';
+      ownerInvitationCode = `${codePrefix}-${Math.floor(1000 + Math.random() * 9000)}`;
     }
+
+    // 9. Create User in MongoDB
+    const newUser = new User({
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      password,
+      role: assignedRole,
+      companyName: orgName,
+      businessName: orgName,
+      phone: phone.trim(),
+      taxId: gstin || taxId || '',
+      businessAddress: formattedAddress,
+      invitationCode: ownerInvitationCode,
+    });
+
+    if (assignedRole === 'Business Owner') {
+      newUser.businessId = newUser._id;
+    } else {
+      newUser.businessId = targetBusinessId;
+    }
+
+    await newUser.save();
+
+    // 10. Role-Specific Post-Registration Setup
+    if (assignedRole === 'Business Owner') {
+      try {
+        await BusinessSettings.create({
+          user: newUser._id,
+          businessName: orgName,
+          email: newUser.email,
+          phone: newUser.phone,
+          gstin: gstin || taxId || '',
+          taxId: gstin || taxId || '',
+          address: formattedAddress,
+          currency: 'INR',
+          currencySymbol: '₹',
+        });
+      } catch (bsErr) {
+        console.warn('[Register] BusinessSettings auto-init warning:', bsErr.message);
+      }
+    } else if (assignedRole === 'Customer') {
+      // Find or create Customer record linked to this login
+      try {
+        let custDoc = await Customer.findOne({
+          user: targetBusinessId,
+          email: newUser.email,
+        });
+
+        if (!custDoc) {
+          custDoc = await Customer.create({
+            user: targetBusinessId,
+            name: newUser.name,
+            companyName: orgName,
+            email: newUser.email,
+            phone: newUser.phone,
+            gstin: gstin || taxId || '',
+            billingAddress: formattedAddress,
+            portalUser: newUser._id,
+          });
+        } else {
+          custDoc.portalUser = newUser._id;
+          await custDoc.save();
+        }
+
+        newUser.customerRecord = custDoc._id;
+        await newUser.save();
+      } catch (custErr) {
+        console.warn('[Register] Customer link warning:', custErr.message);
+      }
+    }
+
+    const token = generateToken(newUser._id);
+
+    res.status(201).json({
+      success: true,
+      message: `Account created successfully as ${assignedRole}! Welcome to BillFlow.`,
+      token,
+      user: {
+        id: newUser._id,
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        companyName: newUser.companyName,
+        businessName: newUser.businessName,
+        businessId: newUser.businessId,
+        invitationCode: newUser.invitationCode,
+        phone: newUser.phone,
+        taxId: newUser.taxId,
+        isActive: newUser.isActive,
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -596,6 +707,7 @@ const seedDemoUsers = async (req, res, next) => {
 };
 
 module.exports = {
+  getPublicBusinesses,
   registerUser,
   loginUser,
   getCurrentUserProfile,

@@ -19,6 +19,10 @@ import {
   Receipt,
   Calendar,
   AlertCircle,
+  Users,
+  Copy,
+  Check,
+  ShieldCheck,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -59,7 +63,7 @@ const formatDate = (dateStr) => {
 };
 
 export const Dashboard = () => {
-  const { user, role } = useAuth();
+  const { user, role, isOwner } = useAuth();
   const navigate = useNavigate();
 
   // State
@@ -67,6 +71,16 @@ export const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+
+  const handleCopyCode = () => {
+    const code = user?.invitationCode || 'APEX-2026';
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(code);
+    }
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
 
   // Fetch Dashboard Data from GET /api/dashboard/summary
   const fetchDashboardData = async (isRefresh = false) => {
@@ -107,6 +121,22 @@ export const Dashboard = () => {
   const recentInvoices = data?.recentInvoices || [];
   const recentPayments = data?.recentPayments || [];
   const outstandingInvoices = data?.outstandingInvoices || [];
+
+  // Dynamic Month-over-Month (MoM) Revenue Calculation
+  const momGrowth = React.useMemo(() => {
+    if (!monthlyRevenue || monthlyRevenue.length < 2) return null;
+    const currentMonth = monthlyRevenue[monthlyRevenue.length - 1]?.revenue || 0;
+    const previousMonth = monthlyRevenue[monthlyRevenue.length - 2]?.revenue || 0;
+    if (previousMonth === 0) {
+      return currentMonth > 0 ? { text: '+100% MoM', isPositive: true } : null;
+    }
+    const diffPercent = ((currentMonth - previousMonth) / previousMonth) * 100;
+    const rounded = Math.round(diffPercent * 10) / 10;
+    return {
+      text: `${rounded >= 0 ? '+' : ''}${rounded}% MoM vs prior month`,
+      isPositive: rounded >= 0,
+    };
+  }, [monthlyRevenue]);
 
   // Helper for invoice status badge variant
   const getStatusVariant = (status) => {
@@ -228,9 +258,9 @@ export const Dashboard = () => {
           <div className="stat-card-value">
             {loading ? <span className="stat-skeleton" /> : formatINR(summary.totalSales)}
           </div>
-          <div className="stat-card-footer trend-up">
-            <DollarSign size={13} />
-            <span>Cumulative billed revenue</span>
+          <div className={`stat-card-footer ${momGrowth ? (momGrowth.isPositive ? 'trend-up' : 'text-danger') : 'text-muted'}`}>
+            <TrendingUp size={13} />
+            <span>{momGrowth ? momGrowth.text : 'Cumulative billed revenue'}</span>
           </div>
         </Card>
 
@@ -623,6 +653,112 @@ export const Dashboard = () => {
           </div>
         </Card.Body>
       </Card>
+
+      {/* ========================================================= */}
+      {/* 7. BUSINESS WORKSPACE & TEAM COLLABORATION (OWNER/ADMIN)  */}
+      {/* ========================================================= */}
+      {(isOwner || role === 'Admin') && (
+        <Card padding="normal" className="dashboard-table-card mt-4">
+          <Card.Header
+            title="Business Workspace & Team Governance"
+            subtitle={`Multi-user access control and team delegation for ${user?.companyName || user?.businessName || 'Your Business'}`}
+            action={
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <span className="text-xs text-muted font-medium">Workspace Code:</span>
+                <button
+                  type="button"
+                  className="invitation-code-pill"
+                  onClick={handleCopyCode}
+                  title="Click to copy invitation code"
+                >
+                  <span className="font-mono font-bold text-primary">
+                    {user?.invitationCode || 'APEX-2026'}
+                  </span>
+                  {copiedCode ? (
+                    <Check size={14} className="text-success" />
+                  ) : (
+                    <Copy size={14} className="text-muted" />
+                  )}
+                </button>
+              </div>
+            }
+          />
+          <Card.Body>
+            <div className="workspace-team-grid">
+              {/* Left Column: Assigned Accountants */}
+              <div className="workspace-sub-card">
+                <div className="workspace-sub-header">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck size={18} className="text-primary" />
+                    <h4 className="workspace-sub-title">Assigned Accountants</h4>
+                  </div>
+                  <Badge variant="primary" size="sm">Workspace Delegation</Badge>
+                </div>
+                <p className="text-xs text-muted mb-3">
+                  Accountants linked to this business can create invoices, manage payments, and generate GST statements.
+                </p>
+
+                <div className="workspace-user-list">
+                  <div className="workspace-user-item">
+                    <div className="w-user-avatar">AR</div>
+                    <div className="w-user-info">
+                      <span className="w-user-name">Ananya Roy</span>
+                      <span className="w-user-email">accountant@apexenterprises.com</span>
+                    </div>
+                    <Badge variant="success" size="sm" dot>Active</Badge>
+                  </div>
+
+                  <div className="workspace-invite-box">
+                    <span className="text-xs text-muted">
+                      💡 <strong>Invite Team Member:</strong> New accountants can select <em>"{user?.companyName || user?.businessName || 'Apex Enterprises Pvt Ltd'}"</em> or enter Workspace Code <code>{user?.invitationCode || 'APEX-2026'}</code> during registration.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Customer Portals & Ledger Links */}
+              <div className="workspace-sub-card">
+                <div className="workspace-sub-header">
+                  <div className="flex items-center gap-2">
+                    <Users size={18} className="text-success" />
+                    <h4 className="workspace-sub-title">Connected Client Accounts</h4>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconRight={ArrowRight}
+                    onClick={() => navigate('/customers')}
+                  >
+                    View All Clients
+                  </Button>
+                </div>
+                <p className="text-xs text-muted mb-3">
+                  Customers linked to this organization can log into their Customer Portal (`/portal`) to inspect billing records and settle due payments.
+                </p>
+
+                <div className="workspace-user-list">
+                  <div className="workspace-user-item">
+                    <div className="w-user-avatar client-avatar">AC</div>
+                    <div className="w-user-info">
+                      <span className="w-user-name">Acme Cloud Technologies</span>
+                      <span className="w-user-email">billing@acmecloud.com</span>
+                    </div>
+                    <Badge variant="success" size="sm">Portal Enabled</Badge>
+                  </div>
+                  <div className="workspace-user-item">
+                    <div className="w-user-avatar client-avatar">GT</div>
+                    <div className="w-user-info">
+                      <span className="w-user-name">Global Tech Solutions</span>
+                      <span className="w-user-email">customer@globaltech.com</span>
+                    </div>
+                    <Badge variant="success" size="sm">Portal Enabled</Badge>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card.Body>
+        </Card>
+      )}
     </div>
   );
 };

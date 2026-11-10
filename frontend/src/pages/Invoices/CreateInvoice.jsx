@@ -293,12 +293,14 @@ export const CreateInvoice = () => {
         setError(`Item #${i + 1} requires a valid description.`);
         return false;
       }
-      if (Number(items[i].quantity) < 1) {
+      const qty = Number(items[i].quantity);
+      if (isNaN(qty) || qty < 1) {
         setError(`Item #${i + 1} quantity must be 1 or greater.`);
         return false;
       }
-      if (Number(items[i].unitPrice) < 0) {
-        setError(`Item #${i + 1} unit price cannot be negative.`);
+      const price = Number(items[i].unitPrice);
+      if (isNaN(price) || price <= 0) {
+        setError(`Item #${i + 1} unit price must be greater than ₹0.00.`);
         return false;
       }
     }

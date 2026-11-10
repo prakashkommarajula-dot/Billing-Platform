@@ -75,6 +75,7 @@ export const Login = () => {
     {
       role: 'Business Owner',
       label: 'Business Owner',
+      badge: 'Invoicing & Sales',
       email: 'owner@apexenterprises.com',
       password: 'Password123!',
       target: '/dashboard',
@@ -82,20 +83,23 @@ export const Login = () => {
     {
       role: 'Admin',
       label: 'Admin',
+      badge: 'User Mgmt & RBAC',
       email: 'admin@platform.com',
       password: 'Password123!',
-      target: '/dashboard',
+      target: '/users',
     },
     {
       role: 'Accountant',
       label: 'Accountant',
+      badge: 'Financial Reports',
       email: 'accountant@apexenterprises.com',
       password: 'Password123!',
-      target: '/dashboard',
+      target: '/reports',
     },
     {
       role: 'Customer',
       label: 'Customer',
+      badge: 'Self-Serve Portal',
       email: 'customer@globaltech.com',
       password: 'Password123!',
       target: '/portal',
@@ -138,7 +142,6 @@ export const Login = () => {
     // If redirected from a protected page, check if role has access
     if (fromPath && fromPath !== '/login' && fromPath !== '/') {
       if (userRole === 'Customer') {
-        // Customer has access only to portal, invoices, payments, profile
         if (
           fromPath.startsWith('/portal') ||
           fromPath.startsWith('/invoices') ||
@@ -149,16 +152,42 @@ export const Login = () => {
         }
         return '/portal';
       }
+      if (userRole === 'Accountant') {
+        if (
+          fromPath.startsWith('/reports') ||
+          fromPath.startsWith('/invoices') ||
+          fromPath.startsWith('/payments') ||
+          fromPath.startsWith('/credit-notes') ||
+          fromPath.startsWith('/profile')
+        ) {
+          return fromPath;
+        }
+        return '/reports';
+      }
+      if (userRole === 'Admin' || userRole === 'System Admin') {
+        if (
+          fromPath.startsWith('/users') ||
+          fromPath.startsWith('/settings') ||
+          fromPath.startsWith('/profile') ||
+          fromPath.startsWith('/dashboard')
+        ) {
+          return fromPath;
+        }
+        return '/users';
+      }
       return fromPath;
     }
 
-    // Default Role Destinations
+    // Role Landing Pages
     switch (userRole) {
       case 'Customer':
         return '/portal';
       case 'Admin':
-      case 'Business Owner':
+      case 'System Admin':
+        return '/users';
       case 'Accountant':
+        return '/reports';
+      case 'Business Owner':
       default:
         return '/dashboard';
     }
@@ -294,7 +323,7 @@ export const Login = () => {
                       <div className="mockup-big-price">₹ 84,500.00</div>
                     </div>
                     <div className="mockup-stat-chip">
-                      <TrendingUp size={14} /> +18.4% MoM
+                      <CheckCircle2 size={14} /> Verified Ledger
                     </div>
                   </div>
                 </div>
@@ -380,7 +409,7 @@ export const Login = () => {
                     title={`Click to fill ${acc.role} credentials`}
                   >
                     <span className="demo-chip-name">{acc.label}</span>
-                    <span className="demo-chip-role">Role</span>
+                    <span className="demo-chip-role">{acc.badge || 'Role'}</span>
                   </button>
                 ))}
               </div>

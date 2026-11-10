@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
-// Never buffer queries when connection is offline or negotiating. Fail fast to instant fallback.
-mongoose.set('bufferCommands', false);
-mongoose.set('bufferTimeoutMS', 2000);
+// Cap mongoose buffer timeout to 1.5 seconds to prevent long hangs if cluster is unreachable
+mongoose.set('bufferTimeoutMS', 1500);
 
 let isConnected = false;
 
@@ -14,15 +13,17 @@ const connectDB = async () => {
 
   try {
     const conn = await mongoose.connect(mongoUri, {
-      serverSelectionTimeoutMS: 4000,
-      connectTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 3000,
+      connectTimeoutMS: 4000,
     });
     isConnected = true;
     console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}`);
+    return true;
   } catch (error) {
     isConnected = false;
     console.error(`[MongoDB] Connection Warning/Error: ${error.message}`);
-    console.log('[MongoDB] Running in Resilient Mode. Demo accounts and mock fallbacks are active.');
+    console.log('[MongoDB] Running in Resilient Offline Mode. Demo accounts and mock fallbacks are fully active.');
+    return false;
   }
 };
 
@@ -40,4 +41,7 @@ mongoose.connection.on('error', (err) => {
   console.warn(`[MongoDB] Connection Event Error: ${err.message}`);
 });
 
+const isDbConnected = () => mongoose.connection.readyState === 1;
+
 module.exports = connectDB;
+module.exports.isDbConnected = isDbConnected;

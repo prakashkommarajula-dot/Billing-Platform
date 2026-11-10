@@ -254,71 +254,88 @@ export const Reports = () => {
     else if (activeTab === 'ledger') fetchLedgerReport();
   }, [activeTab, fetchSalesReport, fetchReceivablesReport, fetchTaxReport, fetchLedgerReport]);
 
-  // Export to CSV Functionality
+  // Export to CSV Functionality with Blob & UTF-8 Escaping
   const handleExportCSV = () => {
     let headers = [];
     let rows = [];
-    let filename = `Report_${activeTab}_${new Date().toISOString().split('T')[0]}.csv`;
+    const todayStr = new Date().toISOString().split('T')[0];
+    let filename = `BillFlow-Sales-Report-${todayStr}.csv`;
+
+    const escapeCSV = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return `"${str}"`;
+    };
 
     if (activeTab === 'sales') {
+      filename = `BillFlow-Sales-Report-${todayStr}.csv`;
       headers = ['Invoice Number', 'Customer', 'Invoice Date', 'Total Amount (INR)', 'Paid Amount (INR)', 'Balance Due (INR)', 'Status'];
-      rows = salesData.invoices.map((inv) => [
-        inv.invoiceNumber,
-        `"${inv.customerName}"`,
+      rows = (salesData.invoices || []).map((inv) => [
+        inv.invoiceNumber || '',
+        inv.customerName || '',
         formatDate(inv.invoiceDate),
-        inv.totalAmount,
-        inv.paidAmount,
-        inv.balanceDue,
-        inv.status,
+        inv.totalAmount || 0,
+        inv.paidAmount || 0,
+        inv.balanceDue || 0,
+        inv.status || '',
       ]);
     } else if (activeTab === 'receivables') {
+      filename = `BillFlow-Receivables-Aging-${todayStr}.csv`;
       headers = ['Customer', 'Invoice Number', 'Invoice Date', 'Due Date', 'Total Amount (INR)', 'Paid Amount (INR)', 'Outstanding Balance (INR)', 'Days Overdue', 'Aging Bucket'];
-      rows = receivablesData.invoices.map((inv) => [
-        `"${inv.customerName}"`,
-        inv.invoiceNumber,
+      rows = (receivablesData.invoices || []).map((inv) => [
+        inv.customerName || '',
+        inv.invoiceNumber || '',
         formatDate(inv.invoiceDate),
         formatDate(inv.dueDate),
-        inv.totalAmount,
-        inv.paidAmount,
-        inv.outstandingBalance,
-        inv.daysOverdue,
-        inv.agingCategory,
+        inv.totalAmount || 0,
+        inv.paidAmount || 0,
+        inv.outstandingBalance || 0,
+        inv.daysOverdue || 0,
+        inv.agingCategory || '',
       ]);
     } else if (activeTab === 'tax') {
+      filename = `BillFlow-GST-Tax-Summary-${todayStr}.csv`;
       headers = ['Invoice Number', 'Customer', 'Date', 'Taxable Amount (INR)', 'CGST (INR)', 'SGST (INR)', 'IGST (INR)', 'Total Tax (INR)', 'Total Amount (INR)', 'Type'];
-      rows = taxData.invoices.map((inv) => [
-        inv.invoiceNumber,
-        `"${inv.customerName}"`,
+      rows = (taxData.invoices || []).map((inv) => [
+        inv.invoiceNumber || '',
+        inv.customerName || '',
         formatDate(inv.invoiceDate),
-        inv.taxableAmount,
-        inv.cgst,
-        inv.sgst,
-        inv.igst,
-        inv.taxTotal,
-        inv.totalAmount,
-        inv.transactionType,
+        inv.taxableAmount || 0,
+        inv.cgst || 0,
+        inv.sgst || 0,
+        inv.igst || 0,
+        inv.taxTotal || 0,
+        inv.totalAmount || 0,
+        inv.transactionType || '',
       ]);
     } else if (activeTab === 'ledger') {
+      filename = `BillFlow-Customer-Ledger-Statement-${todayStr}.csv`;
       headers = ['Date', 'Transaction Type', 'Reference #', 'Description', 'Debit (INR)', 'Credit (INR)', 'Running Balance (INR)'];
-      rows = ledgerData.ledger.map((entry) => [
+      rows = (ledgerData.ledger || []).map((entry) => [
         formatDate(entry.date),
-        entry.type,
-        entry.reference,
-        `"${entry.description}"`,
-        entry.debit,
-        entry.credit,
-        entry.runningBalance,
+        entry.type || '',
+        entry.reference || '',
+        entry.description || '',
+        entry.debit || 0,
+        entry.credit || 0,
+        entry.runningBalance || 0,
       ]);
     }
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const csvContent = [
+      headers.map(escapeCSV).join(','),
+      ...rows.map((r) => r.map(escapeCSV).join(',')),
+    ].join('\r\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', url);
     link.setAttribute('download', filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 300);
   };
 
   return (

@@ -272,7 +272,22 @@ const createCreditNote = async (req, res, next) => {
     }
 
     // 1. Fetch Target Invoice
-    const invoice = await Invoice.findById(invoiceId);
+    let invoice = null;
+    if (mongoose.connection.readyState === 1 && mongoose.Types.ObjectId.isValid(invoiceId)) {
+      try {
+        invoice = await Invoice.findById(invoiceId);
+      } catch (e) {
+        console.warn('[CreditNote] DB lookup warning:', e.message);
+      }
+    }
+
+    if (!invoice) {
+      const { demoInvoices } = require('../utils/mockData');
+      invoice = demoInvoices.find(
+        (i) => i._id === invoiceId || i.id === invoiceId || i.invoiceNumber === invoiceId
+      );
+    }
+
     if (!invoice) {
       return res.status(404).json({
         success: false,
@@ -306,21 +321,75 @@ const createCreditNote = async (req, res, next) => {
 
     // 3. Generate sequential Credit Note Number: CN-2026-0001
     const year = new Date().getFullYear();
-    const existingCNs = await CreditNote.find({ user: invoice.user }).select('creditNoteNumber');
     let maxNum = 0;
-    existingCNs.forEach((cn) => {
-      const match = cn.creditNoteNumber && cn.creditNoteNumber.match(/(\d+)$/);
-      if (match) {
-        const num = parseInt(match[1], 10);
-        if (num > maxNum) maxNum = num;
-      }
-    });
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const existingCNs = await CreditNote.find({ user: invoice.user }).select('creditNoteNumber');
+        existingCNs.forEach((cn) => {
+          const match = cn.creditNoteNumber && cn.creditNoteNumber.match(/(\d+)$/);
+          if (match) {
+            const num = parseInt(match[1], 10);
+            if (num > maxNum) maxNum = num;
+          }
+        });
+      } catch (e) {}
+    }
+
+    if (maxNum === 0) {
+      demoCreditNotes.forEach((cn) => {
+        const match = cn.creditNoteNumber && cn.creditNoteNumber.match(/(\d+)$/);
+        if (match) {
+          const num = parseInt(match[1], 10);
+          if (num > maxNum) maxNum = num;
+        }
+      });
+    }
+
     const creditNoteNumber = `CN-${year}-${(maxNum + 1).toString().padStart(4, '0')}`;
 
     // 4. Calculate adjusted balances
     const newBalanceDue = Math.max(0, round2(currentBalance - creditAmount));
 
-    // 5. Create Credit Note record
+    // 5. Offline Resilient Mode
+    if (mongoose.connection.readyState !== 1) {
+      const mockCreditNote = {
+        _id: 'cn_' + Date.now(),
+        id: 'cn_' + Date.now(),
+        user: invoice.user,
+        invoice: invoice._id,
+        invoiceNumber: invoice.invoiceNumber,
+        customer: invoice.customer,
+        customerName: invoice.customerName,
+        creditNoteNumber,
+        creditNoteDate: creditNoteDate ? new Date(creditNoteDate) : new Date(),
+        amount: creditAmount,
+        reason,
+        description: description ? description.trim() : notes ? notes.trim() : '',
+        invoiceBalanceBeforeCredit: currentBalance,
+        invoiceBalanceAfterCredit: newBalanceDue,
+        recordedBy: req.user._id,
+        recordedByName: req.user.name || 'Accountant',
+        status: 'Issued',
+        notes: notes ? notes.trim() : '',
+      };
+      demoCreditNotes.unshift(mockCreditNote);
+      invoice.balanceDue = newBalanceDue;
+      if (newBalanceDue === 0) invoice.status = 'Paid';
+
+      return res.status(201).json({
+        success: true,
+        message: `Credit Note ${mockCreditNote.creditNoteNumber} of ₹${creditAmount.toLocaleString('en-IN')} issued successfully. Invoice balance updated to ₹${newBalanceDue.toLocaleString('en-IN')}.`,
+        creditNote: mockCreditNote,
+        invoice: {
+          _id: invoice._id,
+          invoiceNumber: invoice.invoiceNumber,
+          balanceDue: invoice.balanceDue,
+          status: invoice.status,
+        },
+      });
+    }
+
+    // 6. Create Credit Note record in MongoDB
     const creditNote = await CreditNote.create({
       user: invoice.user,
       invoice: invoice._id,

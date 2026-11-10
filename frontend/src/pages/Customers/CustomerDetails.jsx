@@ -89,26 +89,28 @@ export const CustomerDetails = () => {
       .then((res) => {
         if (res.success && res.customers && res.customers.length > 0) {
           setAllCustomers(res.customers);
-          // If no customer ID is specified in URL, auto-select first customer
-          if (!customerIdFromUrl) {
-            const firstId = res.customers[0]._id || res.customers[0].id;
-            setSelectedCustomerId(firstId);
-            setSearchParams({ id: firstId });
+          if (customerIdFromUrl) {
+            setSelectedCustomerId(customerIdFromUrl);
+          } else {
+            setLoading(false);
           }
         } else {
-          // If no customers returned, load default customer
-          fetchCustomerDetails('details');
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.warn('Fetch all customers error:', err);
-        fetchCustomerDetails('details');
+        setLoading(false);
       });
-  }, [customerIdFromUrl, setSearchParams]);
+  }, [customerIdFromUrl]);
 
   // 2. Fetch Selected Customer Details
   const fetchCustomerDetails = useCallback(async (idToFetch) => {
-    if (!idToFetch) return;
+    if (!idToFetch) {
+      setCustomer(null);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError('');
 
@@ -239,6 +241,45 @@ export const CustomerDetails = () => {
           onClose={() => setError('')}
           className="no-print"
         />
+      )}
+
+      {/* Empty State Customer Selector when no customer is selected */}
+      {!customer && !loading && (
+        <Card padding="normal" className="empty-customer-card text-center my-6">
+          <div style={{ padding: '3rem 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Users size={32} color="var(--primary-blue)" />
+            </div>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
+              Select a Customer to Inspect Account Details
+            </h3>
+            <p style={{ maxWidth: '520px', color: 'var(--text-muted)', fontSize: '0.925rem', lineHeight: 1.5, margin: 0 }}>
+              Choose a client from the dropdown selector below to view their active ledger statement, tax invoices, recorded payments, and credit note history.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', marginTop: '0.5rem' }}>
+              <select
+                value={selectedCustomerId}
+                onChange={(e) => handleSelectCustomer(e.target.value)}
+                className="input-field"
+                style={{ minWidth: '280px', padding: '0.6rem 0.85rem' }}
+              >
+                <option value="">-- Choose a Customer Account --</option>
+                {allCustomers.map((c) => (
+                  <option key={c._id} value={c._id}>
+                    {c.name} {c.companyName ? `(${c.companyName})` : ''}
+                  </option>
+                ))}
+              </select>
+              <Button
+                variant="outline"
+                icon={Users}
+                onClick={() => navigate('/customers')}
+              >
+                Browse Customer Directory
+              </Button>
+            </div>
+          </div>
+        </Card>
       )}
 
       {/* ========================================================= */}

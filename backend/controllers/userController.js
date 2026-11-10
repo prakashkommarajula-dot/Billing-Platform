@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const Invoice = require('../models/Invoice');
 const bcrypt = require('bcryptjs');
 const { demoUsers } = require('../utils/mockData');
 
@@ -374,11 +375,38 @@ const deleteUser = async (req, res, next) => {
       });
     }
 
-    await User.findByIdAndDelete(req.params.id);
+    // Safety check: Prevent hard deletion of users owning invoice records
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const invoiceCount = await Invoice.countDocuments({ user: user._id });
+        if (invoiceCount > 0) {
+          user.isActive = false;
+          await user.save();
+          return res.status(200).json({
+            success: true,
+            message: `User '${user.name}' owns ${invoiceCount} financial invoice record(s). To maintain audit integrity, the account has been safely deactivated instead of deleted.`,
+            user: {
+              _id: user._id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              isActive: false,
+            },
+          });
+        }
+      } catch (checkErr) {
+        console.warn('[User] Invoice count check warning:', checkErr.message);
+      }
+    }
+
+    // Default to soft-deactivation to preserve audit and relational integrity
+    user.isActive = false;
+    await user.save();
 
     res.status(200).json({
       success: true,
-      message: `User '${user.name}' deleted successfully`,
+      message: `User '${user.name}' deactivated successfully`,
+      user,
     });
   } catch (error) {
     next(error);

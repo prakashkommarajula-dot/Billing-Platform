@@ -99,11 +99,31 @@ const getProducts = async (req, res, next) => {
     const userId = req.user._id;
 
     if (mongoose.connection.readyState !== 1) {
+      let filtered = [...demoProducts];
+      const { search: term, category: cat, type: typ } = req.query;
+      if (term && term.trim()) {
+        const lower = term.trim().toLowerCase();
+        filtered = filtered.filter(
+          (p) =>
+            (p.name && p.name.toLowerCase().includes(lower)) ||
+            (p.productCode && p.productCode.toLowerCase().includes(lower)) ||
+            (p.hsnCode && p.hsnCode.toLowerCase().includes(lower)) ||
+            (p.sacCode && p.sacCode.toLowerCase().includes(lower)) ||
+            (p.category && p.category.toLowerCase().includes(lower)) ||
+            (p.description && p.description.toLowerCase().includes(lower))
+        );
+      }
+      if (cat && cat !== 'All') {
+        filtered = filtered.filter((p) => p.category === cat);
+      }
+      if (typ && typ !== 'All') {
+        filtered = filtered.filter((p) => p.type === typ);
+      }
       return res.status(200).json({
         success: true,
-        products: demoProducts,
+        products: filtered,
         pagination: {
-          total: demoProducts.length,
+          total: filtered.length,
           page: 1,
           limit: 10,
           totalPages: 1,
@@ -131,13 +151,17 @@ const getProducts = async (req, res, next) => {
 
     const query = { user: userId };
 
-    // Search query
+    // Search query with case-insensitive normalization & HSN/SAC support
     if (search && search.trim()) {
-      const searchRegex = new RegExp(search.trim(), 'i');
+      const cleanTerm = search.trim().toLowerCase();
+      const escaped = cleanTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = new RegExp(escaped, 'i');
       query.$or = [
         { name: searchRegex },
         { productCode: searchRegex },
         { productId: searchRegex },
+        { hsnCode: searchRegex },
+        { sacCode: searchRegex },
         { category: searchRegex },
         { description: searchRegex },
       ];

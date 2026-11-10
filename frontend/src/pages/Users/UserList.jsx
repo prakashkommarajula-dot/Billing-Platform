@@ -93,6 +93,20 @@ export const UserList = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPasswordText, setShowPasswordText] = useState(false);
 
+  // Secure Random Password Generator for Admin
+  const generateRandomPassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%&*';
+    let pwd = '';
+    pwd += 'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)];
+    pwd += 'abcdefghijkmnpqrstuvwxyz'[Math.floor(Math.random() * 24)];
+    pwd += '23456789'[Math.floor(Math.random() * 8)];
+    pwd += '!@#$%&*'[Math.floor(Math.random() * 7)];
+    for (let i = 4; i < 12; i++) {
+      pwd += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return pwd;
+  };
+
   // Delete Confirmation Modal State
   const [deleteTargetUser, setDeleteTargetUser] = useState(null);
 
@@ -627,14 +641,27 @@ export const UserList = () => {
                   />
 
                   {!editingUserId && (
-                    <Input
-                      label="Initial Password *"
-                      type="password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      placeholder="Minimum 6 characters"
-                      required
-                    />
+                    <div>
+                      <Input
+                        label="Initial Password *"
+                        type="text"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        placeholder="Minimum 6 characters"
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="text-xs text-primary-blue font-semibold flex items-center gap-1 mt-1"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                        onClick={() => {
+                          const gen = generateRandomPassword();
+                          setFormData((prev) => ({ ...prev, password: gen }));
+                        }}
+                      >
+                        <KeyRound size={13} /> Generate Secure Password
+                      </button>
+                    </div>
                   )}
 
                   <div className="custom-input-wrap">
@@ -758,6 +785,22 @@ export const UserList = () => {
                     placeholder="Re-enter password"
                     required
                   />
+                </div>
+
+                <div className="mt-2 flex items-center justify-between">
+                  <button
+                    type="button"
+                    className="text-xs text-primary-blue font-semibold flex items-center gap-1"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                    onClick={() => {
+                      const gen = generateRandomPassword();
+                      setNewPassword(gen);
+                      setConfirmPassword(gen);
+                      setShowPasswordText(true);
+                    }}
+                  >
+                    <KeyRound size={13} /> Generate Strong Password
+                  </button>
                 </div>
               </div>
 

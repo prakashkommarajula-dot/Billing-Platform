@@ -1,0 +1,389 @@
+{
+  "roles": {
+    "Business Owner": {
+      "loginStatus": "SUCCESS",
+      "statusCode": 200,
+      "timeMs": 902,
+      "userProfile": {
+        "id": "6aef0e891a7af6c7eede0002",
+        "_id": "6aef0e891a7af6c7eede0002",
+        "name": "Rajesh Sharma",
+        "email": "owner@apexenterprises.com",
+        "role": "Business Owner",
+        "companyName": "Apex Enterprises Pvt Ltd",
+        "businessName": "Apex Enterprises Pvt Ltd",
+        "phone": "+91 98765 43210",
+        "taxId": "29ABCDE1234F1Z5",
+        "businessAddress": {
+          "street": "42 MG Road, Brigade Junction",
+          "city": "Bengaluru",
+          "state": "Karnataka",
+          "zipCode": "560025",
+          "country": "India",
+          "fullAddress": "42 MG Road, Brigade Junction, Bengaluru, Karnataka 560025, India"
+        },
+        "isActive": true
+      },
+      "tokenIssued": true,
+      "landingUrl": "https://billflow-billing-platform.onrender.com/dashboard",
+      "sidebarItems": [
+        {
+          "text": "Dashboard",
+          "href": "/dashboard"
+        },
+        {
+          "text": "Customers",
+          "href": "/customers"
+        },
+        {
+          "text": "Customer Details",
+          "href": "/customers/details"
+        },
+        {
+          "text": "Products & Services",
+          "href": "/products"
+        },
+        {
+          "text": "Invoices",
+          "href": "/invoices"
+        },
+        {
+          "text": "Create Invoice",
+          "href": "/invoices/create"
+        },
+        {
+          "text": "Invoice Details",
+          "href": "/invoices/details"
+        },
+        {
+          "text": "Payments",
+          "href": "/payments"
+        },
+        {
+          "text": "Credit Notes",
+          "href": "/credit-notes"
+        },
+        {
+          "text": "Reports & Analytics",
+          "href": "/reports"
+        },
+        {
+          "text": "Customer Portal",
+          "href": "/portal"
+        },
+        {
+          "text": "Business Settings",
+          "href": "/settings"
+        },
+        {
+          "text": "User Profile",
+          "href": "/profile"
+        },
+        {
+          "text": "Project Docs (PDF)",
+          "href": "/docs/BillFlow_Comprehensive_Project_Documentation.pdf"
+        }
+      ]
+    },
+    "System Admin": {
+      "loginStatus": "SUCCESS",
+      "statusCode": 200,
+      "timeMs": 296,
+      "userProfile": {
+        "id": "6aef0e891a7af6c7eede0001",
+        "_id": "6aef0e891a7af6c7eede0001",
+        "name": "System Administrator",
+        "email": "admin@platform.com",
+        "role": "Admin",
+        "companyName": "Platform Central Corp",
+        "businessName": "Platform Central Corp",
+        "phone": "+1 555-0100",
+        "taxId": "ADMIN-ROOT-001",
+        "businessAddress": {
+          "street": "100 Silicon Boulevard, Tech Tower",
+          "city": "Bengaluru",
+          "state": "Karnataka",
+          "zipCode": "560001",
+          "country": "India",
+          "fullAddress": "100 Silicon Boulevard, Tech Tower, Bengaluru, Karnataka 560001, India"
+        },
+        "isActive": true
+      },
+      "tokenIssued": true,
+      "landingUrl": "https://billflow-billing-platform.onrender.com/dashboard",
+      "sidebarItems": [
+        {
+          "text": "Dashboard",
+          "href": "/dashboard"
+        },
+        {
+          "text": "Customers",
+          "href": "/customers"
+        },
+        {
+          "text": "Customer Details",
+          "href": "/customers/details"
+        },
+        {
+          "text": "Products & Services",
+          "href": "/products"
+        },
+        {
+          "text": "Invoices",
+          "href": "/invoices"
+        },
+        {
+          "text": "Create Invoice",
+          "href": "/invoices/create"
+        },
+        {
+          "text": "Invoice Details",
+          "href": "/invoices/details"
+        },
+        {
+          "text": "Payments",
+          "href": "/payments"
+        },
+        {
+          "text": "Credit Notes",
+          "href": "/credit-notes"
+        },
+        {
+          "text": "Reports & Analytics",
+          "href": "/reports"
+        },
+        {
+          "text": "Customer Portal",
+          "href": "/portal"
+        },
+        {
+          "text": "User Management",
+          "href": "/users"
+        },
+        {
+          "text": "Business Settings",
+          "href": "/settings"
+        },
+        {
+          "text": "User Profile",
+          "href": "/profile"
+        },
+        {
+          "text": "Project Docs (PDF)",
+          "href": "/docs/BillFlow_Comprehensive_Project_Documentation.pdf"
+        }
+      ]
+    },
+    "Accountant": {
+      "loginStatus": "SUCCESS",
+      "statusCode": 200,
+      "timeMs": 239,
+      "userProfile": {
+        "id": "6aef0e891a7af6c7eede0003",
+        "_id": "6aef0e891a7af6c7eede0003",
+        "name": "Ananya Roy",
+        "email": "accountant@apexenterprises.com",
+        "role": "Accountant",
+        "companyName": "Apex Enterprises Pvt Ltd",
+        "businessName": "Apex Enterprises Pvt Ltd",
+        "phone": "+91 98765 43211",
+        "taxId": "29ABCDE1234F1Z5",
+        "businessAddress": {
+          "street": "42 MG Road, Brigade Junction",
+          "city": "Bengaluru",
+          "state": "Karnataka",
+          "zipCode": "560025",
+          "country": "India",
+          "fullAddress": "42 MG Road, Brigade Junction, Bengaluru, Karnataka 560025, India"
+        },
+        "isActive": true
+      },
+      "tokenIssued": true,
+      "landingUrl": "https://billflow-billing-platform.onrender.com/dashboard",
+      "sidebarItems": [
+        {
+          "text": "Dashboard",
+          "href": "/dashboard"
+        },
+        {
+          "text": "Customers",
+          "href": "/customers"
+        },
+        {
+          "text": "Customer Details",
+          "href": "/customers/details"
+        },
+        {
+          "text": "Products & Services",
+          "href": "/products"
+        },
+        {
+          "text": "Invoices",
+          "href": "/invoices"
+        },
+        {
+          "text": "Create Invoice",
+          "href": "/invoices/create"
+        },
+        {
+          "text": "Invoice Details",
+          "href": "/invoices/details"
+        },
+        {
+          "text": "Payments",
+          "href": "/payments"
+        },
+        {
+          "text": "Credit Notes",
+          "href": "/credit-notes"
+        },
+        {
+          "text": "Reports & Analytics",
+          "href": "/reports"
+        },
+        {
+          "text": "User Profile",
+          "href": "/profile"
+        },
+        {
+          "text": "Project Docs (PDF)",
+          "href": "/docs/BillFlow_Comprehensive_Project_Documentation.pdf"
+        }
+      ]
+    },
+    "Customer Portal": {
+      "loginStatus": "SUCCESS",
+      "statusCode": 200,
+      "timeMs": 230,
+      "userProfile": {
+        "id": "6aef0e891a7af6c7eede0004",
+        "_id": "6aef0e891a7af6c7eede0004",
+        "name": "David Miller",
+        "email": "customer@globaltech.com",
+        "role": "Customer",
+        "companyName": "Global Tech Solutions",
+        "businessName": "Global Tech Solutions",
+        "phone": "+1 555-0199",
+        "taxId": "US-EIN-9921827",
+        "businessAddress": {
+          "street": "500 Oracle Parkway, Suite 300",
+          "city": "Redwood City",
+          "state": "California",
+          "zipCode": "94065",
+          "country": "USA",
+          "fullAddress": "500 Oracle Parkway, Suite 300, Redwood City, California 94065, USA"
+        },
+        "isActive": true
+      },
+      "tokenIssued": true,
+      "landingUrl": "https://billflow-billing-platform.onrender.com/portal",
+      "sidebarItems": [
+        {
+          "text": "Invoices",
+          "href": "/invoices"
+        },
+        {
+          "text": "Invoice Details",
+          "href": "/invoices/details"
+        },
+        {
+          "text": "Payments",
+          "href": "/payments"
+        },
+        {
+          "text": "Customer Portal",
+          "href": "/portal"
+        },
+        {
+          "text": "User Profile",
+          "href": "/profile"
+        },
+        {
+          "text": "Project Docs (PDF)",
+          "href": "/docs/BillFlow_Comprehensive_Project_Documentation.pdf"
+        }
+      ]
+    }
+  },
+  "rbacSecurity": {
+    "customerToUsers": {
+      "status": 403,
+      "pass": true
+    },
+    "accountantToUsers": {
+      "status": 403,
+      "pass": true
+    },
+    "customerToSettings": {
+      "status": 403,
+      "pass": true
+    },
+    "customerInvoices": {
+      "status": 200,
+      "count": 8,
+      "isolated": true
+    },
+    "unauthToDashboard": {
+      "status": 401,
+      "pass": true
+    }
+  },
+  "pageAudits": {},
+  "performance": {
+    "Dashboard Summary": {
+      "timeMs": 674,
+      "status": 200
+    },
+    "Customer List": {
+      "timeMs": 288,
+      "status": 200
+    },
+    "Product Catalog": {
+      "timeMs": 321,
+      "status": 200
+    },
+    "Invoice List": {
+      "timeMs": 289,
+      "status": 200
+    },
+    "Payment List": {
+      "timeMs": 229,
+      "status": 200
+    },
+    "Credit Notes List": {
+      "timeMs": 299,
+      "status": 200
+    },
+    "Reports Sales": {
+      "timeMs": 303,
+      "status": 200
+    },
+    "Invoice PDF Download": {
+      "timeMs": 332,
+      "status": 200
+    }
+  },
+  "mobileResponsiveness": {
+    "Mobile iPhone (375x812)": {
+      "hasHorizontalOverflow": true,
+      "hasMobileMenuButton": true
+    },
+    "Tablet iPad (768x1024)": {
+      "hasHorizontalOverflow": true,
+      "hasMobileMenuButton": true
+    },
+    "Desktop HD (1440x900)": {
+      "hasHorizontalOverflow": false,
+      "hasMobileMenuButton": true
+    }
+  },
+  "formsValidation": {
+    "createInvoice": {
+      "triggered": true,
+      "alerts": [
+        "Please select or specify a customer name."
+      ]
+    }
+  },
+  "findings": []
+}

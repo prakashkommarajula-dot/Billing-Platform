@@ -55,12 +55,6 @@ export const Sidebar = ({ isOpen, onClose }) => {
           roles: ['Admin', 'Business Owner', 'Accountant'],
         },
         {
-          name: 'Customer Details',
-          path: '/customers/details',
-          icon: UserCheck,
-          roles: ['Admin', 'Business Owner', 'Accountant'],
-        },
-        {
           name: 'Products & Services',
           path: '/products',
           icon: Package,
@@ -77,12 +71,6 @@ export const Sidebar = ({ isOpen, onClose }) => {
           path: '/invoices/create',
           icon: FilePlus,
           roles: ['Admin', 'Business Owner', 'Accountant'],
-        },
-        {
-          name: 'Invoice Details',
-          path: '/invoices/details',
-          icon: Receipt,
-          roles: ['Admin', 'Business Owner', 'Accountant', 'Customer'],
         },
       ],
     },

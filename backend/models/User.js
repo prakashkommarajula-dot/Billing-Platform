@@ -70,6 +70,21 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    businessId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      index: true,
+    },
+    invitationCode: {
+      type: String,
+      trim: true,
+      default: '',
+      index: true,
+    },
+    customerRecord: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Customer',
+    },
   },
   {
     timestamps: true,

@@ -191,8 +191,8 @@ export const PaymentList = () => {
     }
 
     const numAmount = Number(payAmount);
-    if (!numAmount || numAmount <= 0) {
-      setFormError('Payment amount must be greater than zero.');
+    if (isNaN(numAmount) || numAmount < 1.0) {
+      setFormError('Payment amount must be at least ₹1.00.');
       return;
     }
 

@@ -630,6 +630,107 @@
   font-weight: 600;
 }
 
+/* Role Selection Cards */
+.role-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 1.25rem 0;
+}
+
+.role-select-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--light-border);
+  background-color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.role-select-card:hover {
+  border-color: #93C5FD;
+  background-color: #F8FAFC;
+  transform: translateY(-1px);
+}
+
+.role-select-card.active {
+  border-color: var(--primary-blue);
+  background-color: #EFF6FF;
+  box-shadow: 0 0 0 1px var(--primary-blue);
+}
+
+.role-card-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background-color: #EFF6FF;
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.role-select-card.active .role-card-icon-box {
+  background-color: var(--primary-blue);
+  color: #FFFFFF;
+}
+
+.role-card-content {
+  flex: 1;
+}
+
+.role-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.2rem;
+}
+
+.role-card-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.role-card-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  background-color: rgba(37, 99, 235, 0.08);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.role-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.role-change-btn {
+  font-size: 0.8rem;
+  color: var(--primary-blue);
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.role-change-btn:hover {
+  text-decoration: underline;
+}
+
 /* ========================================================= */
 /* FORGOT PASSWORD MODAL STYLES                              */
 /* ========================================================= */

@@ -70,6 +70,11 @@ const customerSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    portalUser: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      index: true,
+    },
   },
   {
     timestamps: true,

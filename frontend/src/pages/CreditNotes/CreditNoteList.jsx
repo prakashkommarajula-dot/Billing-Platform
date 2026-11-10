@@ -99,6 +99,7 @@ export const CreditNoteList = () => {
   const [creditAmount, setCreditAmount] = useState('');
   const [cnDate, setCnDate] = useState(new Date().toISOString().split('T')[0]);
   const [cnReason, setCnReason] = useState('Price Adjustment');
+  const [customCnReason, setCustomCnReason] = useState('');
   const [cnDescription, setCnDescription] = useState('');
   const [formError, setFormError] = useState('');
 
@@ -204,13 +205,20 @@ export const CreditNoteList = () => {
       return;
     }
 
+    if (cnReason === 'Other' && !customCnReason.trim()) {
+      setFormError('Please specify the custom credit note reason.');
+      return;
+    }
+
+    const finalReason = cnReason === 'Other' ? `Other: ${customCnReason.trim()}` : cnReason;
+
     setSubmitting(true);
     try {
       const payload = {
         invoice: selectedInvoiceId,
         amount: numAmount,
         creditNoteDate: cnDate,
-        reason: cnReason,
+        reason: finalReason,
         description: cnDescription.trim(),
       };
 
@@ -769,6 +777,25 @@ export const CreditNoteList = () => {
                     </select>
                   </div>
                 </div>
+
+                {cnReason === 'Other' && (
+                  <div className="input-group">
+                    <label className="input-label" htmlFor="custom-cn-reason">
+                      Specify Custom Reason <span className="input-required-star">*</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        id="custom-cn-reason"
+                        type="text"
+                        value={customCnReason}
+                        onChange={(e) => setCustomCnReason(e.target.value)}
+                        placeholder="e.g. Commercial dispute resolution"
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                  </div>
+                )}
 
                 {/* 4. Description */}
                 <div className="input-group">
