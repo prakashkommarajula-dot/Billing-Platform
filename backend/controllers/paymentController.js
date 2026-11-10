@@ -219,19 +219,35 @@ const getPaymentById = async (req, res, next) => {
 // @access  Private
 const getEligibleInvoices = async (req, res, next) => {
   try {
-    const query = {
-      user: req.user._id,
-      status: { $in: ['Sent', 'Partially Paid', 'Overdue'] },
-      balanceDue: { $gt: 0 },
-    };
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const query = {
+          user: req.user._id,
+          status: { $in: ['Sent', 'Partially Paid', 'Overdue'] },
+          balanceDue: { $gt: 0 },
+        };
 
-    const invoices = await Invoice.find(query)
-      .select('invoiceNumber customer customerName balanceDue totalAmount paidAmount invoiceDate dueDate')
-      .sort({ invoiceDate: -1 });
+        const invoices = await Invoice.find(query)
+          .select('invoiceNumber customer customerName balanceDue totalAmount paidAmount invoiceDate dueDate')
+          .sort({ invoiceDate: -1 });
+
+        return res.status(200).json({
+          success: true,
+          invoices,
+        });
+      } catch (dbErr) {
+        console.warn('[Payment] Eligible invoices DB query warning:', dbErr.message);
+      }
+    }
+
+    const { demoInvoices } = require('../utils/mockData');
+    const eligible = demoInvoices.filter(
+      (i) => ['Sent', 'Partially Paid', 'Overdue'].includes(i.status) && (i.balanceDue || 0) > 0
+    );
 
     res.status(200).json({
       success: true,
-      invoices,
+      invoices: eligible,
     });
   } catch (error) {
     next(error);

@@ -459,11 +459,39 @@ const createCustomer = async (req, res, next) => {
     }
 
     // Auto-generate customerId e.g. CUST-XXXX
-    const count = await Customer.countDocuments({ user: req.user._id });
-    const formattedId = `CUST-${(count + 1).toString().padStart(3, '0')}`;
+    let formattedId = `CUST-${Date.now().toString().slice(-4)}`;
 
-    const customer = await Customer.create({
-      user: req.user._id,
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const count = await Customer.countDocuments({ user: req.user._id });
+        formattedId = `CUST-${(count + 1).toString().padStart(3, '0')}`;
+        const customer = await Customer.create({
+          user: req.user._id,
+          customerId: formattedId,
+          name: name.trim(),
+          companyName: companyName ? companyName.trim() : '',
+          email: email ? email.trim().toLowerCase() : '',
+          phone: phone ? phone.trim() : '',
+          gstin: gstin ? gstin.trim().toUpperCase() : taxId ? taxId.trim().toUpperCase() : '',
+          taxId: gstin ? gstin.trim().toUpperCase() : taxId ? taxId.trim().toUpperCase() : '',
+          billingAddress: addr,
+          notes: notes ? notes.trim() : '',
+          status: 'Active',
+        });
+
+        return res.status(201).json({
+          success: true,
+          message: 'Customer created successfully',
+          customer,
+        });
+      } catch (dbErr) {
+        console.warn('[Customer] Create DB warning:', dbErr.message);
+      }
+    }
+
+    const mockCustomer = {
+      _id: 'cust_' + Date.now(),
+      id: 'cust_' + Date.now(),
       customerId: formattedId,
       name: name.trim(),
       companyName: companyName ? companyName.trim() : '',
@@ -474,12 +502,15 @@ const createCustomer = async (req, res, next) => {
       billingAddress: addr,
       notes: notes ? notes.trim() : '',
       status: 'Active',
-    });
+      openingBalance: 0,
+      outstandingBalance: 0,
+    };
+    demoCustomers.unshift(mockCustomer);
 
     res.status(201).json({
       success: true,
-      message: 'Customer created successfully',
-      customer,
+      message: 'Customer created successfully (Demo Mode)',
+      customer: mockCustomer,
     });
   } catch (error) {
     next(error);

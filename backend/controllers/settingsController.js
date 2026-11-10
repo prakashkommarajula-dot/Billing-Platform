@@ -70,6 +70,21 @@ const updateSettings = async (req, res, next) => {
       bankDetails,
     } = req.body;
 
+    if (mongoose.connection.readyState !== 1) {
+      if (companyName) demoSettings.businessName = companyName.trim();
+      if (businessEmail) demoSettings.email = businessEmail.toLowerCase().trim();
+      if (phone) demoSettings.phone = phone.trim();
+      if (gstin) demoSettings.taxId = gstin.toUpperCase().trim();
+      if (address) demoSettings.address = { ...demoSettings.address, ...address };
+      if (bankDetails) demoSettings.bankDetails = { ...demoSettings.bankDetails, ...bankDetails };
+
+      return res.status(200).json({
+        success: true,
+        message: 'Settings updated successfully (Demo Mode)',
+        settings: demoSettings,
+      });
+    }
+
     let settings = await getOrCreateSettings(req.user._id, req.user);
 
     // Update Company Information

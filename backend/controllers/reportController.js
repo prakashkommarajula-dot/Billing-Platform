@@ -210,9 +210,19 @@ const getReceivablesReport = async (req, res, next) => {
       query.$or = [{ invoiceNumber: regex }, { customerName: regex }];
     }
 
-    const allInvoices = await Invoice.find(query)
-      .select('invoiceNumber customer customerName invoiceDate dueDate totalAmount paidAmount balanceDue status')
-      .sort({ dueDate: 1 });
+    let allInvoices = [];
+    if (mongoose.connection.readyState === 1) {
+      try {
+        allInvoices = await Invoice.find(query)
+          .select('invoiceNumber customer customerName invoiceDate dueDate totalAmount paidAmount balanceDue status')
+          .sort({ dueDate: 1 });
+      } catch (dbErr) {
+        console.warn('[Report] Receivables DB warning:', dbErr.message);
+        allInvoices = demoInvoices.filter((i) => (i.balanceDue || 0) > 0);
+      }
+    } else {
+      allInvoices = demoInvoices.filter((i) => (i.balanceDue || 0) > 0);
+    }
 
     const now = new Date();
     let totalReceivables = 0;
@@ -347,9 +357,19 @@ const getTaxSummaryReport = async (req, res, next) => {
       }
     }
 
-    const invoices = await Invoice.find(query)
-      .select('invoiceNumber customerName invoiceDate taxableAmount subtotal discount cgst sgst igst taxTotal totalAmount transactionType items')
-      .sort({ invoiceDate: -1 });
+    let invoices = [];
+    if (mongoose.connection.readyState === 1) {
+      try {
+        invoices = await Invoice.find(query)
+          .select('invoiceNumber customerName invoiceDate taxableAmount subtotal discount cgst sgst igst taxTotal totalAmount transactionType items')
+          .sort({ invoiceDate: -1 });
+      } catch (dbErr) {
+        console.warn('[Report] Tax summary DB warning:', dbErr.message);
+        invoices = demoInvoices;
+      }
+    } else {
+      invoices = demoInvoices;
+    }
 
     let totalTaxableSales = 0;
     let totalCgst = 0;
@@ -453,6 +473,70 @@ const getTaxSummaryReport = async (req, res, next) => {
 const getCustomerLedgerReport = async (req, res, next) => {
   try {
     const { customerId, startDate, endDate } = req.query;
+
+    if (mongoose.connection.readyState !== 1) {
+      const { demoCustomers, demoPayments, demoCreditNotes } = require('../utils/mockData');
+      const targetCust = (customerId ? demoCustomers.find(c => c._id === customerId || c.id === customerId) : null) || demoCustomers[0];
+      const invoices = demoInvoices.filter(i => i.customer === targetCust._id || i.customerName === targetCust.name);
+      const payments = demoPayments.filter(p => p.customer === targetCust._id || p.customerName === targetCust.name);
+      const creditNotes = demoCreditNotes.filter(cn => cn.customer === targetCust._id || cn.customerName === targetCust.name);
+
+      const transactions = [];
+      invoices.forEach(inv => {
+        if (inv.status !== 'Draft' && inv.status !== 'Cancelled') {
+          transactions.push({
+            date: inv.invoiceDate || inv.createdAt,
+            type: 'Invoice',
+            reference: inv.invoiceNumber,
+            description: `Tax Invoice Billed - ${inv.status}`,
+            debit: inv.totalAmount || 0,
+            credit: 0,
+          });
+        }
+      });
+      payments.forEach(p => {
+        transactions.push({
+          date: p.paymentDate || p.createdAt,
+          type: 'Payment',
+          reference: p.paymentNumber || 'PAY',
+          description: `Payment Settled via ${p.paymentMethod}`,
+          debit: 0,
+          credit: p.amount || 0,
+        });
+      });
+      creditNotes.forEach(cn => {
+        transactions.push({
+          date: cn.creditNoteDate || cn.createdAt,
+          type: 'Credit Note',
+          reference: cn.creditNoteNumber,
+          description: `Credit Note - ${cn.reason}`,
+          debit: 0,
+          credit: cn.amount || 0,
+        });
+      });
+      transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      let running = 0;
+      let totalDebits = 0;
+      let totalCredits = 0;
+      const ledger = transactions.map(t => {
+        running = round2(running + t.debit - t.credit);
+        totalDebits += t.debit;
+        totalCredits += t.credit;
+        return { ...t, runningBalance: running };
+      });
+
+      return res.status(200).json({
+        success: true,
+        customers: demoCustomers,
+        customer: targetCust,
+        ledger,
+        openingBalance: 0,
+        closingBalance: running,
+        totalDebits: round2(totalDebits),
+        totalCredits: round2(totalCredits),
+      });
+    }
 
     const userScope = req.user.role === 'Admin' ? {} : { user: req.user._id };
 

@@ -153,6 +153,26 @@ const createUser = async (req, res, next) => {
       });
     }
 
+    if (mongoose.connection.readyState !== 1) {
+      const mockUser = {
+        _id: 'usr_' + Date.now(),
+        id: 'usr_' + Date.now(),
+        name: name.trim(),
+        email: email.toLowerCase().trim(),
+        role: role || 'Business Owner',
+        companyName: companyName ? companyName.trim() : '',
+        phone: phone ? phone.trim() : '',
+        isActive: Boolean(isActive),
+      };
+      demoUsers[mockUser.email] = mockUser;
+
+      return res.status(201).json({
+        success: true,
+        message: `User '${mockUser.name}' created successfully (Demo Mode)`,
+        user: mockUser,
+      });
+    }
+
     // Check duplicate email
     const existing = await User.findOne({ email: email.toLowerCase().trim() });
     if (existing) {

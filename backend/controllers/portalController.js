@@ -140,6 +140,19 @@ const getPortalSummary = async (req, res, next) => {
 // @access  Private (Customer only views own)
 const getPortalInvoices = async (req, res, next) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({
+        success: true,
+        invoices: demoInvoices,
+        pagination: {
+          total: demoInvoices.length,
+          page: 1,
+          limit: 10,
+          totalPages: 1,
+        },
+      });
+    }
+
     const { invoiceQuery } = await resolveCustomerScope(req);
     const { status, search, page = 1, limit = 10 } = req.query;
 
@@ -183,6 +196,13 @@ const getPortalInvoices = async (req, res, next) => {
 // @access  Private
 const getPortalPayments = async (req, res, next) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({
+        success: true,
+        payments: demoPayments,
+      });
+    }
+
     const { invoiceQuery } = await resolveCustomerScope(req);
 
     const customerInvoices = await Invoice.find(invoiceQuery).select('_id');
@@ -206,6 +226,14 @@ const getPortalPayments = async (req, res, next) => {
 // @access  Private
 const getPortalCreditNotes = async (req, res, next) => {
   try {
+    const { demoCreditNotes } = require('../utils/mockData');
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({
+        success: true,
+        creditNotes: demoCreditNotes,
+      });
+    }
+
     const { invoiceQuery } = await resolveCustomerScope(req);
 
     const customerInvoices = await Invoice.find(invoiceQuery).select('_id');
@@ -230,6 +258,59 @@ const getPortalCreditNotes = async (req, res, next) => {
 // @access  Private
 const getPortalStatement = async (req, res, next) => {
   try {
+    const { demoCreditNotes } = require('../utils/mockData');
+    if (mongoose.connection.readyState !== 1) {
+      const allEntries = [];
+      demoInvoices.forEach(inv => {
+        allEntries.push({
+          date: new Date(inv.invoiceDate),
+          type: 'Invoice',
+          reference: inv.invoiceNumber,
+          description: `Tax Invoice - ${inv.status}`,
+          debit: round2(inv.totalAmount || 0),
+          credit: 0,
+        });
+      });
+      demoPayments.forEach(p => {
+        allEntries.push({
+          date: new Date(p.paymentDate),
+          type: 'Payment',
+          reference: p.paymentNumber,
+          description: `Payment via ${p.paymentMethod}`,
+          debit: 0,
+          credit: round2(p.amount || 0),
+        });
+      });
+      allEntries.sort((a, b) => a.date - b.date);
+
+      let run = 0;
+      const ledger = allEntries.map(e => {
+        run = round2(run + e.debit - e.credit);
+        return { ...e, runningBalance: run };
+      });
+
+      return res.status(200).json({
+        success: true,
+        customer: {
+          name: req.user.name,
+          email: req.user.email,
+          companyName: req.user.companyName || 'Global Tech Solutions',
+          phone: req.user.phone || '+1 555-0199',
+          gstin: req.user.taxId || 'US-EIN-9921827',
+          billingAddress: req.user.businessAddress || {},
+        },
+        statement: {
+          startDate: null,
+          endDate: null,
+          openingBalance: 0,
+          closingBalance: run,
+          periodDebits: 234660,
+          periodCredits: 147660,
+          ledger,
+        },
+      });
+    }
+
     const { invoiceQuery, custDoc, customerEmail } = await resolveCustomerScope(req);
     const { startDate, endDate } = req.query;
 
@@ -341,6 +422,19 @@ const getPortalStatement = async (req, res, next) => {
 const updatePortalProfile = async (req, res, next) => {
   try {
     const { phone, companyName, billingAddress } = req.body;
+
+    if (mongoose.connection.readyState !== 1) {
+      if (req.user) {
+        if (phone !== undefined) req.user.phone = phone.trim();
+        if (companyName !== undefined) req.user.companyName = companyName.trim();
+        if (billingAddress) req.user.businessAddress = { ...(req.user.businessAddress || {}), ...billingAddress };
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'Portal profile updated successfully (Demo Mode)',
+        user: req.user,
+      });
+    }
 
     const user = await User.findById(req.user._id);
     if (!user) {

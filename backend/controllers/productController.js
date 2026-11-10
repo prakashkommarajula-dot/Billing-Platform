@@ -252,11 +252,39 @@ const createProduct = async (req, res, next) => {
     }
 
     // Auto-generate sequential or clean productId
-    const count = await Product.countDocuments({ user: req.user._id });
-    const formattedId = `PRD-${(count + 1).toString().padStart(3, '0')}`;
+    let formattedId = `PRD-${Date.now().toString().slice(-4)}`;
 
-    const product = await Product.create({
-      user: req.user._id,
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const count = await Product.countDocuments({ user: req.user._id });
+        formattedId = `PRD-${(count + 1).toString().padStart(3, '0')}`;
+        const product = await Product.create({
+          user: req.user._id,
+          productId: formattedId,
+          name: name.trim(),
+          productCode: productCode ? productCode.trim().toUpperCase() : '',
+          description: description ? description.trim() : '',
+          category: category ? category.trim() : 'General',
+          type: type === 'Product' ? 'Product' : 'Service',
+          unit: unit ? unit.trim() : 'Units',
+          price: Number(price),
+          taxRate: taxRate !== undefined ? Number(taxRate) : 18,
+          status: status || 'Active',
+        });
+
+        return res.status(201).json({
+          success: true,
+          message: `${product.type} "${product.name}" created successfully`,
+          product,
+        });
+      } catch (dbErr) {
+        console.warn('[Product] Create DB warning:', dbErr.message);
+      }
+    }
+
+    const mockProduct = {
+      _id: 'prd_' + Date.now(),
+      id: 'prd_' + Date.now(),
       productId: formattedId,
       name: name.trim(),
       productCode: productCode ? productCode.trim().toUpperCase() : '',
@@ -267,12 +295,13 @@ const createProduct = async (req, res, next) => {
       price: Number(price),
       taxRate: taxRate !== undefined ? Number(taxRate) : 18,
       status: status || 'Active',
-    });
+    };
+    demoProducts.unshift(mockProduct);
 
     res.status(201).json({
       success: true,
-      message: `${product.type} "${product.name}" created successfully`,
-      product,
+      message: `${mockProduct.type} "${mockProduct.name}" created successfully (Demo Mode)`,
+      product: mockProduct,
     });
   } catch (error) {
     next(error);

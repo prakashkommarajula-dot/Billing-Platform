@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-// Cap mongoose buffer timeout to 2.5 seconds to prevent 10s hangs if cluster is unreachable
-mongoose.set('bufferTimeoutMS', 2500);
+// Never buffer queries when connection is offline or negotiating. Fail fast to instant fallback.
+mongoose.set('bufferCommands', false);
+mongoose.set('bufferTimeoutMS', 2000);
 
 let isConnected = false;
 

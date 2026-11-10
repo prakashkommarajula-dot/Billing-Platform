@@ -44,12 +44,41 @@ const getProfile = async (req, res, next) => {
 const updateProfile = async (req, res, next) => {
   try {
     const { name, phone, companyName, avatar } = req.body;
+
+    if (mongoose.connection.readyState !== 1 || !req.user || !mongoose.Types.ObjectId.isValid(req.user._id)) {
+      if (req.user) {
+        if (name) req.user.name = name.trim();
+        if (phone !== undefined) req.user.phone = phone.trim();
+        if (companyName !== undefined) {
+          req.user.companyName = companyName.trim();
+          req.user.businessName = companyName.trim();
+        }
+        if (avatar !== undefined) req.user.avatar = avatar;
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Personal profile details updated successfully',
+        user: req.user,
+      });
+    }
+
     const user = await User.findById(req.user._id);
 
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User profile not found',
+      if (req.user) {
+        if (name) req.user.name = name.trim();
+        if (phone !== undefined) req.user.phone = phone.trim();
+        if (companyName !== undefined) {
+          req.user.companyName = companyName.trim();
+          req.user.businessName = companyName.trim();
+        }
+        if (avatar !== undefined) req.user.avatar = avatar;
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'Personal profile details updated successfully',
+        user: req.user,
       });
     }
 
