@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 const puppeteer = require('puppeteer-core');
 const {
   Document,
@@ -34,45 +33,23 @@ function markdownToHtml(md) {
   let inTable = false;
   let tableRows = [];
 
-  function flushTable() {
-    if (inTable && tableRows.length > 0) {
-      let tableHtml = '<table class="report-table"><thead><tr>';
-      tableRows[0].forEach(h => { tableHtml += `<th>${formatInline(h)}</th>`; });
-      tableHtml += '</tr></thead><tbody>';
-      for (let i = 1; i < tableRows.length; i++) {
-        tableHtml += '<tr>';
-        tableRows[i].forEach(c => { tableHtml += `<td>${formatInline(c)}</td>`; });
-        tableHtml += '</tr>';
-      }
-      tableHtml += '</tbody></table>';
-      html.push(tableHtml);
-      inTable = false;
-      tableRows = [];
-    }
-  }
-
-  for (let idx = 0; idx < lines.length; idx++) {
-    let line = lines[idx];
-
+  for (let line of lines) {
     // Page break
     if (line.includes('\\newpage')) {
-      flushTable();
       html.push('<div class="page-break"></div>');
       continue;
     }
     if (line.includes('\\vspace')) {
-      flushTable();
-      html.push('<div style="height: 35px;"></div>');
+      html.push('<div style="height: 40px;"></div>');
       continue;
     }
 
     // Code blocks
     if (line.startsWith('```')) {
-      flushTable();
       if (!inCode) {
         inCode = true;
         codeLang = line.replace('```', '').trim();
-        html.push(`<pre class="code-block" data-lang="${codeLang}"><code>`);
+        html.push('<pre><code>');
       } else {
         inCode = false;
         html.push('</code></pre>');
@@ -90,19 +67,22 @@ function markdownToHtml(md) {
         inTable = true;
         tableRows = [];
       }
-      if (line.includes('---')) continue; // separator row
+      if (line.includes('---')) continue; // separator line
       const cells = line.split('|').slice(1, -1).map(c => c.trim());
       tableRows.push(cells);
       continue;
     } else if (inTable) {
-      flushTable();
-      // Do not continue! Process this line.
-    }
-
-    // Raw HTML blocks (cover page, custom tables, divs)
-    if (line.trim().startsWith('<') || line.trim().startsWith('</') || line.trim().endsWith('>')) {
-      html.push(line);
-      continue;
+      inTable = false;
+      let tableHtml = '<table class="report-table"><thead><tr>';
+      tableRows[0].forEach(h => { tableHtml += `<th>${formatInline(h)}</th>`; });
+      tableHtml += '</tr></thead><tbody>';
+      for (let i = 1; i < tableRows.length; i++) {
+        tableHtml += '<tr>';
+        tableRows[i].forEach(c => { tableHtml += `<td>${formatInline(c)}</td>`; });
+        tableHtml += '</tr>';
+      }
+      tableHtml += '</tbody></table>';
+      html.push(tableHtml);
     }
 
     // Headings
@@ -136,7 +116,6 @@ function markdownToHtml(md) {
     }
   }
 
-  flushTable();
   return html.join('\n');
 }
 
@@ -173,29 +152,29 @@ const reportCss = `
   
   h1 {
     color: #0f172a;
-    font-size: 19pt;
+    font-size: 20pt;
     font-weight: 800;
-    margin-top: 22pt;
-    margin-bottom: 10pt;
-    border-bottom: 2px solid #1e3a8a;
-    padding-bottom: 5pt;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 6pt;
     page-break-after: avoid;
   }
 
   h2 {
     color: #1e3a8a;
-    font-size: 14pt;
+    font-size: 15pt;
     font-weight: 700;
-    margin-top: 16pt;
+    margin-top: 18pt;
     margin-bottom: 8pt;
     page-break-after: avoid;
   }
 
   h3 {
     color: #1e40af;
-    font-size: 12pt;
+    font-size: 12.5pt;
     font-weight: 600;
-    margin-top: 12pt;
+    margin-top: 14pt;
     margin-bottom: 6pt;
     page-break-after: avoid;
   }
@@ -211,7 +190,7 @@ const reportCss = `
 
   p {
     margin-top: 0;
-    margin-bottom: 9pt;
+    margin-bottom: 10pt;
     text-align: justify;
   }
 
@@ -225,16 +204,16 @@ const reportCss = `
     margin-left: 10pt;
   }
 
-  pre.code-block {
+  pre {
     background: #0f172a;
     color: #f8fafc;
-    padding: 9pt 12pt;
-    border-radius: 5pt;
+    padding: 10pt 14pt;
+    border-radius: 6pt;
     font-family: "Cascadia Code", Consolas, Monaco, monospace;
-    font-size: 9pt;
+    font-size: 9.5pt;
     line-height: 1.45;
     overflow-x: auto;
-    margin: 9pt 0;
+    margin: 10pt 0;
     page-break-inside: avoid;
   }
 
@@ -244,14 +223,14 @@ const reportCss = `
     padding: 1pt 4pt;
     border-radius: 3pt;
     font-family: Consolas, monospace;
-    font-size: 9pt;
+    font-size: 9.5pt;
     border: 1px solid #e2e8f0;
   }
 
   .report-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 12pt 0;
+    margin: 14pt 0;
     font-size: 9.5pt;
     page-break-inside: avoid;
   }
@@ -284,7 +263,7 @@ const reportCss = `
     max-width: 95%;
     height: auto;
     border: 1px solid #cbd5e1;
-    border-radius: 5pt;
+    border-radius: 6pt;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   }
 
@@ -301,7 +280,7 @@ const reportCss = `
     border: 0;
     height: 1px;
     background: #e2e8f0;
-    margin: 16pt 0;
+    margin: 18pt 0;
   }
 
   .math-block {
@@ -323,7 +302,7 @@ const reportCss = `
   /* Cover Page Styling */
   .cover-page {
     text-align: center;
-    padding: 20pt 5pt;
+    padding: 30pt 10pt;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -342,7 +321,7 @@ async function main() {
 <html>
 <head>
 <meta charset="utf-8">
-<title>BillFlow – B.Tech Course Project Report (SR University)</title>
+<title>BillFlow – B.Tech Project Report</title>
 <style>${reportCss}</style>
 </head>
 <body>
@@ -351,13 +330,15 @@ ${bodyHtml}
 </html>
   `;
   fs.writeFileSync(HTML_PATH, fullHtml, 'utf8');
-  console.log('✓ Created report_template.html (' + fullHtml.length + ' bytes)');
+  console.log('✓ Created report_template.html');
 
   console.log('[3/4] Compiling to PDF via Chrome Headless Engine...');
+  const tempDir = path.join(require('os').tmpdir(), 'puppeteer_pdf_' + Date.now());
   const browser = await puppeteer.launch({
     executablePath: CHROME_PATH,
     headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    userDataDir: tempDir,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
   });
 
   const page = await browser.newPage();
@@ -368,17 +349,12 @@ ${bodyHtml}
     margin: { top: '20mm', bottom: '20mm', left: '18mm', right: '18mm' },
     printBackground: true,
     displayHeaderFooter: true,
-    headerTemplate: '<div style="font-size: 8pt; color: #94a3b8; width: 100%; text-align: right; padding-right: 20mm;">SR University – DevOps & Full Stack Development (23CS102PE405)</div>',
+    headerTemplate: '<div style="font-size: 8pt; color: #94a3b8; width: 100%; text-align: right; padding-right: 20mm;">BillFlow B.Tech Project Report – 2026</div>',
     footerTemplate: '<div style="font-size: 8pt; color: #94a3b8; width: 100%; text-align: center;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
   });
   await browser.close();
+  try { fs.rmSync(tempDir, { recursive: true, force: true }); } catch (e) {}
   console.log('✓ Successfully compiled BILLFLOW_PROJECT_REPORT.pdf');
-
-  // Verify PDF page count
-  const pdfBuffer = fs.readFileSync(PDF_PATH);
-  const pageMatches = pdfBuffer.toString('latin1').match(/\/Type\s*\/Page[^s]/g);
-  const pageCount = pageMatches ? pageMatches.length : 0;
-  console.log(`✓ Official PDF Page Count: ${pageCount} pages (Requirement: Minimum 45 pages)`);
 
   console.log('[4/4] Generating Microsoft Word (.docx) Document...');
   await generateDocx();
@@ -387,7 +363,7 @@ ${bodyHtml}
   console.log('\n======================================================');
   console.log('ALL DOCUMENTATION DELIVERABLES CREATED SUCCESSFULLY!');
   console.log('1. Markdown:  ' + MD_PATH);
-  console.log(`2. PDF:       ${PDF_PATH} (${pageCount} Pages)`);
+  console.log('2. PDF:       ' + PDF_PATH);
   console.log('3. Word Doc:  ' + DOCX_PATH);
   console.log('4. HTML:      ' + HTML_PATH);
   console.log('======================================================\n');
@@ -398,68 +374,7 @@ async function generateDocx() {
   const lines = md.split('\n');
   const children = [];
 
-  let inTable = false;
-  let tableRows = [];
-
-  function flushDocxTable() {
-    if (inTable && tableRows.length > 0) {
-      const docxRows = tableRows.map((row, rowIndex) => {
-        const isHeader = rowIndex === 0;
-        return new TableRow({
-          children: row.map(cellText => {
-            return new TableCell({
-              children: [
-                new Paragraph({
-                  children: [
-                    new TextRun({
-                      text: cellText.replace(/[*_`]/g, ''),
-                      bold: isHeader,
-                      color: isHeader ? 'FFFFFF' : '0F172A',
-                      size: isHeader ? 19 : 18,
-                    }),
-                  ],
-                  alignment: AlignmentType.LEFT,
-                }),
-              ],
-              shading: isHeader ? { fill: '1E3A8A' } : (rowIndex % 2 === 0 ? { fill: 'F8FAFC' } : { fill: 'FFFFFF' }),
-              margins: { top: 80, bottom: 80, left: 100, right: 100 },
-            });
-          }),
-        });
-      });
-
-      children.push(
-        new Table({
-          rows: docxRows,
-          width: { size: 100, type: WidthType.PERCENTAGE },
-        })
-      );
-      children.push(new Paragraph({ text: '', spacing: { after: 120 } }));
-      inTable = false;
-      tableRows = [];
-    }
-  }
-
   for (let line of lines) {
-    if (line.includes('\\newpage')) {
-      flushDocxTable();
-      children.push(new Paragraph({ children: [new TextRun({ text: '' })], pageBreakBefore: true }));
-      continue;
-    }
-
-    if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
-      if (!inTable) {
-        inTable = true;
-        tableRows = [];
-      }
-      if (line.includes('---')) continue;
-      const cells = line.split('|').slice(1, -1).map(c => c.trim());
-      tableRows.push(cells);
-      continue;
-    } else if (inTable) {
-      flushDocxTable();
-    }
-
     if (line.startsWith('# ')) {
       children.push(
         new Paragraph({
@@ -506,7 +421,7 @@ async function generateDocx() {
             );
             children.push(
               new Paragraph({
-                children: [new TextRun({ text: alt, italics: true, size: 18, color: '475569' })],
+                children: [new TextRun({ text: alt, italics: true, size: 18 })],
                 alignment: AlignmentType.CENTER,
                 spacing: { after: 120 },
               })
@@ -516,18 +431,16 @@ async function generateDocx() {
           }
         }
       }
-    } else if (line.trim().length > 0 && !line.startsWith('<') && !line.startsWith('```')) {
+    } else if (line.trim().length > 0 && !line.startsWith('|') && !line.startsWith('```')) {
       children.push(
         new Paragraph({
-          children: [new TextRun({ text: line.replace(/[*_`]/g, ''), size: 21 })],
-          spacing: { after: 90 },
+          children: [new TextRun({ text: line.replace(/[*_`]/g, ''), size: 22 })],
+          spacing: { after: 100 },
           alignment: AlignmentType.JUSTIFIED,
         })
       );
     }
   }
-
-  flushDocxTable();
 
   const doc = new Document({
     sections: [

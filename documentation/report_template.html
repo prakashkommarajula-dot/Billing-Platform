@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>BillFlow – B.Tech Course Project Report (SR University)</title>
+<title>BillFlow – B.Tech Project Report</title>
 <style>
   @page {
     size: A4;
@@ -28,29 +28,29 @@
   
   h1 {
     color: #0f172a;
-    font-size: 19pt;
+    font-size: 20pt;
     font-weight: 800;
-    margin-top: 22pt;
-    margin-bottom: 10pt;
-    border-bottom: 2px solid #1e3a8a;
-    padding-bottom: 5pt;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 6pt;
     page-break-after: avoid;
   }
 
   h2 {
     color: #1e3a8a;
-    font-size: 14pt;
+    font-size: 15pt;
     font-weight: 700;
-    margin-top: 16pt;
+    margin-top: 18pt;
     margin-bottom: 8pt;
     page-break-after: avoid;
   }
 
   h3 {
     color: #1e40af;
-    font-size: 12pt;
+    font-size: 12.5pt;
     font-weight: 600;
-    margin-top: 12pt;
+    margin-top: 14pt;
     margin-bottom: 6pt;
     page-break-after: avoid;
   }
@@ -66,7 +66,7 @@
 
   p {
     margin-top: 0;
-    margin-bottom: 9pt;
+    margin-bottom: 10pt;
     text-align: justify;
   }
 
@@ -80,16 +80,16 @@
     margin-left: 10pt;
   }
 
-  pre.code-block {
+  pre {
     background: #0f172a;
     color: #f8fafc;
-    padding: 9pt 12pt;
-    border-radius: 5pt;
+    padding: 10pt 14pt;
+    border-radius: 6pt;
     font-family: "Cascadia Code", Consolas, Monaco, monospace;
-    font-size: 9pt;
+    font-size: 9.5pt;
     line-height: 1.45;
     overflow-x: auto;
-    margin: 9pt 0;
+    margin: 10pt 0;
     page-break-inside: avoid;
   }
 
@@ -99,14 +99,14 @@
     padding: 1pt 4pt;
     border-radius: 3pt;
     font-family: Consolas, monospace;
-    font-size: 9pt;
+    font-size: 9.5pt;
     border: 1px solid #e2e8f0;
   }
 
   .report-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 12pt 0;
+    margin: 14pt 0;
     font-size: 9.5pt;
     page-break-inside: avoid;
   }
@@ -139,7 +139,7 @@
     max-width: 95%;
     height: auto;
     border: 1px solid #cbd5e1;
-    border-radius: 5pt;
+    border-radius: 6pt;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   }
 
@@ -156,7 +156,7 @@
     border: 0;
     height: 1px;
     background: #e2e8f0;
-    margin: 16pt 0;
+    margin: 18pt 0;
   }
 
   .math-block {
@@ -178,7 +178,7 @@
   /* Cover Page Styling */
   .cover-page {
     text-align: center;
-    padding: 20pt 5pt;
+    padding: 30pt 10pt;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -187,94 +187,94 @@
 </style>
 </head>
 <body>
-<div class="cover-page">
-<div style="text-align: center; margin-top: 5px;">
-  <h2 style="font-size: 20pt; font-weight: 800; color: #1e3a8a; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">SR UNIVERSITY</h2>
-  <h3 style="font-size: 13pt; font-weight: 700; color: #334155; margin-top: 0; margin-bottom: 6px; border: none;">SCHOOL OF COMPUTER SCIENCE & ARTIFICIAL INTELLIGENCE</h3>
-  <h4 style="font-size: 11pt; font-weight: 600; color: #64748b; margin-top: 0; margin-bottom: 14px; letter-spacing: 0.5px; border: none;">COURSE PROJECT REPORT</h4>
-</div>
-<div style="text-align: center; margin: 12px 0;">
-  <img src="screenshots/sru_logo.png" alt="SR University Logo" style="width: 175px; height: auto;" />
-</div>
-<div style="text-align: center; margin: 15px 0;">
-  <h1 style="font-size: 17pt; font-weight: 800; color: #0f172a; margin-bottom: 6px; line-height: 1.3; border: none;">BILLFLOW – INVOICE GENERATION AND BUSINESS BILLING MANAGEMENT PLATFORM</h1>
-  <p style="font-size: 10.5pt; color: #475569; font-style: italic; margin-bottom: 2px;">Submitted in partial fulfilment of the requirements for the course</p>
-  <h3 style="font-size: 13pt; font-weight: 700; color: #1d4ed8; margin-top: 2px; border: none;">DEVOPS AND FULL STACK DEVELOPMENT</h3>
-</div>
-<div style="margin: 18px auto; width: 94%;">
-  <table class="report-table" style="width: 100%; border: 1px solid #cbd5e1; font-size: 10pt;">
-    <thead>
-      <tr style="background: #1e3a8a; color: white;">
-        <th style="padding: 6px 12px; border: 1px solid #1e3a8a; width: 38%;">Student Details</th>
-        <th style="padding: 6px 12px; border: 1px solid #1e3a8a; width: 62%;">Information</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Student HT No.</td>
-        <td style="font-weight: 700; color: #1e40af; padding: 6px 12px; border: 1px solid #cbd5e1;">2303A51197</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Student Name</td>
-        <td style="font-weight: 700; padding: 6px 12px; border: 1px solid #cbd5e1;">kommarajula prakash</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Faculty Coordinator</td>
-        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">Dr. Mohammed Ali Shaik, Professor, School of Computer Science & Artificial Intelligence</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Designation</td>
-        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">Professor</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">School</td>
-        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">School of Computer Science & Artificial Intelligence</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Academic Year</td>
-        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">2026–2027</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Semester</td>
-        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">I</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Course Code</td>
-        <td style="font-weight: 700; padding: 6px 12px; border: 1px solid #cbd5e1;">23CS102PE405</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<div style="text-align: center; margin-top: 25px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
-  <h4 style="font-size: 11pt; font-weight: 700; color: #0f172a; margin-bottom: 2px; border: none;">SR UNIVERSITY</h4>
-  <p style="font-size: 9pt; color: #64748b; margin: 0;">Ananthasagar, Hasanparthy, Warangal, Telangana, India – 506371 | www.sru.edu.in</p>
-</div>
-</div>
+<p><div class="cover-page"></p>
+<p><div style="text-align: center; margin-top: 5px;"></p>
+<p>  <h2 style="font-size: 20pt; font-weight: 800; color: #1e3a8a; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">SR UNIVERSITY</h2></p>
+<p>  <h3 style="font-size: 13pt; font-weight: 700; color: #334155; margin-top: 0; margin-bottom: 6px; border: none;">SCHOOL OF COMPUTER SCIENCE & ARTIFICIAL INTELLIGENCE</h3></p>
+<p>  <h4 style="font-size: 11pt; font-weight: 600; color: #64748b; margin-top: 0; margin-bottom: 14px; letter-spacing: 0.5px; border: none;">COURSE PROJECT REPORT</h4></p>
+<p></div></p>
+<p><div style="text-align: center; margin: 12px 0;"></p>
+<p>  <img src="screenshots/sru_logo.png" alt="SR University Logo" style="width: 175px; height: auto;" /></p>
+<p></div></p>
+<p><div style="text-align: center; margin: 15px 0;"></p>
+<p>  <h1 style="font-size: 17pt; font-weight: 800; color: #0f172a; margin-bottom: 6px; line-height: 1.3; border: none;">BILLFLOW – INVOICE GENERATION AND BUSINESS BILLING MANAGEMENT PLATFORM</h1></p>
+<p>  <p style="font-size: 10.5pt; color: #475569; font-style: italic; margin-bottom: 2px;">Submitted in partial fulfilment of the requirements for the course</p></p>
+<p>  <h3 style="font-size: 13pt; font-weight: 700; color: #1d4ed8; margin-top: 2px; border: none;">DEVOPS AND FULL STACK DEVELOPMENT</h3></p>
+<p></div></p>
+<p><div style="margin: 18px auto; width: 94%;"></p>
+<p>  <table class="report-table" style="width: 100%; border: 1px solid #cbd5e1; font-size: 10pt;"></p>
+<p>    <thead></p>
+<p>      <tr style="background: #1e3a8a; color: white;"></p>
+<p>        <th style="padding: 6px 12px; border: 1px solid #1e3a8a; width: 38%;">Student Details</th></p>
+<p>        <th style="padding: 6px 12px; border: 1px solid #1e3a8a; width: 62%;">Information</th></p>
+<p>      </tr></p>
+<p>    </thead></p>
+<p>    <tbody></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Student HT No.</td></p>
+<p>        <td style="font-weight: 700; color: #1e40af; padding: 6px 12px; border: 1px solid #cbd5e1;">2303A51197</td></p>
+<p>      </tr></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Student Name</td></p>
+<p>        <td style="font-weight: 700; padding: 6px 12px; border: 1px solid #cbd5e1;">kommarajula prakash</td></p>
+<p>      </tr></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Faculty Coordinator</td></p>
+<p>        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">Dr. Mohammed Ali Shaik, Professor, School of Computer Science & Artificial Intelligence</td></p>
+<p>      </tr></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Designation</td></p>
+<p>        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">Professor</td></p>
+<p>      </tr></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">School</td></p>
+<p>        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">School of Computer Science & Artificial Intelligence</td></p>
+<p>      </tr></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Academic Year</td></p>
+<p>        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">2026–2027</td></p>
+<p>      </tr></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Semester</td></p>
+<p>        <td style="padding: 6px 12px; border: 1px solid #cbd5e1;">I</td></p>
+<p>      </tr></p>
+<p>      <tr></p>
+<p>        <td style="font-weight: 600; padding: 6px 12px; border: 1px solid #cbd5e1;">Course Code</td></p>
+<p>        <td style="font-weight: 700; padding: 6px 12px; border: 1px solid #cbd5e1;">23CS102PE405</td></p>
+<p>      </tr></p>
+<p>    </tbody></p>
+<p>  </table></p>
+<p></div></p>
+<p><div style="text-align: center; margin-top: 25px; border-top: 1px solid #e2e8f0; padding-top: 12px;"></p>
+<p>  <h4 style="font-size: 11pt; font-weight: 700; color: #0f172a; margin-bottom: 2px; border: none;">SR UNIVERSITY</h4></p>
+<p>  <p style="font-size: 9pt; color: #64748b; margin: 0;">Ananthasagar, Hasanparthy, Warangal, Telangana, India – 506371 | www.sru.edu.in</p></p>
+<p></div></p>
+<p></div></p>
 <div class="page-break"></div>
 <h2>CERTIFICATE OF APPROVAL</h2>
 <p>This is to certify that the course project report entitled <strong>"BILLFLOW – INVOICE GENERATION AND BUSINESS BILLING MANAGEMENT PLATFORM"</strong> submitted by <strong>kommarajula prakash</strong> (Hall Ticket No: <strong>2303A51197</strong>) in partial fulfilment of the requirements for the course <strong>DEVOPS AND FULL STACK DEVELOPMENT</strong> (<strong>Course Code: 23CS102PE405</strong>) is an authentic record of bonafide academic and engineering work carried out under our guidance and supervision at the <strong>School of Computer Science & Artificial Intelligence, SR University, Warangal</strong> during the Academic Year 2026–2027 (Semester I).</p>
 <p>The results embodied in this course project report have been verified through direct live deployment, automated continuous integration pipelines, end-to-end integration testing, and formal code evaluation. This work has not been submitted previously to any other university or examining body for the award of any degree, diploma, or academic credit.</p>
-<div style="height: 90px;"></div>
-<table style="width: 100%; border: none; font-size: 10.5pt; margin-top: 40px;">
-  <tr style="border: none;">
-    <td style="border: none; width: 33%; vertical-align: top;">
-      <strong>Dr. Mohammed Ali Shaik</strong><br/>
-      Professor & Faculty Coordinator<br/>
-      School of Computer Science & AI<br/>
+<p><div style="height: 90px;"></div></p>
+<p><table style="width: 100%; border: none; font-size: 10.5pt; margin-top: 40px;"></p>
+<p>  <tr style="border: none;"></p>
+<p>    <td style="border: none; width: 33%; vertical-align: top;"></p>
+<p>      <strong>Dr. Mohammed Ali Shaik</strong><br/></p>
+<p>      Professor & Faculty Coordinator<br/></p>
+<p>      School of Computer Science & AI<br/></p>
 <p>      SR University, Warangal</p>
-    </td>
-    <td style="border: none; width: 34%; text-align: center; vertical-align: top;">
-      <strong>Head of the Department</strong><br/>
-      School of Computer Science & AI<br/>
+<p>    </td></p>
+<p>    <td style="border: none; width: 34%; text-align: center; vertical-align: top;"></p>
+<p>      <strong>Head of the Department</strong><br/></p>
+<p>      School of Computer Science & AI<br/></p>
 <p>      SR University, Warangal</p>
-    </td>
-    <td style="border: none; width: 33%; text-align: right; vertical-align: top;">
-      <strong>External Examiner</strong><br/>
-      Evaluation Committee<br/>
+<p>    </td></p>
+<p>    <td style="border: none; width: 33%; text-align: right; vertical-align: top;"></p>
+<p>      <strong>External Examiner</strong><br/></p>
+<p>      Evaluation Committee<br/></p>
 <p>      SR University, Warangal</p>
-    </td>
-  </tr>
-</table>
+<p>    </td></p>
+<p>  </tr></p>
+<p></table></p>
 <div class="page-break"></div>
 <h2>DECLARATION</h2>
 <p>I, <strong>kommarajula prakash</strong>, bearing Hall Ticket No. <strong>2303A51197</strong>, student of Bachelor of Technology in the <strong>School of Computer Science & Artificial Intelligence, SR University, Warangal</strong>, hereby declare that the course project report entitled <strong>"BILLFLOW – INVOICE GENERATION AND BUSINESS BILLING MANAGEMENT PLATFORM"</strong> is a genuine and original work carried out independently by me under the supervision and mentorship of <strong>Dr. Mohammed Ali Shaik</strong>, Professor, School of Computer Science & Artificial Intelligence.</p>
@@ -283,33 +283,33 @@
 <div class="numbered-item">2. The empirical test cases, system diagrams, database schemas, and application screenshots presented in this report reflect actual verified behavior.</div>
 <div class="numbered-item">3. Due citations and references have been provided for all external software libraries, frameworks, open-source utilities, and architectural standards referenced in this document.</div>
 <div class="numbered-item">4. This project has not been submitted anywhere else for the award of any degree or diploma.</div>
-<div style="height: 60px;"></div>
-<table style="width: 100%; border: none; font-size: 10.5pt;">
-  <tr style="border: none;">
-    <td style="border: none; width: 50%; vertical-align: top;">
-      <strong>Date:</strong> 11-11-2026<br/>
-      <strong>Place:</strong> Warangal, Telangana
-    </td>
-    <td style="border: none; width: 50%; text-align: right; vertical-align: top;">
-      <strong>kommarajula prakash</strong><br/>
-      HT No: 2303A51197<br/>
-      B.Tech (DevOps & Full Stack Development)<br/>
-      School of Computer Science & Artificial Intelligence<br/>
+<p><div style="height: 60px;"></div></p>
+<p><table style="width: 100%; border: none; font-size: 10.5pt;"></p>
+<p>  <tr style="border: none;"></p>
+<p>    <td style="border: none; width: 50%; vertical-align: top;"></p>
+<p>      <strong>Date:</strong> 11-11-2026<br/></p>
+<p>      <strong>Place:</strong> Warangal, Telangana</p>
+<p>    </td></p>
+<p>    <td style="border: none; width: 50%; text-align: right; vertical-align: top;"></p>
+<p>      <strong>kommarajula prakash</strong><br/></p>
+<p>      HT No: 2303A51197<br/></p>
+<p>      B.Tech (DevOps & Full Stack Development)<br/></p>
+<p>      School of Computer Science & Artificial Intelligence<br/></p>
 <p>      SR University, Warangal</p>
-    </td>
-  </tr>
-</table>
+<p>    </td></p>
+<p>  </tr></p>
+<p></table></p>
 <div class="page-break"></div>
 <h2>ACKNOWLEDGEMENT</h2>
 <p>I express my deepest gratitude and sincere appreciation to my Faculty Coordinator, <strong>Dr. Mohammed Ali Shaik</strong>, Professor, School of Computer Science & Artificial Intelligence, SR University, for his invaluable guidance, constant motivation, insightful suggestions, and thorough technical critique throughout the design, implementation, and deployment phases of <strong>BillFlow</strong>. His deep insights in full-stack engineering principles and cloud computing paradigms served as a continuous source of inspiration.</p>
 <p>I extend my heartfelt gratitude to the <strong>Dean and Head of the Department</strong>, School of Computer Science & Artificial Intelligence, SR University, for fostering an exceptional environment of engineering excellence and providing the required laboratory equipment, cloud infrastructure, and computational resources necessary for executing this project.</p>
 <p>I am also thankful to all the faculty members, laboratory instructors, and administrative staff of the School of Computer Science & Artificial Intelligence for their direct and indirect encouragement during the semester.</p>
 <p>Finally, I wish to express my sincere appreciation to my parents, family members, and classmates for their enduring patience, moral support, and creative feedback during long hours of coding, testing, and debugging.</p>
-<div style="height: 40px;"></div>
-<div style="text-align: right;">
-  <strong>kommarajula prakash</strong><br/>
+<p><div style="height: 40px;"></div></p>
+<p><div style="text-align: right;"></p>
+<p>  <strong>kommarajula prakash</strong><br/></p>
 <p>  (HT No: 2303A51197)</p>
-</div>
+<p></div></p>
 <div class="page-break"></div>
 <h2>ABSTRACT</h2>
 <p>BillFlow is a production-ready, full-stack cloud accounting and invoice management platform developed to address the acute operational bottlenecks faced by small-to-medium enterprises (SMEs), trading firms, and freelance professionals. Conventional billing workflows frequently rely on error-prone spreadsheet calculations, fragmented paper documentation, and manual tax computation, leading to significant delays in invoice issuance, audit discrepancies, and impeded cash collection.</p>
@@ -414,7 +414,7 @@
 <h1>CHAPTER 3 – SYSTEM DESIGN</h1>
 <h2>3.1 Proposed Three-Tier Architecture</h2>
 <p>BillFlow is architectured around a classic, decoupled <strong>Three-Tier Enterprise Architecture</strong> comprising the Presentation Tier, Application Logic Tier, and Data Persistence Tier, interconnected over secure, standardized HTTP/JSON interfaces.</p>
-<pre class="code-block" data-lang=""><code>
+<pre><code>
 +-------------------------------------------------------------------------+
 |                         PRESENTATION TIER                               |
 |   React.js 18 Single-Page Application (SPA) | Vite Build Engine         |
@@ -449,7 +449,7 @@
 <h2>3.2 System Component and Data Flow Diagrams (DFD)</h2>
 <h3>3.2.1 Data Flow Diagram – Level 0 (Context Diagram)</h3>
 <p>At the highest abstraction level, external actors interact with the unified BillFlow system boundary by exchanging credentials, billing records, payment submissions, and receiving generated invoices, statements, and financial reports.</p>
-<pre class="code-block" data-lang=""><code>
+<pre><code>
    +------------------+                    +-----------------+
    |  Business Owner  |                    |    Customer     |
    +--------+---------+                    +--------+--------+
@@ -471,7 +471,7 @@
 </code></pre>
 <h3>3.2.2 Data Flow Diagram – Level 1 (Subsystem Decomposition)</h3>
 <p>Decomposing the BillFlow platform reveals seven core modular subsystems communicating with dedicated data stores:</p>
-<pre class="code-block" data-lang=""><code>
+<pre><code>
                                   +-------------------+
                                   | 1. Authentication | &lt;====&gt; [ D1: Users ]
                                   +---------+---------+
@@ -505,7 +505,7 @@
 </code></pre>
 <h3>3.2.3 Data Flow Diagram – Level 2 (Invoice Creation & Dual-GST Tax Engine)</h3>
 <p>The Level 2 DFD details the precise computational pipeline executed during tax invoice creation:</p>
-<pre class="code-block" data-lang=""><code>
+<pre><code>
 [ User Submits Invoice Form ]
               |
               v
@@ -542,7 +542,7 @@
 [ Step 6: Trigger Vector PDF Streaming Buffer ]
 </code></pre>
 <h2>3.3 Use Case Modeling and Interaction Workflows</h2>
-<pre class="code-block" data-lang="mermaid"><code>
+<pre><code>
 graph TD
     subgraph Actors
         BO[Business Owner]
@@ -616,7 +616,7 @@ graph TD
 <h2>4.2 Module-wise Implementation</h2>
 <h3>4.2.1 Multi-Tenant Workspace & Role-Based Authentication</h3>
 <p>Authentication is implemented via a stateless JWT workflow. When a user submits credentials to <code class="inline-code">POST /api/auth/login</code>, the controller queries the <code class="inline-code">User</code> collection (explicitly requesting the password hash via <code class="inline-code">+password</code>). The password is authenticated using <code class="inline-code">bcrypt.compare()</code>. Upon verification, an HMAC-SHA256 signed JWT is generated containing <code class="inline-code">userId</code>, <code class="inline-code">role</code>, and <code class="inline-code">organizationId</code>.</p>
-<pre class="code-block" data-lang="javascript"><code>
+<pre><code>
 // backend/middleware/auth.js - JWT &amp; Role Verification Middleware
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
@@ -658,7 +658,7 @@ module.exports = { protect, authorize };
 </code></pre>
 <h3>4.2.2 Tax Invoice Calculation Engine (Dual GST Logic)</h3>
 <p>The tax engine evaluates item quantities, base prices, line discounts, and tax rates. It dynamically verifies state codes between the billing organization and customer to determine whether to bifurcate tax into CGST and SGST (intra-state) or apply IGST (inter-state).</p>
-<pre class="code-block" data-lang="javascript"><code>
+<pre><code>
 // backend/controllers/invoiceController.js - Dual-GST Tax Logic
 let subtotal = 0;
 let totalCgst = 0;
@@ -701,7 +701,7 @@ const grandTotal = Math.round((subtotal + totalTax - (Number(discount) || 0)) * 
 </code></pre>
 <h3>4.2.3 PDFKit Vector Invoice Streaming Engine</h3>
 <p>Unlike clumsy client-side DOM-to-canvas approaches that produce blurry, unsearchable raster images, BillFlow utilizes PDFKit on the backend to construct vector graphic PDF files on-the-fly. The document writes directly into an HTTP response stream with <code class="inline-code">Content-Type: application/pdf</code> headers.</p>
-<pre class="code-block" data-lang="javascript"><code>
+<pre><code>
 // backend/utils/pdfGenerator.js - Vector PDF Streamer
 const PDFDocument = require('pdfkit');
 
@@ -738,7 +738,7 @@ function generateInvoicePdf(invoice, res) {
 <table class="report-table"><thead><tr><th>HTTP Method</th><th>Endpoint URI</th><th>Authorization Level</th><th>Description & Query / Body Parameters</th><th>Success Status</th></tr></thead><tbody><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/auth/register</code></td><td>Public</td><td>Register new Owner, Accountant, or Customer account.</td><td>201 Created</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/auth/login</code></td><td>Public</td><td>Authenticate user, return signed JWT and user profile.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/auth/me</code></td><td>Authenticated</td><td>Fetch active user session and workspace profile.</td><td>200 OK</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/auth/updatedetails</code></td><td>Authenticated</td><td>Update user name, contact email, and phone number.</td><td>200 OK</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/auth/updatepassword</code></td><td>Authenticated</td><td>Change user account password with old password verification.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/customers</code></td><td>Owner, Accountant</td><td>Retrieve all customers belonging to tenant workspace.</td><td>200 OK</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/customers</code></td><td>Owner, Accountant</td><td>Create a new customer profile with GSTIN and address.</td><td>201 Created</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/customers/:id</code></td><td>Owner, Accountant</td><td>Retrieve single customer details, balance, and ledger.</td><td>200 OK</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/customers/:id</code></td><td>Owner, Accountant</td><td>Update existing customer contact or billing address.</td><td>200 OK</td></tr><tr><td><strong>DELETE</strong></td><td><code class="inline-code">/api/customers/:id</code></td><td>Owner</td><td>Remove customer record (if no linked invoices exist).</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/products</code></td><td>Owner, Accountant</td><td>List all products and services with HSN codes and prices.</td><td>200 OK</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/products</code></td><td>Owner, Accountant</td><td>Create new product or service with default GST tier.</td><td>201 Created</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/products/:id</code></td><td>Owner, Accountant</td><td>Update product unit price, description, or tax rate.</td><td>200 OK</td></tr><tr><td><strong>DELETE</strong></td><td><code class="inline-code">/api/products/:id</code></td><td>Owner</td><td>Remove product from active catalog.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/invoices</code></td><td>Owner, Accountant</td><td>List tenant invoices with filtering by status and date.</td><td>200 OK</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/invoices</code></td><td>Owner, Accountant</td><td>Create and issue tax invoice with dual-GST calculations.</td><td>201 Created</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/invoices/:id</code></td><td>Owner, Accountant, Cust</td><td>Retrieve full invoice document with itemized tax splits.</td><td>200 OK</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/invoices/:id</code></td><td>Owner, Accountant</td><td>Update invoice draft details or line items.</td><td>200 OK</td></tr><tr><td><strong>DELETE</strong></td><td><code class="inline-code">/api/invoices/:id</code></td><td>Owner</td><td>Void or delete draft invoice.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/invoices/:id/pdf</code></td><td>Owner, Accountant, Cust</td><td>Stream dynamically generated vector PDF invoice.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/payments</code></td><td>Owner, Accountant</td><td>Master payment register of all settled transactions.</td><td>200 OK</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/payments</code></td><td>Owner, Accountant</td><td>Record payment received; decrements customer balance.</td><td>201 Created</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/credit-notes</code></td><td>Owner, Accountant</td><td>List all credit adjustment notes.</td><td>200 OK</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/credit-notes</code></td><td>Owner, Accountant</td><td>Issue credit note against invoice with ledger credit.</td><td>201 Created</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/reports/dashboard</code></td><td>Owner, Accountant</td><td>Fetch aggregated KPI cards and monthly revenue series.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/reports/gst</code></td><td>Owner, Accountant</td><td>Generate GSTR-1 and GSTR-3B tax compliance summary.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/portal/my-invoices</code></td><td>Customer</td><td>Fetch invoices issued to authenticated customer.</td><td>200 OK</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/portal/pay</code></td><td>Customer</td><td>Process simulated online payment with instant receipt.</td><td>200 OK</td></tr><tr><td><strong>GET</strong></td><td><code class="inline-code">/api/users</code></td><td>System Admin</td><td>Master list of all registered platform users.</td><td>200 OK</td></tr><tr><td><strong>PUT</strong></td><td><code class="inline-code">/api/users/:id/status</code></td><td>System Admin</td><td>Toggle user active/deactivated state or change role.</td><td>200 OK</td></tr><tr><td><strong>POST</strong></td><td><code class="inline-code">/api/users/:id/reset-password</code></td><td>System Admin</td><td>Administrative override password reset.</td><td>200 OK</td></tr></tbody></table>
 <h2>4.4 Installation and Development Guide</h2>
 <h3>4.4.1 Local Development Setup</h3>
-<pre class="code-block" data-lang="bash"><code>
+<pre><code>
 # 1. Clone repository from GitHub
 git clone https://github.com/prakashkommarajula-dot/Billing-Platform.git
 cd Billing-Platform
@@ -856,7 +856,7 @@ npm run dev
 <li><strong>Main Branch Protection:</strong> The <code class="inline-code">main</code> branch represents production-ready, deployable code. Direct untested commits to <code class="inline-code">main</code> were restricted.</li>
 <li><strong>Atomic Semantic Commits:</strong> Every commit message followed semantic commit guidelines (e.g., <code class="inline-code">feat: implement dual-gst tax engine</code>, <code class="inline-code">fix: resolve mongoose connection buffer timeout</code>, <code class="inline-code">chore: update docker-compose manifests</code>).</li>
 <li><strong>Continuous Synchronization:</strong> Cloud deployment on Render is linked directly to webhook triggers on <code class="inline-code">main</code>, initiating automated container builds upon every verified push.</li>
-<pre class="code-block" data-lang=""><code>
+<pre><code>
 +------------------+         +-------------------+         +-------------------+
 |  Local Workspace | =======&gt; | GitHub Repository | =======&gt; |   Render Cloud    |
 |  Feature Commits |   push  |    main Branch    |  webhook | Automated Deploy  |
@@ -873,7 +873,7 @@ npm run dev
 <h2>6.3 Docker Containerization</h2>
 <h3>6.3.1 Backend Dockerfile</h3>
 <p>The backend container utilizes a security-hardened Alpine Linux base image running under a non-root <code class="inline-code">node</code> user:</p>
-<pre class="code-block" data-lang="dockerfile"><code>
+<pre><code>
 # backend/Dockerfile
 FROM node:18-alpine
 
@@ -897,7 +897,7 @@ CMD ["node", "server.js"]
 </code></pre>
 <h3>6.3.2 Frontend Multi-Stage Dockerfile</h3>
 <p>The frontend container employs a multi-stage build pattern: Stage 1 compiles React assets via Node.js, and Stage 2 copies the static bundle into an ultra-lightweight Nginx Alpine server:</p>
-<pre class="code-block" data-lang="dockerfile"><code>
+<pre><code>
 # frontend/Dockerfile - Multi-Stage Production Build
 # Stage 1: Build React SPA
 FROM node:18-alpine AS builder
@@ -916,7 +916,7 @@ CMD ["nginx", "-g", "daemon off;"]
 </code></pre>
 <h3>6.3.3 Docker Compose Multi-Container Orchestration</h3>
 <p>The entire application topology—including frontend, backend, and local MongoDB database—is managed via <code class="inline-code">docker-compose.yml</code>:</p>
-<pre class="code-block" data-lang="yaml"><code>
+<pre><code>
 version: '3.8'
 
 services:
@@ -972,7 +972,7 @@ volumes:
 <h2>6.4 Kubernetes Deployment (KIND Cluster)</h2>
 <p>For cloud-native orchestration, declarative Kubernetes manifests were developed and validated on a local KIND (Kubernetes in Docker) cluster.</p>
 <h3>6.4.1 KIND Cluster Configuration</h3>
-<pre class="code-block" data-lang="yaml"><code>
+<pre><code>
 # kind-cluster-config.yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -988,7 +988,7 @@ nodes:
   - role: worker
 </code></pre>
 <h3>6.4.2 Backend Deployment & Service Manifests</h3>
-<pre class="code-block" data-lang="yaml"><code>
+<pre><code>
 # k8s/backend-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
